@@ -13,11 +13,10 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        for (int i = 0; i <= size(); i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
-            }
+        if (size() < 10000) {
+            storage[size()] = r;
+        } else {
+            System.out.println("Storage is full !!!");
         }
     }
 
