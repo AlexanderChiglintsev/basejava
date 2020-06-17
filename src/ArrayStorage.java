@@ -3,25 +3,26 @@
  */
 public class ArrayStorage {
     private Resume[] storage = new Resume[10000];
+    private int size = 0;
 
     void clear() {
-        for (int i = size() - 1; i >= 0; i--) {
-            if (storage[i] != null) {
-                storage[i] = null;
-            } else break;
+        for (int i = size; i >= 0; i--) {
+            storage[i] = null;
+            size = 0;
         }
     }
 
     void save(Resume r) {
-        if (size() < 10000) {
-            storage[size()] = r;
+        if (size < 10000) {
+            storage[size] = r;
+            size++;
         } else {
             System.out.println("Storage is full !!!");
         }
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i <= size() - 1; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
@@ -31,38 +32,27 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int numdel = 0;
-        for (int i = 0; i <= size() - 1; i++) {
+        for (int i = 0; i < size; i++) {
             numdel++;
             if (storage[i].uuid.equals(uuid)) {
                 break;
             }
         }
-        storage[numdel - 1] = storage[size() - 1];
-        storage[size() - 1] = null;
+        storage[numdel - 1] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] allres = new Resume[size()];
-        for (int i = 0; i <= size() - 1; i++) {
-            if (storage[i] != null) {
-                allres[i] = storage[i];
-            } else {
-                break;
-            }
-        }
-        return allres;
+        Resume[] resumes = new Resume[size];
+        System.arraycopy(storage, 0, resumes, 0, size);
+        return resumes;
     }
 
     int size() {
-        int i = 0;
-        for (Resume res : storage) {
-            if (res != null) {
-                i++;
-            }
-        }
-        return i;
+        return size;
     }
 }
