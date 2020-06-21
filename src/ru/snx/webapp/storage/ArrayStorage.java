@@ -2,42 +2,38 @@ package ru.snx.webapp.storage;
 
 import ru.snx.webapp.model.Resume;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private final int STORAGE_CAPACITY = 10000;
+    private Resume[] storage = new Resume[STORAGE_CAPACITY];
     private int size = 0;
 
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
-    public void update(Resume r) throws IOException {
-        int index = checkExists(r.getUuid());
+    public void update(Resume r) {
+        int index = findIndex(r.getUuid());
         if (index != -1) {
-            System.out.println("Укажите новое значение uuid: ");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            storage[index].setUuid(reader.readLine().trim().toLowerCase());
+            storage[index] = r;
         } else {
-            System.out.println("Нет такого резюме !!!");
+            System.out.println("Резюме " + r.getUuid() + " отсутствует !!!");
         }
     }
 
     public void save(Resume r) {
-        if (size < 10000) {
-            int index = checkExists(r.getUuid());
+        if (size < STORAGE_CAPACITY) {
+            int index = findIndex(r.getUuid());
             if (index == -1) {
                 storage[size] = r;
                 size++;
             } else {
-                System.out.println("Резюме с таким uuid уже существует !!!");
+                System.out.println("Резюме " + r.getUuid() + " уже существует !!!");
             }
         } else {
             System.out.println("База резюме переполнена !!!");
@@ -45,23 +41,21 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = checkExists(uuid);
+        int index = findIndex(uuid);
         if (index != -1) {
             return storage[index];
-        } else {
-            System.out.println("Нет такого резюме !!!");
         }
         return null;
     }
 
     public void delete(String uuid) {
-        int index = checkExists(uuid);
+        int index = findIndex(uuid);
         if (index != -1) {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         } else {
-            System.out.println("Нет такого резюме !!!");
+            System.out.println("Резюме " + uuid + " отсутствует !!!");
         }
     }
 
@@ -79,7 +73,7 @@ public class ArrayStorage {
     /*Поиск резюме по uuid
     Возвращает индекс элемента в storage, если найдено,
     в противном случае -1*/
-    private int checkExists(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
