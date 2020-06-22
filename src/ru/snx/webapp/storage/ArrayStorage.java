@@ -45,6 +45,7 @@ public class ArrayStorage {
         if (index != -1) {
             return storage[index];
         }
+        System.out.println("Резюме " + uuid + " отсутствует !!!");
         return null;
     }
 
