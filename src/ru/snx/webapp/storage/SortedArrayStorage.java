@@ -11,12 +11,11 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int index = findIndex(r.getUuid());
         if (index >= 0) {
             System.out.println("Резюме " + r.getUuid() + " уже существует !!!");
-        } else {
-            System.out.println(size-(Math.abs(index)-1));
+        } else if (size < STORAGE_CAPACITY) {
             System.arraycopy(storage,(Math.abs(index)-1),storage,Math.abs(index),(size-(Math.abs(index)-1)));
             storage[Math.abs(index)-1] = r;
             size++;
-        }
+        } else System.out.println("База резюме заполнена !!!");
     }
 
     @Override
@@ -25,7 +24,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         if (index < 0) {
             System.out.println("Резюме " + uuid + " отсутствует !!!");
         } else {
-            System.out.println(size-Math.abs(index)-1);
             System.arraycopy(storage,(Math.abs(index)+1),storage,(Math.abs(index)),(size-Math.abs(index)-1));
             storage[size-1] = null;
             size--;

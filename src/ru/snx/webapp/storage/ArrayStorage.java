@@ -18,7 +18,7 @@ public class ArrayStorage extends AbstractArrayStorage {
                 System.out.println("Резюме " + r.getUuid() + " уже существует !!!");
             }
         } else {
-            System.out.println("База резюме переполнена !!!");
+            System.out.println("База резюме заполнена !!!");
         }
     }
 
