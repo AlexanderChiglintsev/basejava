@@ -7,27 +7,14 @@ import java.util.Arrays;
 public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
-    public void save(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (index >= 0) {
-            System.out.println("Резюме " + r.getUuid() + " уже существует !!!");
-        } else if (size < STORAGE_CAPACITY) {
-            System.arraycopy(storage,(Math.abs(index)-1),storage,Math.abs(index),(size-(Math.abs(index)-1)));
-            storage[Math.abs(index)-1] = r;
-            size++;
-        } else System.out.println("База резюме заполнена !!!");
+    protected void insertResume(int index, Resume r) {
+        System.arraycopy(storage, (Math.abs(index) - 1), storage, Math.abs(index), (size - (Math.abs(index) - 1)));
+        storage[Math.abs(index) - 1] = r;
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            System.out.println("Резюме " + uuid + " отсутствует !!!");
-        } else {
-            System.arraycopy(storage,(Math.abs(index)+1),storage,(Math.abs(index)),(size-Math.abs(index)-1));
-            storage[size-1] = null;
-            size--;
-        }
+    protected void deleteResume(int index) {
+        System.arraycopy(storage, (Math.abs(index) + 1), storage, (Math.abs(index)), (size - Math.abs(index) - 1));
     }
 
     @Override

@@ -7,30 +7,14 @@ import ru.snx.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-
-    public void save(Resume r) {
-        if (size < STORAGE_CAPACITY) {
-            int index = findIndex(r.getUuid());
-            if (index == -1) {
-                storage[size] = r;
-                size++;
-            } else {
-                System.out.println("Резюме " + r.getUuid() + " уже существует !!!");
-            }
-        } else {
-            System.out.println("База резюме заполнена !!!");
-        }
+    @Override
+    protected void insertResume(int index, Resume r) {
+        storage[size] = r;
     }
 
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index != -1) {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
-        } else {
-            System.out.println("Резюме " + uuid + " отсутствует !!!");
-        }
+    @Override
+    protected void deleteResume(int index) {
+        storage[index] = storage[size - 1];
     }
 
     /**
