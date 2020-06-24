@@ -5,9 +5,9 @@ import ru.snx.webapp.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_CAPACITY = 100000;
-    protected Resume[] storage = new Resume[STORAGE_CAPACITY];
-    protected int size = 0;
+    private static final int STORAGE_CAPACITY = 100000;
+    Resume[] storage = new Resume[STORAGE_CAPACITY];
+    int size = 0;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
