@@ -1,15 +1,18 @@
 package ru.snx.webapp.storage;
 
+import ru.snx.webapp.exceptions.ExistStorageException;
+import ru.snx.webapp.exceptions.NoExistStorageException;
+import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    private static final int STORAGE_CAPACITY = 100000;
+    private static final int STORAGE_CAPACITY = 100_000;
     Resume[] storage = new Resume[STORAGE_CAPACITY];
     int size = 0;
 
-    public void clear() {
+    public final void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
@@ -17,17 +20,17 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume r) {
         int index = findIndex(r.getUuid());
         if (index >= 0) {
-            System.out.println("Резюме " + r.getUuid() + " уже существует !!!");
+            throw new ExistStorageException(r.getUuid());
         } else if (size < STORAGE_CAPACITY) {
             insertResume(index, r);
             size++;
-        } else System.out.println("База резюме заполнена !!!");
+        } else throw new StorageException("База резюме заполнена !!!", r.getUuid());
     }
 
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            System.out.println("Резюме " + uuid + " отсутствует !!!");
+            throw new NoExistStorageException(uuid);
         } else {
             deleteResume(index);
             storage[size - 1] = null;
@@ -40,7 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             storage[index] = r;
         } else {
-            System.out.println("Резюме " + r.getUuid() + " отсутствует !!!");
+            throw new NoExistStorageException(r.getUuid());
         }
     }
 
@@ -49,8 +52,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index >= 0) {
             return storage[index];
         }
-        System.out.println("Резюме " + uuid + " отсутствует !!!");
-        return null;
+        throw new NoExistStorageException(uuid);
     }
 
     public Resume[] getAll() {
