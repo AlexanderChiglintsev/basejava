@@ -1,9 +1,6 @@
 package ru.snx.webapp.storage;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import ru.snx.webapp.exceptions.*;
 import ru.snx.webapp.model.Resume;
 
@@ -44,6 +41,24 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(4, storage.size());
     }
 
+    @Test(expected = ExistStorageException.class)
+    public void saveExistException() {
+        storage.save(res1);
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveStorageOverflow() {
+        storage.clear();
+        try {
+            for (int i = 0; i < 100000; i++) {
+                storage.save(new Resume(Integer.toString(i)));
+            }
+        } catch (Exception e) {
+            Assert.fail("Filling storage is fail !!!");
+        }
+        storage.save(new Resume());
+    }
+
     @Test(expected = NoExistStorageException.class)
     public void delete() {
         storage.delete("1");
@@ -57,9 +72,19 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(res1, storage.get("1"));
     }
 
+    @Test(expected = NoExistStorageException.class)
+    public void updateNoExist() {
+        storage.update(new Resume());
+    }
+
     @Test
     public void get() {
         Assert.assertEquals(res1, storage.get("1"));
+    }
+
+    @Test(expected = NoExistStorageException.class)
+    public void getNoExist() {
+        storage.get("123");
     }
 
     @Test
@@ -75,26 +100,4 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(0, storage.size());
     }
 
-    @Test(expected = NoExistStorageException.class)
-    public void resumeNotFound() {
-        storage.get("123");
-    }
-
-    @Test(expected = ExistStorageException.class)
-    public void resumeExist() {
-        storage.save(res1);
-    }
-
-    @Test(expected = StorageException.class)
-    public void storageOverflow() {
-        storage.clear();
-        try {
-            for (int i = 0; i < 100000; i++) {
-                storage.save(new Resume(Integer.toString(i)));
-            }
-        } catch (Exception e) {
-            Assert.fail("Filling storage is fail !!!");
-        }
-        storage.save(new Resume());
-    }
 }
