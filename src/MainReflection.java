@@ -16,5 +16,6 @@ public class MainReflection {
         // My realisation invoking method
         Method method = r.getClass().getDeclaredMethod("toString");
         System.out.println(method.invoke(r));
+
     }
 }

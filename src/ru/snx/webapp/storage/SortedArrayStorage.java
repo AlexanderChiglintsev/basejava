@@ -8,8 +8,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insertResume(int index, Resume r) {
-        System.arraycopy(storage, (Math.abs(index) - 1), storage, Math.abs(index), (size - (Math.abs(index) - 1)));
-        storage[Math.abs(index) - 1] = r;
+        index = Math.abs(index);
+        System.arraycopy(storage, (index - 1), storage, index, (size - (index - 1)));
+        storage[index - 1] = r;
     }
 
     @Override

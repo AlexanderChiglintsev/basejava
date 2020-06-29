@@ -4,9 +4,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.snx.webapp.exceptions.ExistStorageException;
-import ru.snx.webapp.exceptions.NoExistStorageException;
-import ru.snx.webapp.exceptions.StorageException;
+import ru.snx.webapp.exceptions.*;
 import ru.snx.webapp.model.Resume;
 
 
@@ -43,12 +41,14 @@ public abstract class AbstractArrayStorageTest {
         Resume resume = new Resume("4");
         storage.save(resume);
         Assert.assertEquals(resume, storage.get("4"));
+        Assert.assertEquals(4, storage.size());
     }
 
-    @Test
+    @Test(expected = NoExistStorageException.class)
     public void delete() {
         storage.delete("1");
-        Assert.assertEquals(2, storage.getAll().length);
+        Assert.assertEquals(2, storage.size());
+        storage.delete("1");
     }
 
     @Test
@@ -64,14 +64,15 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] resumes;
-        resumes = new Resume[]{res1, res2, res3};
+        Resume[] resumes = new Resume[]{res1, res2, res3};
         Assert.assertArrayEquals(resumes, storage.getAll());
     }
 
     @Test
     public void size() {
         Assert.assertEquals(3, storage.size());
+        storage.clear();
+        Assert.assertEquals(0, storage.size());
     }
 
     @Test(expected = NoExistStorageException.class)
