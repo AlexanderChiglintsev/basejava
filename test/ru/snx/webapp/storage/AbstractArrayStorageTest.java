@@ -50,7 +50,7 @@ public abstract class AbstractArrayStorageTest {
     public void saveStorageOverflow() {
         storage.clear();
         try {
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 10000; i++) {
                 storage.save(new Resume(Integer.toString(i)));
             }
         } catch (Exception e) {

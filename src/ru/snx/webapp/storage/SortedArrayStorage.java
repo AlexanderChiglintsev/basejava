@@ -11,11 +11,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         index = Math.abs(index);
         System.arraycopy(storage, (index - 1), storage, index, (size - (index - 1)));
         storage[index - 1] = r;
+        size++;
     }
 
     @Override
     protected void deleteResume(int index) {
         System.arraycopy(storage, (index + 1), storage, index, (size - index - 1));
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
@@ -24,4 +27,5 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         indexSearch.setUuid(uuid);
         return Arrays.binarySearch(storage, 0, size, indexSearch);
     }
+
 }
