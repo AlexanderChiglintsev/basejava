@@ -49,11 +49,6 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-    /*@Override
-    public Resume[] getAll() {
-        return new Resume[0];
-    }*/
-
     protected abstract int findIndex(String uuid);
 
     protected abstract void insertResume(int index, Resume r);
