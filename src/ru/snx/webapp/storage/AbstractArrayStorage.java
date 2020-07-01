@@ -1,5 +1,6 @@
 package ru.snx.webapp.storage;
 
+import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -23,13 +24,25 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkSize() {
-        return (size == STORAGE_CAPACITY);
+    protected void updateResume(int index, Resume r) {
+        storage[index] = r;
     }
 
     @Override
-    protected void updateResume(int index, Resume r) {
-        storage[index] = r;
+    protected void insertResume(int index, Resume r) {
+        if (size == STORAGE_CAPACITY) {
+            throw new StorageException("База резюме заполнена !!!", r.getUuid());
+        } else {
+            insertArrayResume(index, r);
+            size++;
+        }
+    }
+
+    @Override
+    protected void deleteResume(int index) {
+        deleteArrayResume(index);
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
@@ -38,4 +51,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected abstract int findIndex(String uuid);
+
+    protected abstract void insertArrayResume(int index, Resume r);
+
+    protected abstract void deleteArrayResume(int index);
 }

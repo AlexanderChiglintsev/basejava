@@ -8,20 +8,14 @@ import ru.snx.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected void insertResume(int index, Resume r) {
+    protected void insertArrayResume(int index, Resume r) {
         storage[size] = r;
-        size++;
     }
 
     @Override
-    protected void deleteResume(int index) {
+    protected void deleteArrayResume(int index) {
         storage[index] = storage[size - 1];
-        size--;
     }
-
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
 
     /*Поиск резюме по uuid
     Возвращает индекс элемента в storage, если найдено,

@@ -2,7 +2,6 @@ package ru.snx.webapp.storage;
 
 import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
-import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
@@ -17,15 +16,11 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        if (checkSize()) {
-            throw new StorageException("База резюме заполнена !!!", r.getUuid());
+        int index = findIndex(r.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
         } else {
-            int index = findIndex(r.getUuid());
-            if (index >= 0){
-                throw new ExistStorageException(r.getUuid());
-            } else {
-                insertResume(index, r);
-            }
+            insertResume(index, r);
         }
     }
 
@@ -59,5 +54,4 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void deleteResume(int index);
 
-    protected abstract boolean checkSize();
 }

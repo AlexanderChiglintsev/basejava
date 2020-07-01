@@ -20,10 +20,9 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected int findIndex(String uuid) {
-        int i =0;
+        int i = 0;
         for (Resume r : storage) {
             if (r.getUuid().equals(uuid)) {
-                System.out.println("i="+i);
                 return i;
             }
             i++;
@@ -39,7 +38,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void updateResume(int index, Resume r) {
         storage.set(index, r);
-        //storage.add(index, r);
     }
 
     @Override
@@ -50,11 +48,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void deleteResume(int index) {
         storage.remove(index);
-    }
-
-    @Override
-    protected boolean checkSize() {
-        return false;
     }
 
     @Override

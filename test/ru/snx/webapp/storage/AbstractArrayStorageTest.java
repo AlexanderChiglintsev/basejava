@@ -30,7 +30,7 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void clear() {
         storage.clear();
-        Assert.assertEquals(0, storage.getAll().length);
+        Assert.assertEquals(0, storage.size());
     }
 
     @Test
@@ -89,8 +89,8 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] resumes = new Resume[]{res1, res2, res3};
-        Assert.assertArrayEquals(resumes, storage.getAll());
+        Resume[] expectedResumes = new Resume[]{res1, res2, res3};
+        Assert.assertArrayEquals(expectedResumes, storage.getAll());
     }
 
     @Test
