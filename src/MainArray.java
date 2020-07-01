@@ -1,5 +1,5 @@
 import ru.snx.webapp.model.Resume;
-import ru.snx.webapp.storage.ListStorage;
+import ru.snx.webapp.storage.SortedArrayStorage;
 import ru.snx.webapp.storage.Storage;
 
 import java.io.BufferedReader;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  * (just run, no need to understand)
  */
 public class MainArray {
-    private final static Storage ARRAY_STORAGE = new ListStorage();
+    private final static Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
