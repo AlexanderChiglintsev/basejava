@@ -43,8 +43,6 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract boolean checkExist(String uuid);
 
-    protected abstract int findIndex(String uuid);
-
     protected abstract void insertResume(Resume r);
 
     protected abstract void updateResume(Resume r);

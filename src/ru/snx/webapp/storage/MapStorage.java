@@ -11,12 +11,7 @@ public class MapStorage extends AbstractStorage {
     protected boolean checkExist(String uuid) {
         return false;
     }
-
-    @Override
-    protected int findIndex(String uuid) {
-        return 0;
-    }
-
+    
     @Override
     protected void insertResume(Resume r) {
 
