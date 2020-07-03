@@ -8,47 +8,50 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        if (!checkExist(r.getUuid())) {
+        int index = findIndex(r.getUuid());
+        if (index < 0) {
             throw new NoExistStorageException(r.getUuid());
-        } else updateResume(r);
+        } else updateResume(index, r);
     }
 
     @Override
     public void save(Resume r) {
-        if (checkExist(r.getUuid())) {
+        int index = findIndex(r.getUuid());
+        if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            insertResume(r);
+            insertResume(index, r);
         }
     }
 
     @Override
     public Resume get(String uuid) {
-
-        if (!checkExist(uuid)) {
+        int index = findIndex(uuid);
+        if (index < 0) {
             throw new NoExistStorageException(uuid);
         } else {
-            return getResume(uuid);
+            return getResume(index);
         }
     }
 
     @Override
     public void delete(String uuid) {
-        if (!checkExist(uuid)) {
+        int index = findIndex(uuid);
+        if (index < 0) {
             throw new NoExistStorageException(uuid);
         } else {
-            deleteResume(uuid);
+            deleteResume(index);
         }
     }
 
-    protected abstract boolean checkExist(String uuid);
+    protected abstract int findIndex(String uuid);
 
-    protected abstract void insertResume(Resume r);
+    protected abstract void insertResume(int index, Resume r);
 
-    protected abstract void updateResume(Resume r);
+    protected abstract void updateResume(int index, Resume r);
 
-    protected abstract Resume getResume(String uuid);
+    protected abstract Resume getResume(int index);
 
-    protected abstract void deleteResume(String uuid);
+    protected abstract void deleteResume(int index);
 
 }
