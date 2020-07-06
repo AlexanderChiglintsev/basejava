@@ -8,50 +8,42 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        if (checkUuid(true, r.getUuid())) {
-            updateResume(r);
-        }
+        if (checkUuidNoExist(r.getUuid())) updateResume(findKey(r.getUuid()), r);
     }
 
     @Override
     public void save(Resume r) {
-        if (checkUuid(false, r.getUuid())) {
-            insertResume(r);
-        }
+        if (checkUuidExist(r.getUuid())) insertResume(findKey(r.getUuid()), r);
     }
 
     @Override
     public Resume get(String uuid) {
-        if (checkUuid(true, uuid)) {
-            return getResume(findIndex(uuid));
-        }
+        if (checkUuidNoExist(uuid)) return getResume(findKey(uuid));
         return null;
     }
 
     @Override
     public void delete(String uuid) {
-        if (checkUuid(true, uuid)) {
-            deleteResume(findIndex(uuid));
-        }
+        if (checkUuidNoExist(uuid)) deleteResume(findKey(uuid));
     }
 
-    private boolean checkUuid(Boolean expect, String uuid) {
-        boolean state = checkExist(uuid);
-        if ((!state) && (expect)) {
-            throw new NoExistStorageException(uuid);
-        } else if ((state) && (!expect)) {
-            throw new ExistStorageException(uuid);
-        }
+    private boolean checkUuidExist(String uuid) {
+        if (checkExist(findKey(uuid))) throw new ExistStorageException(uuid);
         return true;
     }
 
-    protected abstract boolean checkExist(String uuid);
+    private boolean checkUuidNoExist(String uuid) {
+        if (!checkExist(findKey(uuid))) throw new NoExistStorageException(uuid);
+        return true;
+    }
 
-    protected abstract Object findIndex(String uuid);
+    protected abstract boolean checkExist(Object key);
 
-    protected abstract void insertResume(Resume r);
+    protected abstract Object findKey(String uuid);
 
-    protected abstract void updateResume(Resume r);
+    protected abstract void insertResume(Object key, Resume r);
+
+    protected abstract void updateResume(Object key, Resume r);
 
     protected abstract Resume getResume(Object key);
 

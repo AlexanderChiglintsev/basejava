@@ -8,13 +8,13 @@ public class MapStorage extends AbstractStorage {
     private HashMap<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected void insertResume(Resume r) {
-        storage.put(r.getUuid(), r);
+    protected void insertResume(Object uuid, Resume r) {
+        storage.put((String) uuid, r);
     }
 
     @Override
-    protected void updateResume(Resume r) {
-        storage.put(r.getUuid(), r);
+    protected void updateResume(Object uuid, Resume r) {
+        storage.put((String) uuid, r);
     }
 
     @Override
@@ -46,12 +46,13 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkExist(String uuid) {
-        return storage.containsKey(uuid);
+    protected boolean checkExist(Object uuid) {
+        String id = (String) uuid;
+        return storage.containsKey(id);
     }
 
     @Override
-    protected Object findIndex(String uuid) {
+    protected Object findKey(String uuid) {
         return uuid;
     }
 }

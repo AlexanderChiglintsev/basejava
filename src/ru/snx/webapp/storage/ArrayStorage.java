@@ -21,7 +21,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     Возвращает индекс элемента в storage, если найдено,
     в противном случае -1*/
     @Override
-    protected Object findIndex(String uuid) {
+    protected Object findKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

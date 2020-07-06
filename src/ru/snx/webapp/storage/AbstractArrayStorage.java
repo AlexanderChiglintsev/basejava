@@ -24,16 +24,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Resume r) {
-        storage[(int) findIndex(r.getUuid())] = r;
+    protected void updateResume(Object index, Resume r) {
+        storage[(int) index] = r;
     }
 
     @Override
-    protected void insertResume(Resume r) {
+    protected void insertResume(Object index, Resume r) {
         if (size == STORAGE_CAPACITY) {
             throw new StorageException("База резюме заполнена !!!", r.getUuid());
         } else {
-            insertArrayResume((int) findIndex(r.getUuid()), r);
+            insertArrayResume((int) index, r);
             size++;
         }
     }
@@ -51,9 +51,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkExist(String uuid) {
-        int index = (Integer) findIndex(uuid);
-        return (index >= 0);
+    protected boolean checkExist(Object index) {
+        return ((int) index >= 0);
     }
 
     protected abstract void insertArrayResume(int index, Resume r);
