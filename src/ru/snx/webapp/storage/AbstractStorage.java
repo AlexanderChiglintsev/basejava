@@ -8,33 +8,38 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        if (checkUuidNoExist(r.getUuid())) updateResume(findKey(r.getUuid()), r);
+        updateResume(checkUuidNoExist(r.getUuid()), r);
     }
 
     @Override
     public void save(Resume r) {
-        if (checkUuidExist(r.getUuid())) insertResume(findKey(r.getUuid()), r);
+        insertResume(checkUuidExist(r.getUuid()), r);
     }
 
     @Override
     public Resume get(String uuid) {
-        if (checkUuidNoExist(uuid)) return getResume(findKey(uuid));
-        return null;
+        return getResume(checkUuidNoExist(uuid));
     }
 
     @Override
     public void delete(String uuid) {
-        if (checkUuidNoExist(uuid)) deleteResume(findKey(uuid));
+        deleteResume(checkUuidNoExist(uuid));
     }
 
-    private boolean checkUuidExist(String uuid) {
-        if (checkExist(findKey(uuid))) throw new ExistStorageException(uuid);
-        return true;
+    private Object checkUuidExist(String uuid) {
+        Object key = findKey(uuid);
+        if (checkExist(key)) {
+            throw new ExistStorageException(uuid);
+        }
+        return key;
     }
 
-    private boolean checkUuidNoExist(String uuid) {
-        if (!checkExist(findKey(uuid))) throw new NoExistStorageException(uuid);
-        return true;
+    private Object checkUuidNoExist(String uuid) {
+        Object key = findKey(uuid);
+        if (!checkExist(key)) {
+            throw new NoExistStorageException(uuid);
+        }
+        return key;
     }
 
     protected abstract boolean checkExist(Object key);
