@@ -19,7 +19,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected Object findKey(String uuid) {
+    protected Integer findKey(String uuid) {
         Resume indexSearch = new Resume();
         indexSearch.setUuid(uuid);
         return Arrays.binarySearch(storage, 0, size, indexSearch);

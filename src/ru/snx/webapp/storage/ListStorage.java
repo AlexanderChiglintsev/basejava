@@ -3,10 +3,11 @@ package ru.snx.webapp.storage;
 import ru.snx.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
 
-    private ArrayList<Resume> storage = new ArrayList<>();
+    private List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -49,7 +50,7 @@ public class ListStorage extends AbstractStorage {
         return (int) index >= 0;
     }
 
-    protected Object findKey(String uuid) {
+    protected Integer findKey(String uuid) {
         int i = 0;
         for (Resume r : storage) {
             if (r.getUuid().equals(uuid)) {
