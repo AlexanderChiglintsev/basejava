@@ -3,8 +3,16 @@ package ru.snx.webapp.storage;
 import ru.snx.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+
+    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume o1, Resume o2) {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+    };
 
     @Override
     protected void insertArrayResume(int index, Resume r) {
@@ -22,7 +30,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected Integer findKey(String uuid) {
         Resume indexSearch = new Resume();
         indexSearch.setUuid(uuid);
-        return Arrays.binarySearch(storage, 0, size, indexSearch);
+        return Arrays.binarySearch(storage, 0, size, indexSearch, RESUME_COMPARATOR);
     }
 
 }
