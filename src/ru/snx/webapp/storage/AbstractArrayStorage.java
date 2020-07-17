@@ -3,7 +3,9 @@ package ru.snx.webapp.storage;
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     private static final int STORAGE_CAPACITY = 10_000;
@@ -15,8 +17,15 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
+    public List<Resume> getAllSorted() {
+        ArrayList<Resume> allSorted = new ArrayList<>();
+        for (Resume r:storage){
+            if (r != null) {
+                allSorted.add(r);
+            }
+        }
+        allSorted.sort(RESUME_COMPARATOR);
+        return allSorted;
     }
 
     public int size() {

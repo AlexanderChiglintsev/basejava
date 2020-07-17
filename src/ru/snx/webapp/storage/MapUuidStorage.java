@@ -2,9 +2,9 @@ package ru.snx.webapp.storage;
 
 import ru.snx.webapp.model.Resume;
 
-import java.util.HashMap;
+import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
     private HashMap<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -35,9 +35,10 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        int capacity = storage.size();
-        return storage.values().toArray(new Resume[capacity]);
+    public List<Resume> getAllSorted() {
+        List<Resume> allSorted = new ArrayList<>(storage.values());
+        allSorted.sort(RESUME_COMPARATOR);
+        return allSorted;
     }
 
     @Override

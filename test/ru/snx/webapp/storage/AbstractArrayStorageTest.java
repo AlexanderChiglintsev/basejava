@@ -16,7 +16,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         storage.clear();
         try {
             for (int i = 0; i < 10000; i++) {
-                storage.save(new Resume(Integer.toString(i)));
+                storage.save(new Resume(Integer.toString(i), "Test"));
             }
         } catch (Exception e) {
             Assert.fail("Filling storage is fail !!!");

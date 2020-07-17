@@ -8,13 +8,11 @@ import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 
-import static org.junit.Assert.*;
-
 public abstract class AbstractStorageTest {
     Storage storage;
-    private Resume res1 = new Resume("1");
-    private Resume res2 = new Resume("2");
-    private Resume res3 = new Resume("3");
+    private Resume res1 = new Resume("1","John");
+    private Resume res2 = new Resume("2", "Mike");
+    private Resume res3 = new Resume("3", "Alex");
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -40,7 +38,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        Resume resume = new Resume("4");
+        Resume resume = new Resume("4", "Test");
         storage.save(resume);
         Assert.assertEquals(resume, storage.get("4"));
         Assert.assertEquals(4, storage.size());
@@ -75,9 +73,9 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
-        Resume[] expectedResumes = new Resume[]{res1, res2, res3};
-        Assert.assertArrayEquals(expectedResumes, storage.getAll());
+    public void getAllSorted() {
+        Resume[] expectedResumes = new Resume[]{res3, res1, res2};
+        Assert.assertArrayEquals(expectedResumes, storage.getAllSorted().toArray());
     }
 
     @Test
