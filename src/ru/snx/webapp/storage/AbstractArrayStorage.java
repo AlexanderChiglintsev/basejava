@@ -18,12 +18,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     public List<Resume> getAllSorted() {
-        ArrayList<Resume> allSorted = new ArrayList<>();
-        for (Resume r:storage){
-            if (r != null) {
-                allSorted.add(r);
-            }
-        }
+        ArrayList<Resume> allSorted = new ArrayList<>(Arrays.asList(storage).subList(0, size));
         allSorted.sort(RESUME_COMPARATOR);
         return allSorted;
     }
