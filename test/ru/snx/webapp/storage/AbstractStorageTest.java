@@ -10,7 +10,7 @@ import ru.snx.webapp.model.Resume;
 
 public abstract class AbstractStorageTest {
     Storage storage;
-    private Resume res1 = new Resume("1","John");
+    private Resume res1 = new Resume("1", "John");
     private Resume res2 = new Resume("2", "Mike");
     private Resume res3 = new Resume("3", "Alex");
 
@@ -59,7 +59,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NoExistStorageException.class)
     public void updateNoExist() {
-        storage.update(new Resume());
+        storage.update(new Resume("testNoExistStorageException"));
     }
 
     @Test
@@ -73,8 +73,18 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAllSorted() {
+    public void getAllSortedByFullName() {
         Resume[] expectedResumes = new Resume[]{res3, res1, res2};
+        Assert.assertArrayEquals(expectedResumes, storage.getAllSorted().toArray());
+    }
+
+    @Test
+    public void getAllSortedByFullNameAndUuid() {
+        Resume res4 = new Resume("5", "Mike");
+        Resume res5 = new Resume("4", "Mike");
+        storage.save(res4);
+        storage.save(res5);
+        Resume[] expectedResumes = new Resume[]{res3, res1, res2, res5, res4};
         Assert.assertArrayEquals(expectedResumes, storage.getAllSorted().toArray());
     }
 

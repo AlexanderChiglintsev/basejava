@@ -5,10 +5,11 @@ import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 
 import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
 
-    static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName);
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     @Override
     public void update(Resume r) {
@@ -28,6 +29,13 @@ public abstract class AbstractStorage implements Storage {
     @Override
     public void delete(String uuid) {
         deleteResume(checkUuidNoExist(uuid));
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> allSorted = getAllSortedResume();
+        allSorted.sort(RESUME_COMPARATOR);
+        return allSorted;
     }
 
     private Object checkUuidExist(String uuid) {
@@ -57,5 +65,7 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume getResume(Object key);
 
     protected abstract void deleteResume(Object key);
+
+    protected abstract List<Resume> getAllSortedResume();
 
 }

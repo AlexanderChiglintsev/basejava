@@ -17,12 +17,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public List<Resume> getAllSorted() {
-        ArrayList<Resume> allSorted = new ArrayList<>(Arrays.asList(storage).subList(0, size));
-        allSorted.sort(RESUME_COMPARATOR);
-        return allSorted;
-    }
-
     public int size() {
         return size;
     }
@@ -52,6 +46,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     protected Resume getResume(Object index) {
         return storage[(int) index];
+    }
+
+    @Override
+    protected List<Resume> getAllSortedResume() {
+        return new ArrayList<>(Arrays.asList(storage).subList(0, size));
     }
 
     @Override
