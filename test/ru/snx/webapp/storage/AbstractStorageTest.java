@@ -1,9 +1,6 @@
 package ru.snx.webapp.storage;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
@@ -16,6 +13,8 @@ public abstract class AbstractStorageTest {
     private Resume res1 = new Resume("1", "John");
     private Resume res2 = new Resume("2", "Mike");
     private Resume res3 = new Resume("3", "Alex");
+    private Resume res4 = new Resume("5", "Mike");
+    private Resume res5 = new Resume("4", "Mike");
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -77,26 +76,14 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSortedByFullName() {
-        List<Resume> expectedResumes = new ArrayList<>();
-        expectedResumes.add(res3);
-        expectedResumes.add(res1);
-        expectedResumes.add(res2);
-        Assert.assertArrayEquals(expectedResumes.toArray(), storage.getAllSorted().toArray());
+        Assert.assertArrayEquals(getTestArrayList().subList(0,storage.size()).toArray(), storage.getAllSorted().toArray());
     }
 
     @Test
     public void getAllSortedByFullNameAndUuid() {
-        Resume res4 = new Resume("5", "Mike");
-        Resume res5 = new Resume("4", "Mike");
         storage.save(res4);
         storage.save(res5);
-        List<Resume> expectedResumes = new ArrayList<>();
-        expectedResumes.add(res3);
-        expectedResumes.add(res1);
-        expectedResumes.add(res2);
-        expectedResumes.add(res5);
-        expectedResumes.add(res4);
-        Assert.assertArrayEquals(expectedResumes.toArray(), storage.getAllSorted().toArray());
+        Assert.assertArrayEquals(getTestArrayList().toArray(), storage.getAllSorted().toArray());
     }
 
     @Test
@@ -109,6 +96,16 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExistException() {
         storage.save(res1);
+    }
+
+    private List<Resume> getTestArrayList() {
+        List<Resume> expectedResumes = new ArrayList<>();
+        expectedResumes.add(res3);
+        expectedResumes.add(res1);
+        expectedResumes.add(res2);
+        expectedResumes.add(res5);
+        expectedResumes.add(res4);
+        return expectedResumes;
     }
 
 }
