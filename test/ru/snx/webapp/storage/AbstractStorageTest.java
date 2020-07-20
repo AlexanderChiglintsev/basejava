@@ -8,6 +8,9 @@ import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractStorageTest {
     Storage storage;
     private Resume res1 = new Resume("1", "John");
@@ -74,8 +77,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSortedByFullName() {
-        Resume[] expectedResumes = new Resume[]{res3, res1, res2};
-        Assert.assertArrayEquals(expectedResumes, storage.getAllSorted().toArray());
+        List<Resume> expectedResumes = new ArrayList<>();
+        expectedResumes.add(res3);
+        expectedResumes.add(res1);
+        expectedResumes.add(res2);
+        Assert.assertArrayEquals(expectedResumes.toArray(), storage.getAllSorted().toArray());
     }
 
     @Test
@@ -84,8 +90,13 @@ public abstract class AbstractStorageTest {
         Resume res5 = new Resume("4", "Mike");
         storage.save(res4);
         storage.save(res5);
-        Resume[] expectedResumes = new Resume[]{res3, res1, res2, res5, res4};
-        Assert.assertArrayEquals(expectedResumes, storage.getAllSorted().toArray());
+        List<Resume> expectedResumes = new ArrayList<>();
+        expectedResumes.add(res3);
+        expectedResumes.add(res1);
+        expectedResumes.add(res2);
+        expectedResumes.add(res5);
+        expectedResumes.add(res4);
+        Assert.assertArrayEquals(expectedResumes.toArray(), storage.getAllSorted().toArray());
     }
 
     @Test
