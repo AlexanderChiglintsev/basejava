@@ -1,11 +1,14 @@
 package ru.snx.webapp.storage;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
@@ -75,15 +78,10 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAllSortedByFullName() {
-        Assert.assertArrayEquals(getTestArrayList().subList(0,storage.size()).toArray(), storage.getAllSorted().toArray());
-    }
-
-    @Test
-    public void getAllSortedByFullNameAndUuid() {
+    public void getAllSorted() {
         storage.save(res4);
         storage.save(res5);
-        Assert.assertArrayEquals(getTestArrayList().toArray(), storage.getAllSorted().toArray());
+        Assert.assertEquals(getTestArrayList(), storage.getAllSorted());
     }
 
     @Test
@@ -99,13 +97,8 @@ public abstract class AbstractStorageTest {
     }
 
     private List<Resume> getTestArrayList() {
-        List<Resume> expectedResumes = new ArrayList<>();
-        expectedResumes.add(res3);
-        expectedResumes.add(res1);
-        expectedResumes.add(res2);
-        expectedResumes.add(res5);
-        expectedResumes.add(res4);
-        return expectedResumes;
+        Resume[] resumes = {res3, res1, res2, res5, res4};
+        return Arrays.asList(resumes);
     }
 
 }
