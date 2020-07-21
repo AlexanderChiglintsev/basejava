@@ -3,7 +3,6 @@ package ru.snx.webapp.storage;
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> getAllSortedResume() {
-        return new ArrayList<>(Arrays.asList(storage).subList(0, size));
+        return Arrays.asList(storage).subList(0, size);
     }
 
     @Override
