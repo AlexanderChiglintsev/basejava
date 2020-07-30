@@ -5,7 +5,7 @@ import ru.snx.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
 
     private List<Resume> storage = new ArrayList<>();
 
@@ -20,23 +20,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void insertResume(Object index, Resume r) {
+    protected void insertResume(Integer index, Resume r) {
         storage.add(r);
     }
 
     @Override
-    protected void updateResume(Object index, Resume r) {
-        storage.set((int) index, r);
+    protected void updateResume(Integer index, Resume r) {
+        storage.set(index, r);
     }
 
     @Override
-    protected Resume getResume(Object index) {
-        return storage.get((int) index);
+    protected Resume getResume(Integer index) {
+        return storage.get(index);
     }
 
     @Override
-    protected void deleteResume(Object index) {
-        storage.remove((int) index);
+    protected void deleteResume(Integer index) {
+        storage.remove(index.intValue());
     }
 
     @Override
@@ -45,8 +45,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkExist(Object index) {
-        return (int) index >= 0;
+    protected boolean checkExist(Integer index) {
+        return index >= 0;
     }
 
     protected Integer findKey(String uuid) {

@@ -6,7 +6,7 @@ import ru.snx.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     private static final int STORAGE_CAPACITY = 10_000;
     Resume[] storage = new Resume[STORAGE_CAPACITY];
     int size = 0;
@@ -21,30 +21,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Object index, Resume r) {
-        storage[(int) index] = r;
+    protected void updateResume(Integer index, Resume r) {
+        storage[index] = r;
     }
 
     @Override
-    protected void insertResume(Object index, Resume r) {
+    protected void insertResume(Integer index, Resume r) {
         if (size == STORAGE_CAPACITY) {
             throw new StorageException("База резюме заполнена !!!", r.getUuid());
         } else {
-            insertArrayResume((int) index, r);
+            insertArrayResume(index, r);
             size++;
         }
     }
 
     @Override
-    protected void deleteResume(Object index) {
-        deleteArrayResume((int) index);
+    protected void deleteResume(Integer index) {
+        deleteArrayResume(index);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected Resume getResume(Object index) {
-        return storage[(int) index];
+    protected Resume getResume(Integer index) {
+        return storage[index];
     }
 
     @Override
@@ -53,8 +53,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkExist(Object index) {
-        return ((int) index >= 0);
+    protected boolean checkExist(Integer index) {
+        return (index >= 0);
     }
 
     protected abstract void insertArrayResume(int index, Resume r);

@@ -7,7 +7,7 @@ import ru.snx.webapp.model.Resume;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SK> implements Storage {
 
     private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
@@ -38,33 +38,33 @@ public abstract class AbstractStorage implements Storage {
         return sortedResumes;
     }
 
-    private Object checkUuidExist(String uuid) {
-        Object key = findKey(uuid);
+    private SK checkUuidExist(String uuid) {
+        SK key = findKey(uuid);
         if (checkExist(key)) {
             throw new ExistStorageException(uuid);
         }
         return key;
     }
 
-    private Object checkUuidNoExist(String uuid) {
-        Object key = findKey(uuid);
+    private SK checkUuidNoExist(String uuid) {
+        SK key = findKey(uuid);
         if (!checkExist(key)) {
             throw new NoExistStorageException(uuid);
         }
         return key;
     }
 
-    protected abstract boolean checkExist(Object key);
+    protected abstract boolean checkExist(SK key);
 
-    protected abstract Object findKey(String uuid);
+    protected abstract SK findKey(String uuid);
 
-    protected abstract void insertResume(Object key, Resume r);
+    protected abstract void insertResume(SK key, Resume r);
 
-    protected abstract void updateResume(Object key, Resume r);
+    protected abstract void updateResume(SK key, Resume r);
 
-    protected abstract Resume getResume(Object key);
+    protected abstract Resume getResume(SK key);
 
-    protected abstract void deleteResume(Object key);
+    protected abstract void deleteResume(SK key);
 
     protected abstract List<Resume> getAllSortedResume();
 

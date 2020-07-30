@@ -4,29 +4,27 @@ import ru.snx.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
     private HashMap<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected void insertResume(Object uuid, Resume r) {
-        storage.put((String) uuid, r);
+    protected void insertResume(String uuid, Resume r) {
+        storage.put(uuid, r);
     }
 
     @Override
-    protected void updateResume(Object uuid, Resume r) {
-        storage.put((String) uuid, r);
+    protected void updateResume(String uuid, Resume r) {
+        storage.put(uuid, r);
     }
 
     @Override
-    protected Resume getResume(Object uuid) {
-        String id = (String) uuid;
-        return storage.get(id);
+    protected Resume getResume(String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
-    protected void deleteResume(Object uuid) {
-        String id = (String) uuid;
-        storage.remove(id);
+    protected void deleteResume(String uuid) {
+        storage.remove(uuid);
     }
 
     @Override
@@ -45,13 +43,12 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean checkExist(Object uuid) {
-        String id = (String) uuid;
-        return storage.containsKey(id);
+    protected boolean checkExist(String uuid) {
+        return storage.containsKey(uuid);
     }
 
     @Override
-    protected Object findKey(String uuid) {
+    protected String findKey(String uuid) {
         return uuid;
     }
 

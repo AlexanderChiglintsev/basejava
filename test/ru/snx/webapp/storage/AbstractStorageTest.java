@@ -9,7 +9,6 @@ import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class AbstractStorageTest {
     Storage storage;
@@ -81,7 +80,7 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         storage.save(res4);
         storage.save(res5);
-        Assert.assertEquals(getTestArrayList(), storage.getAllSorted());
+        Assert.assertEquals(Arrays.asList(res3, res1, res2, res5, res4), storage.getAllSorted());
     }
 
     @Test
@@ -94,11 +93,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExistException() {
         storage.save(res1);
-    }
-
-    private List<Resume> getTestArrayList() {
-        Resume[] resumes = {res3, res1, res2, res5, res4};
-        return Arrays.asList(resumes);
     }
 
 }
