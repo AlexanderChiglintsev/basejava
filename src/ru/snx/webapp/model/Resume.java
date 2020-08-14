@@ -1,5 +1,6 @@
 package ru.snx.webapp.model;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,6 +12,8 @@ public class Resume {
     // Unique identifier
     private String uuid;
     private String fullName;
+    private HashMap<ContactType, Contact> contactList;
+    private HashMap<SectionType, AbstractSection> sections;
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -37,6 +40,22 @@ public class Resume {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public HashMap<ContactType, Contact> getContactList() {
+        return contactList;
+    }
+
+    public void setContactList(HashMap<ContactType, Contact> contactList) {
+        this.contactList = contactList;
+    }
+
+    public HashMap<SectionType, AbstractSection> getSections() {
+        return sections;
+    }
+
+    public void setSections(HashMap<SectionType, AbstractSection> sections) {
+        this.sections = sections;
     }
 
     @Override
