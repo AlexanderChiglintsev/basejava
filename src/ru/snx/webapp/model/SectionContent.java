@@ -13,6 +13,16 @@ public class SectionContent {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "SectionContent{" +
+                "timeinterval='" + timeinterval + '\'' +
+                ", company='" + company + '\'' +
+                ", position='" + position + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     public String getTimeinterval() {
         return timeinterval;
     }

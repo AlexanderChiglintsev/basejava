@@ -31,22 +31,22 @@ public class ResumeTestData {
         sections.put(SectionType.PERSONAL, personal);
 
         List<String> achieve = new ArrayList<>();
-        achieve.set(achieve.size(), "Реализация протоколов по приему платежей всех основных платежных " +
+        achieve.add(achieve.size(), "Реализация протоколов по приему платежей всех основных платежных " +
                 "системы России (Cyberplat, Eport, Chronopay, Сбербанк), Белоруcсии(Erip, Osmp) и Никарагуа.");
-        achieve.set(achieve.size(), "Создание JavaEE фреймворка для отказоустойчивого взаимодействия " +
+        achieve.add(achieve.size(), "Создание JavaEE фреймворка для отказоустойчивого взаимодействия " +
                 "слабо-связанных сервисов (SOA-base архитектура, JAX-WS, JMS, AS Glassfish). " +
                 "Сбор статистики сервисов и информации о состоянии через систему мониторинга Nagios. " +
                 "Реализация онлайн клиента для администрирования и мониторинга системы по JMX (Jython/ Django).");
-        achieve.set(achieve.size(), "Реализация c нуля Rich Internet Application приложения на стеке технологий " +
+        achieve.add(achieve.size(), "Реализация c нуля Rich Internet Application приложения на стеке технологий " +
                 "JPA, Spring, Spring-MVC, GWT, ExtGWT (GXT), Commet, HTML5, Highstock для алгоритмического трейдинга.");
-        achieve.set(achieve.size(), "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. " +
+        achieve.add(achieve.size(), "Налаживание процесса разработки и непрерывной интеграции ERP системы River BPM. " +
                 "Интеграция с 1С, Bonita BPM, CMIS, LDAP. Разработка приложения управления окружением " +
                 "на стеке: Scala/Play/Anorm/JQuery. " +
                 "Разработка SSO аутентификации и авторизации различных ERP модулей, интеграция CIFS/SMB java сервера.");
-        achieve.set(achieve.size(), "Реализация двухфакторной аутентификации для онлайн платформы " +
+        achieve.add(achieve.size(), "Реализация двухфакторной аутентификации для онлайн платформы " +
                 "управления проектами Wrike. Интеграция с Twilio, " +
                 "DuoSecurity, Google Authenticator, Jira, Zendesk.");
-        achieve.set(achieve.size(), "С 2013 года: разработка проектов \"Разработка Web приложения\"," +
+        achieve.add(achieve.size(), "С 2013 года: разработка проектов \"Разработка Web приложения\"," +
                 "\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). " +
                 "Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                 "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
@@ -54,54 +54,54 @@ public class ResumeTestData {
         sections.put(SectionType.ACHIEVEMENT, achievements);
 
         List<String> qual = new ArrayList<>();
-        qual.set(qual.size(), "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
-        qual.set(qual.size(), "Version control: Subversion, Git, Mercury, ClearCase, Perforce");
-        qual.set(qual.size(), "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
-        qual.set(qual.size(), "MySQL, SQLite, MS SQL, HSQLDB");
-        qual.set(qual.size(), "Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy");
-        qual.set(qual.size(), "XML/XSD/XSLT, SQL, C/C++, Unix shell scripts");
-        qual.set(qual.size(), "Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor, MyBatis, " +
+        qual.add(qual.size(), "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
+        qual.add(qual.size(), "Version control: Subversion, Git, Mercury, ClearCase, Perforce");
+        qual.add(qual.size(), "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle");
+        qual.add(qual.size(), "MySQL, SQLite, MS SQL, HSQLDB");
+        qual.add(qual.size(), "Languages: Java, Scala, Python/Jython/PL-Python, JavaScript, Groovy");
+        qual.add(qual.size(), "XML/XSD/XSLT, SQL, C/C++, Unix shell scripts");
+        qual.add(qual.size(), "Java Frameworks: Java 8 (Time API, Streams), Guava, Java Executor, MyBatis, " +
                 "Spring (MVC, Security, Data, Clouds, Boot), JPA (Hibernate, EclipseLink), " +
                 "Guice, GWT(SmartGWT, ExtGWT/GXT), Vaadin, Jasperreports, Apache Commons, " +
                 "Eclipse SWT, JUnit, Selenium (htmlelements)");
-        qual.set(qual.size(), "Python: Django");
-        qual.set(qual.size(), "JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js");
-        qual.set(qual.size(), "Scala: SBT, Play2, Specs2, Anorm, Spray, Akka");
-        qual.set(qual.size(), "Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, " +
+        qual.add(qual.size(), "Python: Django");
+        qual.add(qual.size(), "JavaScript: jQuery, ExtJS, Bootstrap.js, underscore.js");
+        qual.add(qual.size(), "Scala: SBT, Play2, Specs2, Anorm, Spray, Akka");
+        qual.add(qual.size(), "Технологии: Servlet, JSP/JSTL, JAX-WS, REST, EJB, RMI, JMS, JavaMail, " +
                 "JAXB, StAX, SAX, DOM, XSLT, MDB, JMX, JDBC, JPA, JNDI, JAAS, SOAP, AJAX, " +
                 "Commet, HTML5, ESB, CMIS, BPMN2, LDAP, OAuth1, OAuth2, JWT");
-        qual.set(qual.size(), "Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
-        qual.set(qual.size(), "администрирование Hudson/Jenkins, Ant + custom task, SoapUI, " +
+        qual.add(qual.size(), "Инструменты: Maven + plugin development, Gradle, настройка Ngnix");
+        qual.add(qual.size(), "администрирование Hudson/Jenkins, Ant + custom task, SoapUI, " +
                 "JPublisher, Flyway, Nagios, iReport, OpenCmis, Bonita, pgBouncer");
-        qual.set(qual.size(), "Отличное знание и опыт применения концепций ООП, SOA, " +
+        qual.add(qual.size(), "Отличное знание и опыт применения концепций ООП, SOA, " +
                 "шаблонов проектрирования, архитектурных шаблонов, " +
                 "UML, функционального программирования");
-        qual.set(qual.size(), "Родной русский, английский \"upper intermediate\"");
+        qual.add(qual.size(), "Родной русский, английский \"upper intermediate\"");
         AbstractSection<List<String>> qualifications = new AbstractSection<>(qual);
         sections.put(SectionType.QUALIFICATION, qualifications);
 
         List<SectionContent> exp = new ArrayList<>();
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "09/1997 - 01/2005",
                 "Alcatel",
                 "Инженер по аппаратному и программному тестированию",
                 "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "01/2005 - 02/2007",
                 "Siemens AG",
                 "Разработчик ПО",
                 "Разработка информационной модели, проектирование интерфейсов, " +
                         "реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "03/2007 - 06/2008",
                 "Enkata",
                 "Разработчик ПО",
                 "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) " +
                         "частей кластерного J2EE приложения (OLAP, Data mining)."
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "06/2008 - 12/2010",
                 "Yota",
                 "Ведущий специалист",
@@ -110,7 +110,7 @@ public class ResumeTestData {
                         "Реализация администрирования, статистики и мониторинга фреймворка. " +
                         "Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "12/2010 - 04/2012",
                 "Luxoft (Deutsche Bank)",
                 "Ведущий программист",
@@ -120,7 +120,7 @@ public class ResumeTestData {
                         "в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, " +
                         "ExtGWT (GXT), Highstock, Commet, HTML5."
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "04/2012 - 10/2014",
                 "RIT Center",
                 "Java архитектор",
@@ -134,7 +134,7 @@ public class ResumeTestData {
                         "Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, " +
                         "Unix shell remote scripting via ssh tunnels, PL/Python"
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "10/2014 - 01/2016",
                 "Wrike",
                 "Старший разработчик (backend)",
@@ -142,7 +142,7 @@ public class ResumeTestData {
                         "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                         "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."
         ));
-        exp.set(exp.size(), new SectionContent(
+        exp.add(exp.size(), new SectionContent(
                 "10/2013 - Сейчас",
                 "Java Online Projects",
                 "Автор проекта.",
@@ -152,45 +152,45 @@ public class ResumeTestData {
         sections.put(SectionType.EXPERIENCE, experience);
 
         List<SectionContent> edu = new ArrayList<>();
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "03/2013 - 05/2013",
                 "Coursera",
                 "",
                 "\"Functional Programming Principles in Scala\" by Martin Odersky"
         ));
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "03/2011 - 04/2011",
                 "Luxoft",
                 "",
                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""
         ));
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "01/2005 - 04/2005",
                 "Siemens AG",
                 "",
                 "3 месяца обучения мобильным IN сетям (Берлин)"
         ));
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "09/1997 - 03/1998",
                 "Alcatel",
                 "",
                 "6 месяцев обучения цифровым телефонным сетям (Москва)"
         ));
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "09/1993 - 07/1996",
                 "Санкт-Петербургский национальный исследовательский университет " +
                         "информационных технологий, механики и оптики",
                 "",
                 "Аспирантура (программист С, С++)"
         ));
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "09/1987 - 07/1993",
                 "Санкт-Петербургский национальный исследовательский университет " +
                 "информационных технологий, механики и оптики",
                 "",
                 "Инженер (программист Fortran, C)"
         ));
-        edu.set(edu.size(), new SectionContent(
+        edu.add(edu.size(), new SectionContent(
                 "09/1984 - 06/1987",
                 "Заочная физико-техническая школа при МФТИ",
                 "",
@@ -200,5 +200,20 @@ public class ResumeTestData {
         sections.put(SectionType.EDUCATION, educations);
 
         resume.setSections(sections);
+
+        System.out.println(resume.getUuid());
+        System.out.println(resume.getFullName());
+        System.out.println(resume.getContactList().get(ContactType.PHONE).getContact());
+        System.out.println(resume.getContactList().get(ContactType.SKYPE).getContact());
+        System.out.println(resume.getContactList().get(ContactType.EMAIL).getContact());
+        System.out.println(resume.getContactList().get(ContactType.LINKEDIN).getContact());
+        System.out.println(resume.getContactList().get(ContactType.GITHUB).getContact());
+        System.out.println(resume.getContactList().get(ContactType.STACKOVERFLOW).getContact());
+        System.out.println(resume.getSections().get(SectionType.OBJECTIVE).getInformation());
+        System.out.println(resume.getSections().get(SectionType.PERSONAL).getInformation());
+        System.out.println(resume.getSections().get(SectionType.ACHIEVEMENT).getInformation());
+        System.out.println(resume.getSections().get(SectionType.QUALIFICATION).getInformation());
+        System.out.println(resume.getSections().get(SectionType.EXPERIENCE).getInformation());
+        System.out.println(resume.getSections().get(SectionType.EDUCATION).getInformation());
     }
 }
