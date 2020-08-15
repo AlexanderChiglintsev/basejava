@@ -1,17 +1,9 @@
 package ru.snx.webapp.model;
 
-public class AbstractSection<T> {
-    private T information;
+public abstract class AbstractSection<T> {
 
-    public AbstractSection(T information) {
-        this.information = information;
-    }
+    public abstract T getInformation();
 
-    public T getInformation() {
-        return information;
-    }
+    public abstract void setInformation(T information);
 
-    public void setInformation(T information) {
-        this.information = information;
-    }
 }

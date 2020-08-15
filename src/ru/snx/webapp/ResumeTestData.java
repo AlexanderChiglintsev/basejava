@@ -20,12 +20,12 @@ public class ResumeTestData {
         resume.setContactList(contacts);
 
         HashMap<SectionType, AbstractSection> sections = new HashMap<>();
-        AbstractSection<String> objective = new AbstractSection<>("Ведущий стажировок " +
+        TextSection objective = new TextSection("Ведущий стажировок " +
                 "и корпоративного обучения по " +
                 "Java Web и Enterprise технологиям");
         sections.put(SectionType.OBJECTIVE, objective);
 
-        AbstractSection<String> personal = new AbstractSection<>("Аналитический склад ума, " +
+        TextSection personal = new TextSection("Аналитический склад ума, " +
                 "сильная логика, креативность, инициативность. " +
                 "Пурист кода и архитектуры.");
         sections.put(SectionType.PERSONAL, personal);
@@ -50,7 +50,7 @@ public class ResumeTestData {
                 "\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). " +
                 "Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                 "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
-        AbstractSection<List<String>> achievements = new AbstractSection<>(achieve);
+        ListSection achievements = new ListSection(achieve);
         sections.put(SectionType.ACHIEVEMENT, achievements);
 
         List<String> qual = new ArrayList<>();
@@ -77,7 +77,7 @@ public class ResumeTestData {
                 "шаблонов проектрирования, архитектурных шаблонов, " +
                 "UML, функционального программирования");
         qual.add(qual.size(), "Родной русский, английский \"upper intermediate\"");
-        AbstractSection<List<String>> qualifications = new AbstractSection<>(qual);
+        ListSection qualifications = new ListSection(qual);
         sections.put(SectionType.QUALIFICATION, qualifications);
 
         List<SectionContent> exp = new ArrayList<>();
@@ -148,7 +148,7 @@ public class ResumeTestData {
                 "Автор проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок."
         ));
-        AbstractSection<List<SectionContent>> experience = new AbstractSection<>(exp);
+        ContentSection experience = new ContentSection(exp);
         sections.put(SectionType.EXPERIENCE, experience);
 
         List<SectionContent> edu = new ArrayList<>();
@@ -186,7 +186,7 @@ public class ResumeTestData {
         edu.add(edu.size(), new SectionContent(
                 "09/1987 - 07/1993",
                 "Санкт-Петербургский национальный исследовательский университет " +
-                "информационных технологий, механики и оптики",
+                        "информационных технологий, механики и оптики",
                 "",
                 "Инженер (программист Fortran, C)"
         ));
@@ -196,7 +196,7 @@ public class ResumeTestData {
                 "",
                 "Закончил с отличием"
         ));
-        AbstractSection<List<SectionContent>> educations = new AbstractSection<>(edu);
+        ContentSection educations = new ContentSection(edu);
         sections.put(SectionType.EDUCATION, educations);
 
         resume.setSections(sections);
