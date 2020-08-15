@@ -1,5 +1,3 @@
-package ru.snx.webapp;
-
 import ru.snx.webapp.model.*;
 
 import java.util.ArrayList;
