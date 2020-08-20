@@ -1,23 +1,24 @@
 import ru.snx.webapp.model.*;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 
 public class ResumeTestData {
     public static void main(String[] args) {
         Resume resume = new Resume("Григорий Кислин");
 
-        HashMap<ContactType, Contact> contacts = new HashMap<>();
-        contacts.put(ContactType.PHONE, new Contact("Телефон", "+7(921) 855-0482"));
-        contacts.put(ContactType.EMAIL, new Contact("E-mail", "gkislin@yandex.ru"));
-        contacts.put(ContactType.SKYPE, new Contact("Skype", "grigory.kislin"));
-        contacts.put(ContactType.LINKEDIN, new Contact("LinkedIn", "https://www.linkedin.com/in/gkislin"));
-        contacts.put(ContactType.STACKOVERFLOW, new Contact("StackOverflow", "https://stackoverflow.com/users/548473"));
-        contacts.put(ContactType.GITHUB, new Contact("GitHub", "https://github.com/gkislin"));
+        EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+        contacts.put(ContactType.PHONE, "+7(921) 855-0482");
+        contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
+        contacts.put(ContactType.SKYPE, "grigory.kislin");
+        contacts.put(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        contacts.put(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        contacts.put(ContactType.GITHUB, "https://github.com/gkislin");
         resume.setContactList(contacts);
 
-        HashMap<SectionType, AbstractSection> sections = new HashMap<>();
+        EnumMap<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
         TextSection objective = new TextSection("Ведущий стажировок " +
                 "и корпоративного обучения по " +
                 "Java Web и Enterprise технологиям");
@@ -48,7 +49,7 @@ public class ResumeTestData {
                 "\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). " +
                 "Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                 "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
-        ListSection achievements = new ListSection(achieve);
+        BulletedListSection achievements = new BulletedListSection(achieve);
         sections.put(SectionType.ACHIEVEMENT, achievements);
 
         List<String> qual = new ArrayList<>();
@@ -75,42 +76,52 @@ public class ResumeTestData {
                 "шаблонов проектрирования, архитектурных шаблонов, " +
                 "UML, функционального программирования");
         qual.add(qual.size(), "Родной русский, английский \"upper intermediate\"");
-        ListSection qualifications = new ListSection(qual);
+        BulletedListSection qualifications = new BulletedListSection(qual);
         sections.put(SectionType.QUALIFICATION, qualifications);
 
-        List<SectionContent> exp = new ArrayList<>();
-        exp.add(exp.size(), new SectionContent(
-                "09/1997 - 01/2005",
+        List<Experience> exp = new ArrayList<>();
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(1997, 9),
+                YearMonth.of(2005, 1),
                 "Alcatel",
+                "http://www.alcatel.ru/",
                 "Инженер по аппаратному и программному тестированию",
                 "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM)."
         ));
-        exp.add(exp.size(), new SectionContent(
-                "01/2005 - 02/2007",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2005, 1),
+                YearMonth.of(2007, 2),
                 "Siemens AG",
+                "https://www.siemens.com/ru/ru/home.html",
                 "Разработчик ПО",
                 "Разработка информационной модели, проектирование интерфейсов, " +
                         "реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix)."
         ));
-        exp.add(exp.size(), new SectionContent(
-                "03/2007 - 06/2008",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2007, 3),
+                YearMonth.of(2008, 6),
                 "Enkata",
+                "http://enkata.com/",
                 "Разработчик ПО",
                 "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) " +
                         "частей кластерного J2EE приложения (OLAP, Data mining)."
         ));
-        exp.add(exp.size(), new SectionContent(
-                "06/2008 - 12/2010",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2008, 6),
+                YearMonth.of(2010, 12),
                 "Yota",
+                "https://www.yota.ru/",
                 "Ведущий специалист",
                 "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" " +
                         "(GlassFish v2.1, v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). " +
                         "Реализация администрирования, статистики и мониторинга фреймворка. " +
                         "Разработка online JMX клиента (Python/ Jython, Django, ExtJS)"
         ));
-        exp.add(exp.size(), new SectionContent(
-                "12/2010 - 04/2012",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2010, 12),
+                YearMonth.of(2012, 4),
                 "Luxoft (Deutsche Bank)",
+                "http://www.luxoft.ru/",
                 "Ведущий программист",
                 "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, " +
                         "SmartGWT, GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. " +
@@ -118,9 +129,11 @@ public class ResumeTestData {
                         "в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, " +
                         "ExtGWT (GXT), Highstock, Commet, HTML5."
         ));
-        exp.add(exp.size(), new SectionContent(
-                "04/2012 - 10/2014",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2012, 4),
+                YearMonth.of(2014, 10),
                 "RIT Center",
+                "",
                 "Java архитектор",
                 "Организация процесса разработки системы ERP для разных окружений: релизная политика, " +
                         "версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), " +
@@ -132,86 +145,104 @@ public class ResumeTestData {
                         "Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, " +
                         "Unix shell remote scripting via ssh tunnels, PL/Python"
         ));
-        exp.add(exp.size(), new SectionContent(
-                "10/2014 - 01/2016",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2014, 10),
+                YearMonth.of(2016, 1),
                 "Wrike",
+                "https://www.wrike.com/",
                 "Старший разработчик (backend)",
                 "Проектирование и разработка онлайн платформы управления проектами Wrike " +
                         "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                         "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO."
         ));
-        exp.add(exp.size(), new SectionContent(
-                "10/2013 - Сейчас",
+        exp.add(exp.size(), new Experience(
+                YearMonth.of(2013, 10),
+                null,
                 "Java Online Projects",
+                "http://javaops.ru/",
                 "Автор проекта.",
                 "Создание, организация и проведение Java онлайн проектов и стажировок."
         ));
-        ContentSection experience = new ContentSection(exp);
+        OrganizationSection experience = new OrganizationSection(exp);
         sections.put(SectionType.EXPERIENCE, experience);
 
-        List<SectionContent> edu = new ArrayList<>();
-        edu.add(edu.size(), new SectionContent(
-                "03/2013 - 05/2013",
+        List<Experience> edu = new ArrayList<>();
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(2013, 3),
+                YearMonth.of(2013, 5),
                 "Coursera",
+                "https://www.coursera.org/course/progfun",
                 "",
                 "\"Functional Programming Principles in Scala\" by Martin Odersky"
         ));
-        edu.add(edu.size(), new SectionContent(
-                "03/2011 - 04/2011",
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(2011, 3),
+                YearMonth.of(2011, 4),
                 "Luxoft",
+                "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
                 "",
                 "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\""
         ));
-        edu.add(edu.size(), new SectionContent(
-                "01/2005 - 04/2005",
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(2005, 1),
+                YearMonth.of(2005, 4),
                 "Siemens AG",
+                "http://www.siemens.ru/",
                 "",
                 "3 месяца обучения мобильным IN сетям (Берлин)"
         ));
-        edu.add(edu.size(), new SectionContent(
-                "09/1997 - 03/1998",
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(1997, 9),
+                YearMonth.of(1998, 3),
                 "Alcatel",
+                "http://www.alcatel.ru/",
                 "",
                 "6 месяцев обучения цифровым телефонным сетям (Москва)"
         ));
-        edu.add(edu.size(), new SectionContent(
-                "09/1993 - 07/1996",
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(1993, 9),
+                YearMonth.of(1996, 7),
                 "Санкт-Петербургский национальный исследовательский университет " +
                         "информационных технологий, механики и оптики",
+                "http://www.ifmo.ru/",
                 "",
                 "Аспирантура (программист С, С++)"
         ));
-        edu.add(edu.size(), new SectionContent(
-                "09/1987 - 07/1993",
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(1987, 9),
+                YearMonth.of(1993, 7),
                 "Санкт-Петербургский национальный исследовательский университет " +
                         "информационных технологий, механики и оптики",
+                "http://www.ifmo.ru/",
                 "",
                 "Инженер (программист Fortran, C)"
         ));
-        edu.add(edu.size(), new SectionContent(
-                "09/1984 - 06/1987",
+        edu.add(edu.size(), new Experience(
+                YearMonth.of(1984, 9),
+                YearMonth.of(1987, 6),
                 "Заочная физико-техническая школа при МФТИ",
+                "http://www.school.mipt.ru/",
                 "",
                 "Закончил с отличием"
         ));
-        ContentSection educations = new ContentSection(edu);
+        OrganizationSection educations = new OrganizationSection(edu);
         sections.put(SectionType.EDUCATION, educations);
 
         resume.setSections(sections);
 
         System.out.println(resume.getUuid());
         System.out.println(resume.getFullName());
-        System.out.println(resume.getContactList().get(ContactType.PHONE).getContact());
-        System.out.println(resume.getContactList().get(ContactType.SKYPE).getContact());
-        System.out.println(resume.getContactList().get(ContactType.EMAIL).getContact());
-        System.out.println(resume.getContactList().get(ContactType.LINKEDIN).getContact());
-        System.out.println(resume.getContactList().get(ContactType.GITHUB).getContact());
-        System.out.println(resume.getContactList().get(ContactType.STACKOVERFLOW).getContact());
-        System.out.println(resume.getSections().get(SectionType.OBJECTIVE).getInformation());
-        System.out.println(resume.getSections().get(SectionType.PERSONAL).getInformation());
-        System.out.println(resume.getSections().get(SectionType.ACHIEVEMENT).getInformation());
-        System.out.println(resume.getSections().get(SectionType.QUALIFICATION).getInformation());
-        System.out.println(resume.getSections().get(SectionType.EXPERIENCE).getInformation());
-        System.out.println(resume.getSections().get(SectionType.EDUCATION).getInformation());
+        System.out.println(resume.getContactList().get(ContactType.PHONE));
+        System.out.println(resume.getContactList().get(ContactType.SKYPE));
+        System.out.println(resume.getContactList().get(ContactType.EMAIL));
+        System.out.println(resume.getContactList().get(ContactType.LINKEDIN));
+        System.out.println(resume.getContactList().get(ContactType.GITHUB));
+        System.out.println(resume.getContactList().get(ContactType.STACKOVERFLOW));
+        System.out.println(((TextSection) resume.getSections().get(SectionType.OBJECTIVE)).getInformation());
+        System.out.println(((TextSection) resume.getSections().get(SectionType.PERSONAL)).getInformation());
+        System.out.println(((BulletedListSection) resume.getSections().get(SectionType.ACHIEVEMENT)).getInformation());
+        System.out.println(((BulletedListSection) resume.getSections().get(SectionType.QUALIFICATION)).getInformation());
+        System.out.println(((OrganizationSection) resume.getSections().get(SectionType.EXPERIENCE)).getInformation());
+        System.out.println(((OrganizationSection) resume.getSections().get(SectionType.EDUCATION)).getInformation());
     }
 }

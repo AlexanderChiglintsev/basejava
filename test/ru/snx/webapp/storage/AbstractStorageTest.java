@@ -1,6 +1,5 @@
 package ru.snx.webapp.storage;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,15 +22,11 @@ public abstract class AbstractStorageTest {
     }
 
     @Before
-    public void beforeTest() {
+    public void init() {
+        storage.clear();
         storage.save(res1);
         storage.save(res2);
         storage.save(res3);
-    }
-
-    @After
-    public void afterTest() {
-        storage.clear();
     }
 
     @Test
@@ -57,8 +52,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        storage.update(res1);
-        Assert.assertEquals(res1, storage.get("1"));
+        Resume res_test = new Resume("1", "test_name");
+        storage.update(res_test);
+        Assert.assertEquals(res_test, storage.get("1"));
     }
 
     @Test(expected = NoExistStorageException.class)
