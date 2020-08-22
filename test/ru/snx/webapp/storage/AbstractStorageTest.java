@@ -8,6 +8,8 @@ import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractStorageTest {
     Storage storage;
@@ -16,6 +18,7 @@ public abstract class AbstractStorageTest {
     private Resume res3 = new Resume("3", "Alex");
     private Resume res4 = new Resume("5", "Mike");
     private Resume res5 = new Resume("4", "Mike");
+    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -52,9 +55,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume res_test = new Resume("1", "test_name");
-        storage.update(res_test);
-        Assert.assertEquals(res_test, storage.get("1"));
+        Resume temp = new Resume("1", "test_name");
+        storage.update(temp);
+        Assert.assertEquals(temp, storage.get("1"));
     }
 
     @Test(expected = NoExistStorageException.class)
@@ -76,7 +79,9 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         storage.save(res4);
         storage.save(res5);
-        Assert.assertEquals(Arrays.asList(res3, res1, res2, res5, res4), storage.getAllSorted());
+        List<Resume> temp = Arrays.asList(res1, res2, res3, res4, res5);
+        temp.sort(RESUME_COMPARATOR);
+        Assert.assertEquals(temp, storage.getAllSorted());
     }
 
     @Test
