@@ -27,5 +27,24 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println("Home work --->");
+        String rootPath = "D:\\javalearn\\basejava\\src";
+        showDir(new File(rootPath));
+
     }
+
+    private static void showDir(File file) {
+        File[] listFiles = file.listFiles();
+        assert listFiles != null;
+        for (File f : listFiles) {
+            if (f.isDirectory()) {
+                System.out.println("[Dir->] " + f.getName());
+                showDir(f);
+            } else {
+                System.out.println(f.getName());
+            }
+        }
+    }
+
 }
