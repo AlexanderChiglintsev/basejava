@@ -88,8 +88,6 @@ public class ResumeTestData {
                         YearMonth.of(2005, 1),
                         "Инженер по аппаратному и программному тестированию",
                         "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).")
-
-
         ));
         exp.add(exp.size(), new Experience(
                 "Siemens AG",
@@ -138,7 +136,7 @@ public class ResumeTestData {
         ));
         exp.add(exp.size(), new Experience(
                 "RIT Center",
-                "",
+                null,
                 new WorkInterval(
                         YearMonth.of(2012, 4),
                         YearMonth.of(2014, 10),
@@ -235,7 +233,9 @@ public class ResumeTestData {
 
         resume.setSections(sections);
 
-        System.out.println("ID: " + resume.getUuid());
+        System.out.println(resume);
+
+        /*System.out.println("ID: " + resume.getUuid());
         System.out.println("Full Name: " + resume.getFullName());
         System.out.println("Phone: " + resume.getContact(ContactType.PHONE));
         System.out.println("Skype: " + resume.getContact(ContactType.SKYPE));
@@ -243,23 +243,23 @@ public class ResumeTestData {
         System.out.println("LinkedIn: " + resume.getContact(ContactType.LINKEDIN));
         System.out.println("GitHub: " + resume.getContact(ContactType.GITHUB));
         System.out.println("StackOverflow: " + resume.getContact(ContactType.STACKOVERFLOW));
-        System.out.println("Позиция: " + ((TextSection) resume.getSection(SectionType.OBJECTIVE)).getInformation());
-        System.out.println("Личные качества: " + ((TextSection) resume.getSection(SectionType.PERSONAL)).getInformation());
-        System.out.println("Достижения");
+        System.out.println("\nПозиция: " + ((TextSection) resume.getSection(SectionType.OBJECTIVE)).getInformation());
+        System.out.println("\nЛичные качества: " + ((TextSection) resume.getSection(SectionType.PERSONAL)).getInformation());
+        System.out.println("\nДостижения\n");
         List<String> ach = ((BulletedListSection) resume.getSection(SectionType.ACHIEVEMENT)).getInformation();
         for (String str : ach) {
             System.out.println(str);
         }
-        System.out.println("Квалификация");
+        System.out.println("\nКвалификация\n");
         List<String> qualify = ((BulletedListSection) resume.getSection(SectionType.QUALIFICATION)).getInformation();
         for (String str : qualify) {
             System.out.println(str);
         }
-        System.out.println("Опыт работы");
+        System.out.println("\nОпыт работы\n");
         List<Experience> exper = ((OrganizationSection) resume.getSection(SectionType.EXPERIENCE)).getInformation();
         for (Experience obj : exper) {
             System.out.println(obj.getOrgName());
-            System.out.println(obj.getUrl() == null ? obj.getUrl() : "Not presented !!!");
+            System.out.println(obj.getUrl() != null ? obj.getUrl() : "Not presented !!!");
             for (WorkInterval w : obj.getWorks()) {
                 System.out.println(w.getStart());
                 System.out.println(w.getEnd());
@@ -268,16 +268,16 @@ public class ResumeTestData {
             }
 
         }
-        System.out.println("Образование");
+        System.out.println("\nОбразование\n");
         List<Experience> educat = ((OrganizationSection) resume.getSection(SectionType.EDUCATION)).getInformation();
         for (Experience obj : educat) {
             System.out.println(obj.getOrgName());
-            System.out.println(obj.getUrl() == null ? obj.getUrl() : "Not presented !!");
+            System.out.println(obj.getUrl() != null ? obj.getUrl() : "Not presented !!");
             for (WorkInterval w : obj.getWorks()) {
                 System.out.println(w.getStart());
                 System.out.println(w.getEnd());
                 System.out.println(w.getDescription());
             }
-        }
+        }*/
     }
 }
