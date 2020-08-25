@@ -1,24 +1,18 @@
 package ru.snx.webapp.model;
 
-import java.time.YearMonth;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Experience {
-    private YearMonth start;
-    private YearMonth end;
     private Link organization;
-    private String position;
-    private String description;
+    private List<WorkInterval> works = new ArrayList<>();
 
-    public Experience(YearMonth start, YearMonth end, String organization, String url, String position, String description) {
-        Objects.requireNonNull(start, "start must not be null !!!");
-        Objects.requireNonNull(end, "end must not be null !!!");
-        Objects.requireNonNull(position, "position must not be null !!!");
-        this.start = start;
-        this.end = end;
+    public Experience(String organization, String url, WorkInterval... w) {
         this.organization = new Link(organization, url);
-        this.position = position;
-        this.description = description;
+        if (w.length != 0) {
+            Collections.addAll(works, w);
+        } else throw new IllegalArgumentException("At least one work period is required !!!");
     }
 
     public String getOrgName() {
@@ -29,44 +23,12 @@ public class Experience {
         return organization.getUrl();
     }
 
-    public YearMonth getStart() {
-        return start;
+    public List<WorkInterval> getWorks() {
+        return works;
     }
 
-    public void setStart(YearMonth start) {
-        this.start = start;
-    }
-
-    public YearMonth getEnd() {
-        return end;
-    }
-
-    public void setEnd(YearMonth end) {
-        this.end = end;
-    }
-
-    public Link getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Link organization) {
-        this.organization = organization;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWorks(List<WorkInterval> works) {
+        this.works = works;
     }
 
     @Override
@@ -76,20 +38,14 @@ public class Experience {
 
         Experience that = (Experience) o;
 
-        if (!start.equals(that.start)) return false;
-        if (!end.equals(that.end)) return false;
-        if (!Objects.equals(organization, that.organization)) return false;
-        if (!position.equals(that.position)) return false;
-        return Objects.equals(description, that.description);
+        if (!organization.equals(that.organization)) return false;
+        return works.equals(that.works);
     }
 
     @Override
     public int hashCode() {
-        int result = start.hashCode();
-        result = 31 * result + end.hashCode();
-        result = 31 * result + (organization != null ? organization.hashCode() : 0);
-        result = 31 * result + position.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = organization.hashCode();
+        result = 31 * result + works.hashCode();
         return result;
     }
 }
