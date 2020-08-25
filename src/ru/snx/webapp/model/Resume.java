@@ -12,7 +12,7 @@ public class Resume {
     // Unique identifier
     private String uuid;
     private String fullName;
-    private Map<ContactType, String> contactList;
+    private Map<ContactType, String> contacts;
     private Map<SectionType, AbstractSection> sections;
 
     public Resume(String fullName) {
@@ -42,12 +42,20 @@ public class Resume {
         this.fullName = fullName;
     }
 
-    public Map<ContactType, String> getContactList() {
-        return contactList;
+    public String getContact(ContactType type) {
+        return contacts.get(type);
     }
 
-    public void setContactList(Map<ContactType, String> contactList) {
-        this.contactList = contactList;
+    public AbstractSection getSection(SectionType type) {
+        return sections.get(type);
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Map<ContactType, String> contacts) {
+        this.contacts = contacts;
     }
 
     public Map<SectionType, AbstractSection> getSections() {

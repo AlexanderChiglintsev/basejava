@@ -16,7 +16,7 @@ public class ResumeTestData {
         contacts.put(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
         contacts.put(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         contacts.put(ContactType.GITHUB, "https://github.com/gkislin");
-        resume.setContactList(contacts);
+        resume.setContacts(contacts);
 
         EnumMap<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
         TextSection objective = new TextSection("Ведущий стажировок " +
@@ -157,7 +157,7 @@ public class ResumeTestData {
         ));
         exp.add(exp.size(), new Experience(
                 YearMonth.of(2013, 10),
-                null,
+                YearMonth.now(),
                 "Java Online Projects",
                 "http://javaops.ru/",
                 "Автор проекта.",
@@ -232,33 +232,33 @@ public class ResumeTestData {
 
         System.out.println("ID: " + resume.getUuid());
         System.out.println("Full Name: " + resume.getFullName());
-        System.out.println("Phone: " + resume.getContactList().get(ContactType.PHONE));
-        System.out.println("Skype: " + resume.getContactList().get(ContactType.SKYPE));
-        System.out.println("E-mail: " + resume.getContactList().get(ContactType.EMAIL));
-        System.out.println("LinkedIn: " + resume.getContactList().get(ContactType.LINKEDIN));
-        System.out.println("GitHub: " + resume.getContactList().get(ContactType.GITHUB));
-        System.out.println("StackOverflow: " + resume.getContactList().get(ContactType.STACKOVERFLOW));
-        System.out.println("Позиция: " + ((TextSection) resume.getSections().get(SectionType.OBJECTIVE)).getInformation());
-        System.out.println("Личные качества: " + ((TextSection) resume.getSections().get(SectionType.PERSONAL)).getInformation());
+        System.out.println("Phone: " + resume.getContact(ContactType.PHONE));
+        System.out.println("Skype: " + resume.getContact(ContactType.SKYPE));
+        System.out.println("E-mail: " + resume.getContact(ContactType.EMAIL));
+        System.out.println("LinkedIn: " + resume.getContact(ContactType.LINKEDIN));
+        System.out.println("GitHub: " + resume.getContact(ContactType.GITHUB));
+        System.out.println("StackOverflow: " + resume.getContact(ContactType.STACKOVERFLOW));
+        System.out.println("Позиция: " + ((TextSection) resume.getSection(SectionType.OBJECTIVE)).getInformation());
+        System.out.println("Личные качества: " + ((TextSection) resume.getSection(SectionType.PERSONAL)).getInformation());
         System.out.println("Достижения");
-        List<String> ach = ((BulletedListSection) resume.getSections().get(SectionType.ACHIEVEMENT)).getInformation();
+        List<String> ach = ((BulletedListSection) resume.getSection(SectionType.ACHIEVEMENT)).getInformation();
         for (String str : ach) {
             System.out.println(str);
         }
         System.out.println("Квалификация");
-        List<String> qualify = ((BulletedListSection) resume.getSections().get(SectionType.QUALIFICATION)).getInformation();
+        List<String> qualify = ((BulletedListSection) resume.getSection(SectionType.QUALIFICATION)).getInformation();
         for (String str : qualify) {
             System.out.println(str);
         }
         System.out.println("Опыт работы");
-        List<Experience> exper = ((OrganizationSection) resume.getSections().get(SectionType.EXPERIENCE)).getInformation();
+        List<Experience> exper = ((OrganizationSection) resume.getSection(SectionType.EXPERIENCE)).getInformation();
         for (Experience obj : exper) {
             showFields(obj);
             System.out.println(obj.getPosition());
             System.out.println(obj.getDescription());
         }
         System.out.println("Образование");
-        List<Experience> educat = ((OrganizationSection) resume.getSections().get(SectionType.EDUCATION)).getInformation();
+        List<Experience> educat = ((OrganizationSection) resume.getSection(SectionType.EDUCATION)).getInformation();
         for (Experience obj : educat) {
             showFields(obj);
             System.out.println(obj.getDescription());
