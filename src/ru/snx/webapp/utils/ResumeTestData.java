@@ -1,3 +1,5 @@
+package ru.snx.webapp.utils;
+
 import ru.snx.webapp.model.*;
 
 import java.time.YearMonth;
@@ -6,8 +8,9 @@ import java.util.EnumMap;
 import java.util.List;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("Григорий Кислин");
+
+    public static Resume getFilledResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
 
         EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
         contacts.put(ContactType.PHONE, "+7(921) 855-0482");
@@ -233,51 +236,7 @@ public class ResumeTestData {
 
         resume.setSections(sections);
 
-        System.out.println(resume);
-
-        /*System.out.println("ID: " + resume.getUuid());
-        System.out.println("Full Name: " + resume.getFullName());
-        System.out.println("Phone: " + resume.getContact(ContactType.PHONE));
-        System.out.println("Skype: " + resume.getContact(ContactType.SKYPE));
-        System.out.println("E-mail: " + resume.getContact(ContactType.EMAIL));
-        System.out.println("LinkedIn: " + resume.getContact(ContactType.LINKEDIN));
-        System.out.println("GitHub: " + resume.getContact(ContactType.GITHUB));
-        System.out.println("StackOverflow: " + resume.getContact(ContactType.STACKOVERFLOW));
-        System.out.println("\nПозиция: " + ((TextSection) resume.getSection(SectionType.OBJECTIVE)).getInformation());
-        System.out.println("\nЛичные качества: " + ((TextSection) resume.getSection(SectionType.PERSONAL)).getInformation());
-        System.out.println("\nДостижения\n");
-        List<String> ach = ((BulletedListSection) resume.getSection(SectionType.ACHIEVEMENT)).getInformation();
-        for (String str : ach) {
-            System.out.println(str);
-        }
-        System.out.println("\nКвалификация\n");
-        List<String> qualify = ((BulletedListSection) resume.getSection(SectionType.QUALIFICATION)).getInformation();
-        for (String str : qualify) {
-            System.out.println(str);
-        }
-        System.out.println("\nОпыт работы\n");
-        List<Experience> exper = ((OrganizationSection) resume.getSection(SectionType.EXPERIENCE)).getInformation();
-        for (Experience obj : exper) {
-            System.out.println(obj.getOrgName());
-            System.out.println(obj.getUrl() != null ? obj.getUrl() : "Not presented !!!");
-            for (WorkInterval w : obj.getWorks()) {
-                System.out.println(w.getStart());
-                System.out.println(w.getEnd());
-                System.out.println(w.getPosition());
-                System.out.println(w.getDescription());
-            }
-
-        }
-        System.out.println("\nОбразование\n");
-        List<Experience> educat = ((OrganizationSection) resume.getSection(SectionType.EDUCATION)).getInformation();
-        for (Experience obj : educat) {
-            System.out.println(obj.getOrgName());
-            System.out.println(obj.getUrl() != null ? obj.getUrl() : "Not presented !!");
-            for (WorkInterval w : obj.getWorks()) {
-                System.out.println(w.getStart());
-                System.out.println(w.getEnd());
-                System.out.println(w.getDescription());
-            }
-        }*/
+        return resume;
     }
+
 }

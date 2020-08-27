@@ -6,6 +6,7 @@ import org.junit.Test;
 import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
+import ru.snx.webapp.utils.ResumeTestData;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -13,11 +14,11 @@ import java.util.List;
 
 public abstract class AbstractStorageTest {
     Storage storage;
-    private Resume res1 = new Resume("1", "John");
-    private Resume res2 = new Resume("2", "Mike");
-    private Resume res3 = new Resume("3", "Alex");
-    private Resume res4 = new Resume("5", "Mike");
-    private Resume res5 = new Resume("4", "Mike");
+    private Resume res1 = ResumeTestData.getFilledResume("1", "John");
+    private Resume res2 = ResumeTestData.getFilledResume("2", "Mike");
+    private Resume res3 = ResumeTestData.getFilledResume("3", "Alex");
+    private Resume res4 = ResumeTestData.getFilledResume("5", "Mike");
+    private Resume res5 = ResumeTestData.getFilledResume("4", "Mike");
     private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
 
     AbstractStorageTest(Storage storage) {
@@ -40,7 +41,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        Resume resume = new Resume("4", "Test");
+        Resume resume = ResumeTestData.getFilledResume("4", "Test");
         storage.save(resume);
         Assert.assertEquals(resume, storage.get("4"));
         Assert.assertEquals(4, storage.size());
@@ -55,14 +56,14 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume temp = new Resume("1", "test_name");
+        Resume temp = ResumeTestData.getFilledResume("1", "test_name");
         storage.update(temp);
         Assert.assertEquals(temp, storage.get("1"));
     }
 
     @Test(expected = NoExistStorageException.class)
     public void updateNoExist() {
-        storage.update(new Resume("testNoExistStorageException"));
+        storage.update(ResumeTestData.getFilledResume("0", "testNoExistStorageException"));
     }
 
     @Test
