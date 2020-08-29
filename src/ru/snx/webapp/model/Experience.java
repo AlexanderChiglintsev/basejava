@@ -1,34 +1,64 @@
 package ru.snx.webapp.model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.time.YearMonth;
+import java.util.Objects;
 
 public class Experience {
-    private Link organization;
-    private List<WorkInterval> works = new ArrayList<>();
+    private YearMonth start;
+    private YearMonth end;
+    private String position;
+    private String description;
 
-    public Experience(String organization, String url, WorkInterval... w) {
-        this.organization = new Link(organization, url);
-        if (w.length != 0) {
-            Collections.addAll(works, w);
-        } else throw new IllegalArgumentException("At least one work period is required !!!");
+    public Experience(YearMonth start, YearMonth end, String position, String description) {
+        Objects.requireNonNull(start, "start must not be null !!!");
+        Objects.requireNonNull(end, "end must not be null !!!");
+        Objects.requireNonNull(description, "position must not be null !!!");
+        this.start = start;
+        this.end = end;
+        this.position = position;
+        this.description = description;
     }
 
-    public String getOrgName() {
-        return organization.getOrganization();
+    public Experience(YearMonth start, YearMonth end, String description) {
+        Objects.requireNonNull(start, "start must not be null !!!");
+        Objects.requireNonNull(end, "end must not be null !!!");
+        Objects.requireNonNull(description, "position must not be null !!!");
+        this.start = start;
+        this.end = end;
+        this.position = null;
+        this.description = description;
     }
 
-    public String getUrl() {
-        return organization.getUrl();
+    public YearMonth getStart() {
+        return start;
     }
 
-    public List<WorkInterval> getWorks() {
-        return works;
+    public void setStart(YearMonth start) {
+        this.start = start;
     }
 
-    public void setWorks(List<WorkInterval> works) {
-        this.works = works;
+    public YearMonth getEnd() {
+        return end;
+    }
+
+    public void setEnd(YearMonth end) {
+        this.end = end;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -38,24 +68,26 @@ public class Experience {
 
         Experience that = (Experience) o;
 
-        if (!organization.equals(that.organization)) return false;
-        return works.equals(that.works);
+        if (!start.equals(that.start)) return false;
+        if (!end.equals(that.end)) return false;
+        if (!Objects.equals(position, that.position)) return false;
+        return description.equals(that.description);
     }
 
     @Override
     public int hashCode() {
-        int result = organization.hashCode();
-        result = 31 * result + works.hashCode();
+        int result = start.hashCode();
+        result = 31 * result + end.hashCode();
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        result = 31 * result + description.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append(organization);
-        for (WorkInterval w : works) {
-            str.append(w).append("\n");
-        }
-        return str.toString();
+        return " Начало: " + start + "\n" +
+                " Окончание: " + end + "\n" +
+                " Позиция: " + position + "\n" +
+                " Описание: " + description;
     }
 }

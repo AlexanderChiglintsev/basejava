@@ -86,40 +86,40 @@ public class ResumeTestData {
         BulletedListSection qualifications = new BulletedListSection(qual);
         sections.put(SectionType.QUALIFICATION, qualifications);
 
-        List<Experience> exp = new ArrayList<>();
-        exp.add(exp.size(), new Experience(
+        List<Organization> exp = new ArrayList<>();
+        exp.add(exp.size(), new Organization(
                 "Alcatel",
                 "http://www.alcatel.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(1997, 9),
                         YearMonth.of(2005, 1),
                         "Инженер по аппаратному и программному тестированию",
                         "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL, ASM).")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "Siemens AG",
                 "https://www.siemens.com/ru/ru/home.html",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2005, 1),
                         YearMonth.of(2007, 2),
                         "Разработчик ПО",
                         "Разработка информационной модели, проектирование интерфейсов, " +
                                 "реализация и отладка ПО на мобильной IN платформе Siemens @vantage (Java, Unix).")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "Enkata",
                 "http://enkata.com/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2007, 3),
                         YearMonth.of(2008, 6),
                         "Разработчик ПО",
                         "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS) " +
                                 "частей кластерного J2EE приложения (OLAP, Data mining).")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "Yota",
                 "https://www.yota.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2008, 6),
                         YearMonth.of(2010, 12),
                         "Ведущий специалист",
@@ -128,10 +128,10 @@ public class ResumeTestData {
                                 "Реализация администрирования, статистики и мониторинга фреймворка. " +
                                 "Разработка online JMX клиента (Python/ Jython, Django, ExtJS)")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "Luxoft (Deutsche Bank)",
                 "http://www.luxoft.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2010, 12),
                         YearMonth.of(2012, 4),
                         "Ведущий программист",
@@ -141,10 +141,10 @@ public class ResumeTestData {
                                 "в области алгоритмического трейдинга. JPA, Spring, Spring-MVC, GWT, " +
                                 "ExtGWT (GXT), Highstock, Commet, HTML5.")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "RIT Center",
                 null,
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2012, 4),
                         YearMonth.of(2014, 10),
                         "Java архитектор",
@@ -158,10 +158,10 @@ public class ResumeTestData {
                                 "Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting, " +
                                 "Unix shell remote scripting via ssh tunnels, PL/Python")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "Wrike",
                 "https://www.wrike.com/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2014, 10),
                         YearMonth.of(2016, 1),
                         "Старший разработчик (backend)",
@@ -169,10 +169,10 @@ public class ResumeTestData {
                                 "(Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). " +
                                 "Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.")
         ));
-        exp.add(exp.size(), new Experience(
+        exp.add(exp.size(), new Organization(
                 "Java Online Projects",
                 "http://javaops.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2013, 10),
                         YearMonth.now(),
                         "Автор проекта.",
@@ -181,56 +181,56 @@ public class ResumeTestData {
         OrganizationSection experience = new OrganizationSection(exp);
         sections.put(SectionType.EXPERIENCE, experience);
 
-        List<Experience> edu = new ArrayList<>();
-        edu.add(edu.size(), new Experience(
+        List<Organization> edu = new ArrayList<>();
+        edu.add(edu.size(), new Organization(
                 "Coursera",
                 "https://www.coursera.org/course/progfun",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2013, 3),
                         YearMonth.of(2013, 5),
                         "\"Functional Programming Principles in Scala\" by Martin Odersky")
         ));
-        edu.add(edu.size(), new Experience(
+        edu.add(edu.size(), new Organization(
                 "Luxoft",
                 "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2011, 3),
                         YearMonth.of(2011, 4),
                         "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"")
         ));
-        edu.add(edu.size(), new Experience(
+        edu.add(edu.size(), new Organization(
                 "Siemens AG",
                 "http://www.siemens.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(2005, 1),
                         YearMonth.of(2005, 4),
                         "3 месяца обучения мобильным IN сетям (Берлин)")
         ));
-        edu.add(edu.size(), new Experience(
+        edu.add(edu.size(), new Organization(
                 "Alcatel",
                 "http://www.alcatel.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(1997, 9),
                         YearMonth.of(1998, 3),
                         "6 месяцев обучения цифровым телефонным сетям (Москва)")
         ));
-        edu.add(edu.size(), new Experience(
+        edu.add(edu.size(), new Organization(
                 "Санкт-Петербургский национальный исследовательский университет " +
                         "информационных технологий, механики и оптики",
                 "http://www.ifmo.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(1993, 9),
                         YearMonth.of(1996, 7),
                         "Аспирантура (программист С, С++)"),
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(1987, 9),
                         YearMonth.of(1993, 7),
                         "Инженер (программист Fortran, C)")
         ));
-        edu.add(edu.size(), new Experience(
+        edu.add(edu.size(), new Organization(
                 "Заочная физико-техническая школа при МФТИ",
                 "http://www.school.mipt.ru/",
-                new WorkInterval(
+                new Experience(
                         YearMonth.of(1984, 9),
                         YearMonth.of(1987, 6),
                         "Закончил с отличием")

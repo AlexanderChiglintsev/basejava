@@ -4,18 +4,18 @@ import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
-    private List<Experience> information;
+    private List<Organization> information;
 
-    public OrganizationSection(List<Experience> information) {
+    public OrganizationSection(List<Organization> information) {
         Objects.requireNonNull(information, "information must not be null !!!");
         this.information = information;
     }
 
-    public List<Experience> getInformation() {
+    public List<Organization> getInformation() {
         return information;
     }
 
-    public void setInformation(List<Experience> information) {
+    public void setInformation(List<Organization> information) {
         this.information = information;
     }
 
@@ -37,7 +37,7 @@ public class OrganizationSection extends AbstractSection {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        for (Experience ex : information) {
+        for (Organization ex : information) {
             str.append(ex).append("\n");
         }
         return str.toString();
