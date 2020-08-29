@@ -5,9 +5,10 @@ import ru.snx.webapp.model.Resume;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapResumeStorage extends AbstractStorage<Resume> {
-    private HashMap<String, Resume> storage = new HashMap<>();
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected void insertResume(Resume resume, Resume r) {

@@ -63,6 +63,10 @@ public abstract class AbstractStorage<SK> implements Storage {
         return key;
     }
 
+    static Comparator<Resume> getResumeComparator() {
+        return RESUME_COMPARATOR;
+    }
+
     protected abstract boolean checkExist(SK key);
 
     protected abstract SK findKey(String uuid);

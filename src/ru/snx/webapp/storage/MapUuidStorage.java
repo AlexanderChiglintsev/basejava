@@ -5,7 +5,7 @@ import ru.snx.webapp.model.Resume;
 import java.util.*;
 
 public class MapUuidStorage extends AbstractStorage<String> {
-    private HashMap<String, Resume> storage = new HashMap<>();
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     protected void insertResume(String uuid, Resume r) {

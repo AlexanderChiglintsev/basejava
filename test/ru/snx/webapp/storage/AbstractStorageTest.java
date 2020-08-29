@@ -19,7 +19,7 @@ public abstract class AbstractStorageTest {
     private Resume res3 = ResumeTestData.getFilledResume("3", "Alex");
     private Resume res4 = ResumeTestData.getFilledResume("5", "Mike");
     private Resume res5 = ResumeTestData.getFilledResume("4", "Mike");
-    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
+    private static final Comparator<Resume> RESUME_COMPARATOR = AbstractStorage.getResumeComparator();
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -50,15 +50,19 @@ public abstract class AbstractStorageTest {
     @Test(expected = NoExistStorageException.class)
     public void delete() {
         storage.delete("1");
-        Assert.assertEquals(2, storage.size());
-        storage.delete("1");
+        storage.get("1");
+    }
+
+    @Test(expected = NoExistStorageException.class)
+    public void deleteNoExist() {
+        storage.delete("TestNoExist");
     }
 
     @Test
     public void update() {
-        Resume temp = ResumeTestData.getFilledResume("1", "test_name");
-        storage.update(temp);
-        Assert.assertEquals(temp, storage.get("1"));
+        Resume resume = ResumeTestData.getFilledResume("1", "test_name");
+        storage.update(resume);
+        Assert.assertEquals(resume, storage.get("1"));
     }
 
     @Test(expected = NoExistStorageException.class)
@@ -80,9 +84,9 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         storage.save(res4);
         storage.save(res5);
-        List<Resume> temp = Arrays.asList(res1, res2, res3, res4, res5);
-        temp.sort(RESUME_COMPARATOR);
-        Assert.assertEquals(temp, storage.getAllSorted());
+        List<Resume> expectedResumes = Arrays.asList(res1, res2, res3, res4, res5);
+        expectedResumes.sort(RESUME_COMPARATOR);
+        Assert.assertEquals(expectedResumes, storage.getAllSorted());
     }
 
     @Test
