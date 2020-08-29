@@ -33,4 +33,13 @@ public class OrganizationSection extends AbstractSection {
     public int hashCode() {
         return information.hashCode();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (Experience ex : information) {
+            str.append(ex).append("\n");
+        }
+        return str.toString();
+    }
 }

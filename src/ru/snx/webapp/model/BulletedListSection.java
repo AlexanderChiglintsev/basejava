@@ -33,4 +33,13 @@ public class BulletedListSection extends AbstractSection {
     public int hashCode() {
         return information.hashCode();
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        for (String s : information) {
+            str.append("* ").append(s).append("\n");
+        }
+        return str.toString();
+    }
 }

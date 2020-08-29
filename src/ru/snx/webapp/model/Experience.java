@@ -48,4 +48,14 @@ public class Experience {
         result = 31 * result + works.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+        str.append(organization);
+        for (WorkInterval w : works) {
+            str.append(w).append("\n");
+        }
+        return str.toString();
+    }
 }

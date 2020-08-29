@@ -8,6 +8,10 @@ import java.util.EnumMap;
 import java.util.List;
 
 public class ResumeTestData {
+    public static void main(String[] args) {
+        Resume resume = getFilledResume("1", "TestTest");
+        System.out.println(resume);
+    }
 
     public static Resume getFilledResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);

@@ -82,4 +82,12 @@ public class WorkInterval {
         result = 31 * result + description.hashCode();
         return result;
     }
+
+    @Override
+    public String toString() {
+        return " Начало: " + start + "\n" +
+                " Окончание: " + end + "\n" +
+                " Позиция: " + position + "\n" +
+                " Описание: " + description;
+    }
 }

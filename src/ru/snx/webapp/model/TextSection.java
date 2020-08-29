@@ -32,4 +32,9 @@ public class TextSection extends AbstractSection {
     public int hashCode() {
         return information.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return " " + information;
+    }
 }
