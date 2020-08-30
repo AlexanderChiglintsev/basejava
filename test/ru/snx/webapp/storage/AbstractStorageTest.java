@@ -9,8 +9,9 @@ import ru.snx.webapp.model.Resume;
 import ru.snx.webapp.utils.ResumeTestData;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
+
+import static ru.snx.webapp.storage.AbstractStorage.RESUME_COMPARATOR;
 
 public abstract class AbstractStorageTest {
     Storage storage;
@@ -19,7 +20,6 @@ public abstract class AbstractStorageTest {
     private Resume res3 = ResumeTestData.getFilledResume("3", "Alex");
     private Resume res4 = ResumeTestData.getFilledResume("5", "Mike");
     private Resume res5 = ResumeTestData.getFilledResume("4", "Mike");
-    private static final Comparator<Resume> RESUME_COMPARATOR = AbstractStorage.getResumeComparator();
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -47,10 +47,10 @@ public abstract class AbstractStorageTest {
         Assert.assertEquals(4, storage.size());
     }
 
-    @Test(expected = NoExistStorageException.class)
+    @Test
     public void delete() {
         storage.delete("1");
-        storage.get("1");
+        Assert.assertEquals(2, storage.size());
     }
 
     @Test(expected = NoExistStorageException.class)

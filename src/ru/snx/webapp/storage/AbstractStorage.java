@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
 
-    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
+    static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid);
     private final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     @Override
@@ -61,10 +61,6 @@ public abstract class AbstractStorage<SK> implements Storage {
             throw new NoExistStorageException(uuid);
         }
         return key;
-    }
-
-    static Comparator<Resume> getResumeComparator() {
-        return RESUME_COMPARATOR;
     }
 
     protected abstract boolean checkExist(SK key);

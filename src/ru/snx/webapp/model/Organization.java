@@ -8,10 +8,10 @@ public class Organization {
     private Link link;
     private List<Experience> experienceList = new ArrayList<>();
 
-    public Organization(String link, String url, Experience... w) {
+    public Organization(String link, String url, Experience... experiences) {
         this.link = new Link(link, url);
-        if (w.length != 0) {
-            experienceList.addAll(Arrays.asList(w));
+        if (experiences.length != 0) {
+            experienceList.addAll(Arrays.asList(experiences));
         } else throw new IllegalArgumentException("At least one work period is required !!!");
     }
 
