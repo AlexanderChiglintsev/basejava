@@ -1,5 +1,7 @@
 package ru.snx.webapp.model;
 
+import ru.snx.webapp.utils.DateUtil;
+
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,15 +75,17 @@ public class Organization {
             this.position = position;
             this.description = description;
         }
-    
+
         public Experience(YearMonth start, YearMonth end, String description) {
-            Objects.requireNonNull(start, "start must not be null !!!");
-            Objects.requireNonNull(end, "end must not be null !!!");
-            Objects.requireNonNull(description, "position must not be null !!!");
-            this.start = start;
-            this.end = end;
-            this.position = null;
-            this.description = description;
+            this(start, end, null, description);
+        }
+
+        public Experience(YearMonth start, String position, String description) {
+            this(start, DateUtil.NOW, position, description);
+        }
+
+        public Experience(YearMonth start, String description) {
+            this(start, DateUtil.NOW, null, description);
         }
 
         public YearMonth getStart() {

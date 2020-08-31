@@ -174,7 +174,6 @@ public class ResumeTestData {
                 "http://javaops.ru/",
                 new Organization.Experience(
                         YearMonth.of(2013, 10),
-                        YearMonth.now(),
                         "Автор проекта.",
                         "Создание, организация и проведение Java онлайн проектов и стажировок.")
         ));
