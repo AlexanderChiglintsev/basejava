@@ -1,10 +1,15 @@
 package ru.snx.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class BulletedListSection extends AbstractSection {
     private List<String> information;
+
+    public BulletedListSection(String... information){
+        this(Arrays.asList(information));
+    }
 
     public BulletedListSection(List<String> information) {
         Objects.requireNonNull(information, "information must not be null !!!");

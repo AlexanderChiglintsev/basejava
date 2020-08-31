@@ -1,10 +1,15 @@
 package ru.snx.webapp.model;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
     private List<Organization> information;
+
+    public OrganizationSection(Organization... organizations){
+        this(Arrays.asList(organizations));
+    }
 
     public OrganizationSection(List<Organization> information) {
         Objects.requireNonNull(information, "information must not be null !!!");

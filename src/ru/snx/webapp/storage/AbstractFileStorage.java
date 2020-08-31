@@ -36,11 +36,13 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void insertResume(File file, Resume r) {
         try {
-            file.createNewFile();
-            doWrite(file, r);
+            if (!file.createNewFile()){
+                throw new StorageException("Creating file error !!!", file.getName());
+            }
         } catch (IOException e) {
             throw new StorageException("IO error !!!", file.getName(), e);
         }
+        updateResume(file, r);
     }
 
     @Override
@@ -48,7 +50,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(file, r);
         } catch (IOException e) {
-            throw new StorageException("IO error !!!", file.getName(), e);
+            throw new StorageException("File write error !!!", file.getName(), e);
         }
     }
 
@@ -63,19 +65,21 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void deleteResume(File file) {
-        file.delete();
+        if (!file.delete()) {
+            throw new StorageException("Delete error !!!", file.getName());
+        }
+
     }
 
     @Override
     protected List<Resume> getAllSortedResume() {
         File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Delete error !!!", null);
+        }
         List<Resume> allres = new ArrayList<>();
         for (File file : files) {
-            try {
-                allres.add(doRead(file));
-            } catch (IOException e) {
-                throw new StorageException("IO error !!!", file.getName(), e);
-            }
+            allres.add(getResume(file));
         }
         return allres;
     }
@@ -83,15 +87,19 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] files = directory.listFiles();
-        for (File f : files) {
-            f.delete();
-        }
+        if (files != null)
+            for (File f : files) {
+                deleteResume(f);
+            }
     }
 
     @Override
     public int size() {
-        File[] files = directory.listFiles();
-        return files != null ? files.length : 0;
+        String[] list = directory.list();
+        if (list == null) {
+            throw new StorageException("IO error !!!", null);
+        }
+        return list.length;
     }
 
     abstract void doWrite(File file, Resume r) throws IOException;
