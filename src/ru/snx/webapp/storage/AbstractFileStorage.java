@@ -3,8 +3,7 @@ package ru.snx.webapp.storage;
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +47,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void updateResume(File file, Resume r) {
         try {
-            doWrite(file, r);
+            doWrite(new BufferedOutputStream(new FileOutputStream(file)), r);
         } catch (IOException e) {
             throw new StorageException("File write error !!!", file.getName(), e);
         }
@@ -57,7 +56,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume getResume(File file) {
         try {
-            return doRead(file);
+            return doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error !!!", file.getName(), e);
         }
@@ -102,7 +101,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         return list.length;
     }
 
-    abstract void doWrite(File file, Resume r) throws IOException;
+    abstract void doWrite(OutputStream os, Resume r) throws IOException;
 
-    abstract Resume doRead(File file) throws IOException;
+    abstract Resume doRead(InputStream is) throws IOException;
 }
