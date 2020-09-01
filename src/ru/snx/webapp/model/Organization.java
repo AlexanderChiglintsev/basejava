@@ -2,13 +2,16 @@ package ru.snx.webapp.model;
 
 import ru.snx.webapp.utils.DateUtil;
 
+import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Organization {
+public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Link link;
     private List<Experience> experienceList = new ArrayList<>();
 
@@ -60,7 +63,9 @@ public class Organization {
         return str.toString();
     }
 
-    public static class Experience {
+    public static class Experience implements Serializable {
+        private static final long serialVersionUID = 1L;
+
         private YearMonth start;
         private YearMonth end;
         private String position;

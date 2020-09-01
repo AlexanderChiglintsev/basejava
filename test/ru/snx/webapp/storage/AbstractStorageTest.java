@@ -8,12 +8,15 @@ import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
 import ru.snx.webapp.utils.ResumeTestData;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import static ru.snx.webapp.storage.AbstractStorage.RESUME_COMPARATOR;
 
 public abstract class AbstractStorageTest {
+
+    static final File STORAGE_DIR = new File("D:\\javalearn\\basejava\\storage");
     Storage storage;
     private Resume res1 = ResumeTestData.getFilledResume("1", "John");
     private Resume res2 = ResumeTestData.getFilledResume("2", "Mike");
