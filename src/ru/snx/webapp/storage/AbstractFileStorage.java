@@ -11,7 +11,7 @@ import java.util.Objects;
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     private File directory;
 
-    public AbstractFileStorage(File directory) {
+    AbstractFileStorage(File directory) {
         Objects.requireNonNull(directory, "directory must not be null !!!");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory !!!");
@@ -74,7 +74,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected List<Resume> getAllSortedResume() {
         File[] files = directory.listFiles();
         if (files == null) {
-            throw new StorageException("Delete error !!!", null);
+            throw new StorageException("IO error !!!", null);
         }
         List<Resume> allres = new ArrayList<>();
         for (File file : files) {
@@ -96,7 +96,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     public int size() {
         String[] list = directory.list();
         if (list == null) {
-            throw new StorageException("IO error !!!", null);
+            throw new StorageException("Getting storage size error !!!", null);
         }
         return list.length;
     }

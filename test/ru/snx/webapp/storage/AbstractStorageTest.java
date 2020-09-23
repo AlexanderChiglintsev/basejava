@@ -16,7 +16,9 @@ import static ru.snx.webapp.storage.AbstractStorage.RESUME_COMPARATOR;
 
 public abstract class AbstractStorageTest {
 
-    static final File STORAGE_DIR = new File("D:\\javalearn\\basejava\\storage");
+    //static final File STORAGE_DIR = new File("D:\\javalearn\\basejava\\storage");
+    static final File STORAGE_DIR = new File("C:\\tmp");
+    static final String PATH = "C:\\tmp";
     Storage storage;
     private Resume res1 = ResumeTestData.getFilledResume("1", "John");
     private Resume res2 = ResumeTestData.getFilledResume("2", "Mike");
