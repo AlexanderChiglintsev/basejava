@@ -29,20 +29,20 @@ public class MainFile {
         }
 
         System.out.println("Home work --->");
-        String rootPath = "D:\\javalearn\\basejava\\src";
-        showDir(new File(rootPath));
+        String rootPath = "C:\\javalearn\\basejava\\src";
+        showDir(new File(rootPath), "");
 
     }
 
-    private static void showDir(File file) {
+    private static void showDir(File file, String prefix) {
         File[] listFiles = file.listFiles();
         assert listFiles != null;
         for (File f : listFiles) {
             if (f.isDirectory()) {
-                System.out.println("[Dir->] " + f.getName());
-                showDir(f);
+                System.out.println(prefix + f.getName());
+                showDir(f, prefix + "  ");
             } else {
-                System.out.println(f.getName());
+                System.out.println(prefix + "*" + f.getName());
             }
         }
     }
