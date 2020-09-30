@@ -15,13 +15,13 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void update(Resume r) {
-        LOG.info("Update: " + r);
+        LOG.info("Update: " + r.getUuid() + " | " + r.getFullName());
         updateResume(checkUuidNoExist(r.getUuid()), r);
     }
 
     @Override
     public void save(Resume r) {
-        //LOG.info("Save: " + r);
+        //LOG.info("Save: " + r.getUuid() + " | " + r.getFullName());
         insertResume(checkUuidExist(r.getUuid()), r);
     }
 
