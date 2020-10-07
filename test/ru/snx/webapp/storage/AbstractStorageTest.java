@@ -18,13 +18,12 @@ public abstract class AbstractStorageTest {
 
     //static final File STORAGE_DIR = new File("D:\\javalearn\\basejava\\storage");
     static final File STORAGE_DIR = new File("C:\\tmp");
-    static final String PATH = "C:\\tmp";
     Storage storage;
-    private Resume res1 = ResumeTestData.getFilledResume("1", "John");
-    private Resume res2 = ResumeTestData.getFilledResume("2", "Mike");
-    private Resume res3 = ResumeTestData.getFilledResume("3", "Alex");
-    private Resume res4 = ResumeTestData.getFilledResume("5", "Mike");
-    private Resume res5 = ResumeTestData.getFilledResume("4", "Mike");
+    private final Resume res1 = ResumeTestData.getFilledResume("1", "John");
+    private final Resume res2 = ResumeTestData.getFilledResume("2", "Mike");
+    private final Resume res3 = ResumeTestData.getFilledResume("3", "Alex");
+    private final Resume res4 = ResumeTestData.getFilledResume("5", "Mike");
+    private final Resume res5 = ResumeTestData.getFilledResume("4", "Mike");
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
