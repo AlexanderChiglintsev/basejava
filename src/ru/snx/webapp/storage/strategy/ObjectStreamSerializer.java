@@ -1,4 +1,4 @@
-package ru.snx.webapp.storage;
+package ru.snx.webapp.storage.strategy;
 
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;

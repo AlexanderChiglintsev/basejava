@@ -16,14 +16,13 @@ import static ru.snx.webapp.storage.AbstractStorage.RESUME_COMPARATOR;
 
 public abstract class AbstractStorageTest {
 
-    //static final File STORAGE_DIR = new File("D:\\javalearn\\basejava\\storage");
     static final File STORAGE_DIR = new File("C:\\tmp");
     Storage storage;
-    private final Resume res1 = ResumeTestData.getFilledResume("1", "John");
-    private final Resume res2 = ResumeTestData.getFilledResume("2", "Mike");
-    private final Resume res3 = ResumeTestData.getFilledResume("3", "Alex");
-    private final Resume res4 = ResumeTestData.getFilledResume("5", "Mike");
-    private final Resume res5 = ResumeTestData.getFilledResume("4", "Mike");
+    private final Resume RES1 = ResumeTestData.getFilledResume("1", "John");
+    private final Resume RES2 = ResumeTestData.getFilledResume("2", "Mike");
+    private final Resume RES3 = ResumeTestData.getFilledResume("3", "Alex");
+    private final Resume RES4 = ResumeTestData.getFilledResume("5", "Mike");
+    private final Resume RES5 = ResumeTestData.getFilledResume("4", "Mike");
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -32,9 +31,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void init() {
         storage.clear();
-        storage.save(res1);
-        storage.save(res2);
-        storage.save(res3);
+        storage.save(RES1);
+        storage.save(RES2);
+        storage.save(RES3);
     }
 
     @Test
@@ -76,7 +75,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        Assert.assertEquals(res1, storage.get("1"));
+        Assert.assertEquals(RES1, storage.get("1"));
     }
 
     @Test(expected = NoExistStorageException.class)
@@ -86,9 +85,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
-        storage.save(res4);
-        storage.save(res5);
-        List<Resume> expectedResumes = Arrays.asList(res1, res2, res3, res4, res5);
+        storage.save(RES4);
+        storage.save(RES5);
+        List<Resume> expectedResumes = Arrays.asList(RES1, RES2, RES3, RES4, RES5);
         expectedResumes.sort(RESUME_COMPARATOR);
         Assert.assertEquals(expectedResumes, storage.getAllSorted());
     }
@@ -101,8 +100,8 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = ExistStorageException.class)
-    public void saveExistException() {
-        storage.save(res1);
+    public void saveExist() {
+        storage.save(RES1);
     }
 
 }

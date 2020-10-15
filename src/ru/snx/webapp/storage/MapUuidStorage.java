@@ -28,7 +28,7 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected List<Resume> getAllSortedResume() {
+    protected List<Resume> getAllResume() {
         return new ArrayList<>(storage.values());
     }
 

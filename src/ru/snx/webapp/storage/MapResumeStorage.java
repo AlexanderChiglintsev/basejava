@@ -32,7 +32,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected List<Resume> getAllSortedResume() {
+    protected List<Resume> getAllResume() {
         return new ArrayList<>(storage.values());
     }
 

@@ -2,9 +2,11 @@ package ru.snx.webapp.storage;
 
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
+import ru.snx.webapp.storage.strategy.Serializer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,13 +40,12 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void insertResume(File file, Resume r) {
         try {
-            if (!file.createNewFile()) {
-                throw new StorageException("Creating file error !!!", file.getName());
+            if (file.createNewFile()) {
+                updateResume(file, r);
             }
         } catch (IOException e) {
-            throw new StorageException("IO error !!!", file.getName(), e);
+            throw new StorageException("File creating error !!!", file.getName(), e);
         }
-        updateResume(file, r);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class FileStorage extends AbstractStorage<File> {
         try {
             serializer.doWrite(new BufferedOutputStream(new FileOutputStream(file)), r);
         } catch (IOException e) {
-            throw new StorageException("File write error !!!", file.getName(), e);
+            throw new StorageException("File writing error !!!", file.getName(), e);
         }
     }
 
@@ -68,43 +69,34 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void deleteResume(File file) {
         if (!file.delete()) {
-            throw new StorageException("Delete error !!!", file.getName());
+            throw new StorageException("File deleting error !!!", file.getName());
         }
 
     }
 
     @Override
-    protected List<Resume> getAllSortedResume() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            throw new StorageException("IO error !!!", null);
-        }
-        List<Resume> allres = new ArrayList<>();
-        for (File file : files) {
-            allres.add(getResume(file));
-        }
-        return allres;
+    protected List<Resume> getAllResume() {
+        List<Resume> allResumes = new ArrayList<>();
+        Arrays.stream(getListFiles()).forEach(file -> allResumes.add(getResume(file)));
+        return allResumes;
     }
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        if (files != null)
-            for (File f : files) {
-                deleteResume(f);
-            }
+        Arrays.stream(getListFiles()).forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        String[] list = directory.list();
-        if (list == null) {
-            throw new StorageException("Getting storage size error !!!", null);
-        }
-        return list.length;
+        return getListFiles().length;
     }
 
-    public void setSerializer(Serializer serializer) {
-        this.serializer = serializer;
+    private File[] getListFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Getting list files in storage error !!!", null);
+        }
+        return files;
     }
+
 }

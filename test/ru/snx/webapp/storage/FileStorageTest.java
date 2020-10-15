@@ -1,6 +1,6 @@
 package ru.snx.webapp.storage;
 
-import static org.junit.Assert.*;
+import ru.snx.webapp.storage.strategy.ObjectStreamSerializer;
 
 public class FileStorageTest extends AbstractStorageTest {
     public FileStorageTest() {

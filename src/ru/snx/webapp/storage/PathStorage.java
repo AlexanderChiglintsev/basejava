@@ -2,6 +2,7 @@ package ru.snx.webapp.storage;
 
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
+import ru.snx.webapp.storage.strategy.Serializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -32,7 +33,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path findKey(String uuid) {
-        return Paths.get(directory.toString(), "\\" + uuid);
+        return Paths.get(directory.toString()).resolve(uuid);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("IO error !!!", path.getFileName().toString(), e);
+            throw new StorageException("File creating error !!! (NIO)", path.getFileName().toString(), e);
         }
         updateResume(path, r);
     }
@@ -50,7 +51,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             serializer.doWrite(new BufferedOutputStream(Files.newOutputStream(path)), r);
         } catch (IOException e) {
-            throw new StorageException("Path write error !!!", path.getFileName().toString(), e);
+            throw new StorageException("File writing error !!! (NIO)", path.getFileName().toString(), e);
         }
     }
 
@@ -59,30 +60,28 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return serializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("IO error !!!", path.getFileName().toString(), e);
+            throw new StorageException("IO error !!! (NIO)", path.getFileName().toString(), e);
         }
     }
 
     @Override
     protected void deleteResume(Path path) {
-        if (!Files.isDirectory(path)) {
-            try {
-                Files.delete(path);
-            } catch (IOException e) {
-                throw new StorageException("Delete error !!!", path.getFileName().toString());
-            }
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            throw new StorageException("File deleting error !!! (NIO)", path.getFileName().toString());
         }
     }
 
     @Override
-    protected List<Resume> getAllSortedResume() {
-        List<Resume> allres = new ArrayList<>();
+    protected List<Resume> getAllResume() {
+        List<Resume> allResumes = new ArrayList<>();
         try {
-            Files.list(directory).forEach(path -> allres.add(getResume(path)));
+            Files.list(directory).forEach(path -> allResumes.add(getResume(path)));
         } catch (IOException e) {
-            throw new StorageException("IO error !!!", null);
+            throw new StorageException("IO error !!! (NIO)", null);
         }
-        return allres;
+        return allResumes;
     }
 
     @Override
@@ -90,7 +89,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.list(directory).forEach(this::deleteResume);
         } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
+            throw new StorageException("Storage clearing error !!! (NIO)", null);
         }
     }
 
@@ -100,12 +99,9 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             count = (int) Files.list(directory).count();
         } catch (IOException e) {
-            throw new StorageException("Getting storage size error !!!", null);
+            throw new StorageException("Getting storage size error !!! (NIO)", null);
         }
         return count;
     }
 
-    public void setSerializer(Serializer serializer) {
-        this.serializer = serializer;
-    }
 }
