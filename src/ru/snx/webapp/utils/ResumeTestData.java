@@ -4,7 +4,6 @@ import ru.snx.webapp.model.*;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 
 public class ResumeTestData {
@@ -16,25 +15,22 @@ public class ResumeTestData {
     public static Resume getFilledResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
 
-        EnumMap<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-        contacts.put(ContactType.PHONE, "+7(921) 855-0482");
-        contacts.put(ContactType.EMAIL, "gkislin@yandex.ru");
-        contacts.put(ContactType.SKYPE, "grigory.kislin");
-        contacts.put(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        contacts.put(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        contacts.put(ContactType.GITHUB, "https://github.com/gkislin");
-        resume.setContacts(contacts);
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+        resume.addContact(ContactType.SKYPE, "grigory.kislin");
+        resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+        resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+        resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
 
-        EnumMap<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
         TextSection objective = new TextSection("Ведущий стажировок " +
                 "и корпоративного обучения по " +
                 "Java Web и Enterprise технологиям");
-        sections.put(SectionType.OBJECTIVE, objective);
+        resume.addSection(SectionType.OBJECTIVE, objective);
 
         TextSection personal = new TextSection("Аналитический склад ума, " +
                 "сильная логика, креативность, инициативность. " +
                 "Пурист кода и архитектуры.");
-        sections.put(SectionType.PERSONAL, personal);
+        resume.addSection(SectionType.PERSONAL, personal);
 
         List<String> achieve = new ArrayList<>();
         achieve.add(achieve.size(), "Реализация протоколов по приему платежей всех основных платежных " +
@@ -56,8 +52,8 @@ public class ResumeTestData {
                 "\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). " +
                 "Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". " +
                 "Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
-        BulletedListSection achievements = new BulletedListSection(achieve);
-        sections.put(SectionType.ACHIEVEMENT, achievements);
+        ListSection achievements = new ListSection(achieve);
+        resume.addSection(SectionType.ACHIEVEMENT, achievements);
 
         List<String> qual = new ArrayList<>();
         qual.add(qual.size(), "JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2");
@@ -83,8 +79,8 @@ public class ResumeTestData {
                 "шаблонов проектрирования, архитектурных шаблонов, " +
                 "UML, функционального программирования");
         qual.add(qual.size(), "Родной русский, английский \"upper intermediate\"");
-        BulletedListSection qualifications = new BulletedListSection(qual);
-        sections.put(SectionType.QUALIFICATION, qualifications);
+        ListSection qualifications = new ListSection(qual);
+        resume.addSection(SectionType.QUALIFICATION, qualifications);
 
         List<Organization> exp = new ArrayList<>();
         exp.add(exp.size(), new Organization(
@@ -178,7 +174,7 @@ public class ResumeTestData {
                         "Создание, организация и проведение Java онлайн проектов и стажировок.")
         ));
         OrganizationSection experience = new OrganizationSection(exp);
-        sections.put(SectionType.EXPERIENCE, experience);
+        resume.addSection(SectionType.EXPERIENCE, experience);
 
         List<Organization> edu = new ArrayList<>();
         edu.add(edu.size(), new Organization(
@@ -235,9 +231,7 @@ public class ResumeTestData {
                         "Закончил с отличием")
         ));
         OrganizationSection educations = new OrganizationSection(edu);
-        sections.put(SectionType.EDUCATION, educations);
-
-        resume.setSections(sections);
+        resume.addSection(SectionType.EDUCATION, educations);
 
         return resume;
     }

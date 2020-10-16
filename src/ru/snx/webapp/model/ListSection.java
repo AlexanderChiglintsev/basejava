@@ -4,16 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class BulletedListSection extends AbstractSection {
+public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
     private List<String> information;
 
-    public BulletedListSection(String... information){
+    public ListSection(String... information) {
         this(Arrays.asList(information));
     }
 
-    public BulletedListSection(List<String> information) {
+    public ListSection(List<String> information) {
         Objects.requireNonNull(information, "information must not be null !!!");
         this.information = information;
     }
@@ -22,16 +22,12 @@ public class BulletedListSection extends AbstractSection {
         return information;
     }
 
-    public void setInformation(List<String> information) {
-        this.information = information;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BulletedListSection that = (BulletedListSection) o;
+        ListSection that = (ListSection) o;
 
         return information.equals(that.information);
     }

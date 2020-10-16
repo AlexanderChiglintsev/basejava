@@ -1,6 +1,7 @@
 package ru.snx.webapp.model;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -11,10 +12,10 @@ import java.util.UUID;
 public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
     // Unique identifier
-    private String uuid;
-    private String fullName;
-    private Map<ContactType, String> contacts;
-    private Map<SectionType, AbstractSection> sections;
+    private final String uuid;
+    private final String fullName;
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -31,16 +32,8 @@ public class Resume implements Serializable {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
     public String getFullName() {
         return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getContact(ContactType type) {
@@ -55,16 +48,16 @@ public class Resume implements Serializable {
         return contacts;
     }
 
-    public void setContacts(Map<ContactType, String> contacts) {
-        this.contacts = contacts;
-    }
-
     public Map<SectionType, AbstractSection> getSections() {
         return sections;
     }
 
-    public void setSections(Map<SectionType, AbstractSection> sections) {
-        this.sections = sections;
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public void addSection(SectionType type, AbstractSection section) {
+        sections.put(type, section);
     }
 
     @Override
@@ -84,8 +77,8 @@ public class Resume implements Serializable {
     public int hashCode() {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
-        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
-        result = 31 * result + (sections != null ? sections.hashCode() : 0);
+        result = 31 * result + contacts.hashCode();
+        result = 31 * result + sections.hashCode();
         return result;
     }
 
@@ -102,7 +95,6 @@ public class Resume implements Serializable {
             System.out.println(entry.getKey());
             System.out.println(entry.getValue());
         }
-
         return "\n";
     }
 }
