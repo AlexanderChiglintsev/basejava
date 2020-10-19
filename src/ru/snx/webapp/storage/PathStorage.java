@@ -4,13 +4,16 @@ import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.Resume;
 import ru.snx.webapp.storage.strategy.Serializer;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private Path directory;
@@ -33,7 +36,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path findKey(String uuid) {
-        return Paths.get(directory.toString()).resolve(uuid);
+        return directory.resolve(uuid);
     }
 
     @Override
@@ -76,32 +79,26 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> getAllResume() {
         List<Resume> allResumes = new ArrayList<>();
-        try {
-            Files.list(directory).forEach(path -> allResumes.add(getResume(path)));
-        } catch (IOException e) {
-            throw new StorageException("IO error !!! (NIO)", null);
-        }
+        getStreamFiles().map(this::getResume).forEach(allResumes::add);
         return allResumes;
     }
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Storage clearing error !!! (NIO)", null);
-        }
+        getStreamFiles().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
-        int count;
+        return (int) getStreamFiles().count();
+    }
+
+    private Stream<Path> getStreamFiles() {
         try {
-            count = (int) Files.list(directory).count();
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Getting storage size error !!! (NIO)", null);
+            throw new StorageException("Getting stream of files error !!! (NIO)", null);
         }
-        return count;
     }
 
 }
