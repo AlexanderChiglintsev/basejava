@@ -2,8 +2,8 @@ package ru.snx.webapp.storage;
 
 import ru.snx.webapp.storage.strategy.ObjectStreamSerializer;
 
-public class FileStorageTest extends AbstractStorageTest {
-    public FileStorageTest() {
+public class ObjectFileStorageTest extends AbstractStorageTest {
+    public ObjectFileStorageTest() {
         super(new FileStorage(STORAGE_DIR, new ObjectStreamSerializer()));
     }
 }

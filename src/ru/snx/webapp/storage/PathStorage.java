@@ -31,7 +31,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected boolean checkExist(Path path) {
-        return Files.exists(path);
+        return Files.isRegularFile(path);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.createFile(path);
         } catch (IOException e) {
-            throw new StorageException("File creating error !!! (NIO)", path.getFileName().toString(), e);
+            throw new StorageException("File creating error !!! (NIO)", getFileName(path), e);
         }
         updateResume(path, r);
     }
@@ -54,7 +54,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             serializer.doWrite(new BufferedOutputStream(Files.newOutputStream(path)), r);
         } catch (IOException e) {
-            throw new StorageException("File writing error !!! (NIO)", path.getFileName().toString(), e);
+            throw new StorageException("File writing error !!! (NIO)", getFileName(path), e);
         }
     }
 
@@ -63,7 +63,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return serializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
-            throw new StorageException("IO error !!! (NIO)", path.getFileName().toString(), e);
+            throw new StorageException("IO error !!! (NIO)", getFileName(path), e);
         }
     }
 
@@ -72,7 +72,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("File deleting error !!! (NIO)", path.getFileName().toString());
+            throw new StorageException("File deleting error !!! (NIO)", getFileName(path), e);
         }
     }
 
@@ -95,8 +95,12 @@ public class PathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Getting stream of files error !!! (NIO)", null);
+            throw new StorageException("Getting stream of files error !!! (NIO)", e);
         }
+    }
+
+    private String getFileName(Path path){
+        return path.getFileName().toString();
     }
 
 }
