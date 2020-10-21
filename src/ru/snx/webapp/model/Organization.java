@@ -1,7 +1,11 @@
 package ru.snx.webapp.model;
 
 import ru.snx.webapp.utils.DateUtil;
+import ru.snx.webapp.utils.YearMonthAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -9,11 +13,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final Link link;
+    private Link link;
     private List<Experience> experienceList = new ArrayList<>();
+
+    public Organization() {
+    }
 
     public Organization(String link, String url, Experience... experiences) {
         this.link = new Link(link, url);
@@ -63,13 +71,18 @@ public class Organization implements Serializable {
         return str.toString();
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Experience implements Serializable {
         private static final long serialVersionUID = 1L;
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
+        private YearMonth startDate;
+        @XmlJavaTypeAdapter(YearMonthAdapter.class)
+        private YearMonth endDate;
+        private String position;
+        private String description;
 
-        private final YearMonth startDate;
-        private final YearMonth endDate;
-        private final String position;
-        private final String description;
+        public Experience() {
+        }
 
         public Experience(YearMonth startDate, YearMonth endDate, String position, String description) {
             Objects.requireNonNull(startDate, "startDate must not be null !!");
