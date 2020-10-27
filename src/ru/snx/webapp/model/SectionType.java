@@ -18,8 +18,8 @@ public enum SectionType {
         return title;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return "\n" + title + ": \n";
-    }
+    }*/
 }

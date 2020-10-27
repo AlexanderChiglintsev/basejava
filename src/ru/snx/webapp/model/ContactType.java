@@ -1,8 +1,8 @@
 package ru.snx.webapp.model;
 
 public enum ContactType {
-    ADDRESS("Адрес"),
-    PHONE("Телефон"),
+    //ADDRESS("Address"),
+    PHONE("Phone"),
     SKYPE("Skype"),
     EMAIL("E-mail"),
     LINKEDIN("LinkedIn"),
@@ -19,8 +19,8 @@ public enum ContactType {
         return title;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         return title + ": ";
-    }
+    }*/
 }
