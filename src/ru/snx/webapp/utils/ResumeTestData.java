@@ -139,7 +139,7 @@ public class ResumeTestData {
         ));
         exp.add(exp.size(), new Organization(
                 "RIT Center",
-                null,
+                "-",
                 new Organization.Experience(
                         YearMonth.of(2012, 4),
                         YearMonth.of(2014, 10),

@@ -30,9 +30,17 @@ public class Organization implements Serializable {
         } else throw new IllegalArgumentException("At least one work period is required !!!");
     }
 
-    public Organization(Link link, List<Experience> experienceList) {
-        this.link = link;
+    public Organization(String link, String url, List<Experience> experienceList) {
+        this.link = new Link(link, url);
         this.experienceList = experienceList;
+    }
+
+    public String getName(){
+        return link.getName();
+    }
+
+    public String getUrl(){
+        return link.getUrl();
     }
 
     public List<Experience> getExperienceList() {
@@ -95,7 +103,7 @@ public class Organization implements Serializable {
         }
 
         public Experience(YearMonth startDate, YearMonth endDate, String description) {
-            this(startDate, endDate, null, description);
+            this(startDate, endDate, "-", description);
         }
 
         public Experience(YearMonth startDate, String position, String description) {
@@ -103,7 +111,7 @@ public class Organization implements Serializable {
         }
 
         public Experience(YearMonth startDate, String description) {
-            this(startDate, DateUtil.NOW, null, description);
+            this(startDate, DateUtil.NOW, "-", description);
         }
 
         public YearMonth getStartDate() {
