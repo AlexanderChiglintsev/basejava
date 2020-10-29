@@ -1,7 +1,7 @@
 package ru.snx.webapp.model;
 
 public enum ContactType {
-    //ADDRESS("Address"),
+    ADDRESS("Address"),
     PHONE("Phone"),
     SKYPE("Skype"),
     EMAIL("E-mail"),

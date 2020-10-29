@@ -74,12 +74,6 @@ public class Resume implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        System.out.println(Objects.equals(sections.get(SectionType.ACHIEVEMENT), resume.sections.get(SectionType.ACHIEVEMENT)));
-        System.out.println(Objects.equals(sections.get(SectionType.EDUCATION), resume.sections.get(SectionType.EDUCATION)));
-        System.out.println(Objects.equals(sections.get(SectionType.EXPERIENCE), resume.sections.get(SectionType.EXPERIENCE)));
-        System.out.println(Objects.equals(sections.get(SectionType.OBJECTIVE), resume.sections.get(SectionType.OBJECTIVE)));
-        System.out.println(Objects.equals(sections.get(SectionType.PERSONAL), resume.sections.get(SectionType.PERSONAL)));
-        System.out.println(Objects.equals(sections.get(SectionType.QUALIFICATION), resume.sections.get(SectionType.QUALIFICATION)));
         return Objects.equals(uuid, resume.uuid) &&
                 Objects.equals(fullName, resume.fullName) &&
                 Objects.equals(contacts, resume.contacts) &&

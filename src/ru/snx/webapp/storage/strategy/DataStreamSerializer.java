@@ -32,21 +32,19 @@ public class DataStreamSerializer implements Serializer {
                         dos.writeUTF(((TextSection) entry.getValue()).getInformation());
                         break;
                     case "ACHIEVEMENT":
-                        writeListSection(dos, entry.getValue());
+                        writeListStr(dos, ((ListSection) entry.getValue()).getInformation());
                         break;
                     case "QUALIFICATION":
-                        writeListSection(dos, entry.getValue());
+                        writeListStr(dos, ((ListSection) entry.getValue()).getInformation());
                         break;
                     case "EXPERIENCE":
-                        writeOrgSection(dos, entry.getValue());
+                        writeOrgList(dos, ((OrganizationSection) entry.getValue()).getInformation());
                         break;
                     case "EDUCATION":
-                        writeOrgSection(dos, entry.getValue());
+                        writeOrgList(dos, ((OrganizationSection) entry.getValue()).getInformation());
                         break;
                 }
-
             }
-
         } catch (IOException e) {
             throw new StorageException("doWrite() error !!!", null, e);
         }
@@ -83,34 +81,29 @@ public class DataStreamSerializer implements Serializer {
                         resume.addSection(st, readOrgSection(dis));
                         break;
                 }
-
             }
             return resume;
         }
     }
 
-    private void writeListSection(DataOutputStream dos, AbstractSection section) throws IOException {
-        ListSection ls = (ListSection) section;
-        List<String> listInfo = ls.getInformation();
+    private void writeListStr(DataOutputStream dos, List<String> listInfo) throws IOException {
         dos.writeInt(listInfo.size());
         for (String s : listInfo) {
             dos.writeUTF(s);
         }
     }
 
-    private void writeOrgSection(DataOutputStream dos, AbstractSection section) throws IOException {
-        OrganizationSection os = (OrganizationSection) section;
-        List<Organization> listInfo = os.getInformation();
+    private void writeOrgList(DataOutputStream dos, List<Organization> listInfo) throws IOException {
         dos.writeInt(listInfo.size());
         for (Organization org : listInfo) {
             dos.writeUTF(org.getName());
-            dos.writeUTF(org.getUrl() != null ? org.getUrl() : "null");
+            dos.writeUTF(org.getUrl());
             List<Organization.Experience> listExp = org.getExperienceList();
             dos.writeInt(listExp.size());
             for (Organization.Experience exp : listExp) {
                 dos.writeUTF(exp.getStartDate().toString());
                 dos.writeUTF(exp.getEndDate().toString());
-                dos.writeUTF(exp.getPosition() != null ? exp.getPosition() : "null");
+                dos.writeUTF(exp.getPosition());
                 dos.writeUTF(exp.getDescription());
             }
         }
