@@ -2,6 +2,7 @@ package ru.snx.webapp.storage.strategy;
 
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.*;
+import ru.snx.webapp.utils.Writer;
 
 import java.io.*;
 import java.time.YearMonth;
@@ -17,6 +18,24 @@ public class DataStreamSerializer implements Serializer {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
             dos.writeInt(resume.getContacts().size());
+
+            Writer<String> writerStr = dos::writeUTF;
+
+            Writer<Organization.Experience> writerExp = (exp) -> {
+                dos.writeUTF(exp.getStartDate().toString());
+                dos.writeUTF(exp.getEndDate().toString());
+                dos.writeUTF(exp.getPosition() != null ? exp.getPosition() : "null");
+                dos.writeUTF(exp.getDescription());
+            };
+
+            Writer<Organization> writerOrg = (org) -> {
+                dos.writeUTF(org.getName());
+                dos.writeUTF(org.getUrl() != null ? org.getUrl() : "null");
+                List<Organization.Experience> listExp = org.getExperienceList();
+                dos.writeInt(listExp.size());
+                writeWithException(listExp, writerExp);
+            };
+
             for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
                 dos.writeUTF(entry.getKey().name());
                 dos.writeUTF(entry.getValue());
@@ -24,24 +43,22 @@ public class DataStreamSerializer implements Serializer {
             dos.writeInt(resume.getSections().size());
             for (Map.Entry<SectionType, AbstractSection> entry : resume.getSections().entrySet()) {
                 dos.writeUTF(entry.getKey().name());
-                switch (entry.getKey().name()) {
-                    case "PERSONAL":
+                switch (entry.getKey()) {
+                    case PERSONAL:
+                    case OBJECTIVE:
                         dos.writeUTF(((TextSection) entry.getValue()).getInformation());
                         break;
-                    case "OBJECTIVE":
-                        dos.writeUTF(((TextSection) entry.getValue()).getInformation());
+                    case ACHIEVEMENT:
+                    case QUALIFICATION:
+                        List<String> listStr = ((ListSection) entry.getValue()).getInformation();
+                        dos.writeInt(listStr.size());
+                        writeWithException(listStr, writerStr);
                         break;
-                    case "ACHIEVEMENT":
-                        writeListStr(dos, ((ListSection) entry.getValue()).getInformation());
-                        break;
-                    case "QUALIFICATION":
-                        writeListStr(dos, ((ListSection) entry.getValue()).getInformation());
-                        break;
-                    case "EXPERIENCE":
-                        writeOrgList(dos, ((OrganizationSection) entry.getValue()).getInformation());
-                        break;
-                    case "EDUCATION":
-                        writeOrgList(dos, ((OrganizationSection) entry.getValue()).getInformation());
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organization> listOrg = ((OrganizationSection) entry.getValue()).getInformation();
+                        dos.writeInt(listOrg.size());
+                        writeWithException(listOrg, writerOrg);
                         break;
                 }
             }
@@ -61,23 +78,17 @@ public class DataStreamSerializer implements Serializer {
             size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 SectionType st = SectionType.valueOf(dis.readUTF());
-                switch (st.name()) {
-                    case "PERSONAL":
+                switch (st) {
+                    case PERSONAL:
+                    case OBJECTIVE:
                         resume.addSection(st, new TextSection(dis.readUTF()));
                         break;
-                    case "OBJECTIVE":
-                        resume.addSection(st, new TextSection(dis.readUTF()));
-                        break;
-                    case "ACHIEVEMENT":
+                    case ACHIEVEMENT:
+                    case QUALIFICATION:
                         resume.addSection(st, readListSection(dis));
                         break;
-                    case "QUALIFICATION":
-                        resume.addSection(st, readListSection(dis));
-                        break;
-                    case "EXPERIENCE":
-                        resume.addSection(st, readOrgSection(dis));
-                        break;
-                    case "EDUCATION":
+                    case EXPERIENCE:
+                    case EDUCATION:
                         resume.addSection(st, readOrgSection(dis));
                         break;
                 }
@@ -86,26 +97,9 @@ public class DataStreamSerializer implements Serializer {
         }
     }
 
-    private void writeListStr(DataOutputStream dos, List<String> listInfo) throws IOException {
-        dos.writeInt(listInfo.size());
-        for (String s : listInfo) {
-            dos.writeUTF(s);
-        }
-    }
-
-    private void writeOrgList(DataOutputStream dos, List<Organization> listInfo) throws IOException {
-        dos.writeInt(listInfo.size());
-        for (Organization org : listInfo) {
-            dos.writeUTF(org.getName());
-            dos.writeUTF(org.getUrl());
-            List<Organization.Experience> listExp = org.getExperienceList();
-            dos.writeInt(listExp.size());
-            for (Organization.Experience exp : listExp) {
-                dos.writeUTF(exp.getStartDate().toString());
-                dos.writeUTF(exp.getEndDate().toString());
-                dos.writeUTF(exp.getPosition());
-                dos.writeUTF(exp.getDescription());
-            }
+    private <T> void writeWithException(List<T> list, Writer<T> writer) throws IOException {
+        for (T s : list) {
+            writer.writeIt(s);
         }
     }
 
@@ -127,9 +121,13 @@ public class DataStreamSerializer implements Serializer {
             List<Organization.Experience> exp = new ArrayList<>();
             int count = dis.readInt();
             for (int j = 0; j < count; j++) {
-                exp.add(new Organization.Experience(YearMonth.parse(dis.readUTF()), YearMonth.parse(dis.readUTF()), dis.readUTF(), dis.readUTF()));
+                YearMonth begin = YearMonth.parse(dis.readUTF());
+                YearMonth end = YearMonth.parse(dis.readUTF());
+                String position = dis.readUTF();
+                String description = dis.readUTF();
+                exp.add(new Organization.Experience(begin, end, (position.equals("null") ? null : position), description));
             }
-            info.add(new Organization(name, url, exp));
+            info.add(new Organization(name, (url.equals("null") ? null : url), exp));
         }
         return new OrganizationSection(info);
     }

@@ -35,11 +35,11 @@ public class Organization implements Serializable {
         this.experienceList = experienceList;
     }
 
-    public String getName(){
+    public String getName() {
         return link.getName();
     }
 
-    public String getUrl(){
+    public String getUrl() {
         return link.getUrl();
     }
 
@@ -95,7 +95,7 @@ public class Organization implements Serializable {
         public Experience(YearMonth startDate, YearMonth endDate, String position, String description) {
             Objects.requireNonNull(startDate, "startDate must not be null !!");
             Objects.requireNonNull(endDate, "endDate must not be null !!");
-            Objects.requireNonNull(description, "position must not be null !!");
+            Objects.requireNonNull(description, "description must not be null !!");
             this.startDate = startDate;
             this.endDate = endDate;
             this.position = position;
@@ -103,15 +103,11 @@ public class Organization implements Serializable {
         }
 
         public Experience(YearMonth startDate, YearMonth endDate, String description) {
-            this(startDate, endDate, "-", description);
+            this(startDate, endDate, null, description);
         }
 
         public Experience(YearMonth startDate, String position, String description) {
             this(startDate, DateUtil.NOW, position, description);
-        }
-
-        public Experience(YearMonth startDate, String description) {
-            this(startDate, DateUtil.NOW, "-", description);
         }
 
         public YearMonth getStartDate() {
