@@ -8,7 +8,6 @@ import java.io.*;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class DataStreamSerializer implements Serializer {
 
@@ -19,13 +18,12 @@ public class DataStreamSerializer implements Serializer {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
 
-            Writer<Map.Entry<ContactType, String>> writerContacts = (cont) -> {
+            writeWithException(dos, new ArrayList<>(resume.getContacts().entrySet()), (cont) -> {
                 dos.writeUTF(cont.getKey().name());
                 dos.writeUTF(cont.getValue());
-            };
-            writeWithException(dos, new ArrayList<>(resume.getContacts().entrySet()), writerContacts);
+            });
 
-            Writer<Map.Entry<SectionType, AbstractSection>> writerSections = (sect) -> {
+            writeWithException(dos, new ArrayList<>(resume.getSections().entrySet()), (sect) -> {
                 dos.writeUTF(sect.getKey().name());
                 switch (sect.getKey()) {
                     case PERSONAL:
@@ -34,18 +32,28 @@ public class DataStreamSerializer implements Serializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        Writer<String> writerStr = dos::writeUTF;
                         List<String> listStr = ((ListSection) sect.getValue()).getInformation();
-                        writeWithException(dos, listStr, writerStr);
+                        writeWithException(dos, listStr, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         List<Organization> listOrg = ((OrganizationSection) sect.getValue()).getInformation();
-                        writeWithException(dos, listOrg, getWriterOrg(dos));
+                        writeWithException(dos, listOrg, (org) -> {
+                            dos.writeUTF(org.getName());
+                            String url = org.getUrl();
+                            dos.writeUTF(url != null ? url : "null");
+                            List<Organization.Experience> listExp = org.getExperienceList();
+                            writeWithException(dos, listExp, (exp) -> {
+                                dos.writeUTF(exp.getStartDate().toString());
+                                dos.writeUTF(exp.getEndDate().toString());
+                                String position = exp.getPosition();
+                                dos.writeUTF(position != null ? position : "null");
+                                dos.writeUTF(exp.getDescription());
+                            });
+                        });
                         break;
                 }
-            };
-            writeWithException(dos,new ArrayList<>(resume.getSections().entrySet()), writerSections);
+            });
 
         } catch (IOException e) {
             throw new StorageException("doWrite() error !!!", null, e);
@@ -87,21 +95,6 @@ public class DataStreamSerializer implements Serializer {
         for (T s : list) {
             writer.writeIt(s);
         }
-    }
-
-    private Writer<Organization> getWriterOrg(DataOutputStream dos){
-        Writer<Organization.Experience> writerExp = (exp) -> {
-            dos.writeUTF(exp.getStartDate().toString());
-            dos.writeUTF(exp.getEndDate().toString());
-            dos.writeUTF(exp.getPosition() != null ? exp.getPosition() : "null");
-            dos.writeUTF(exp.getDescription());
-        };
-        return (org) -> {
-            dos.writeUTF(org.getName());
-            dos.writeUTF(org.getUrl() != null ? org.getUrl() : "null");
-            List<Organization.Experience> listExp = org.getExperienceList();
-            writeWithException(dos, listExp, writerExp);
-        };
     }
 
     private AbstractSection readListSection(DataInputStream dis) throws IOException {
