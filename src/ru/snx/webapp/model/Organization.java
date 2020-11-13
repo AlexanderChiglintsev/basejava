@@ -20,6 +20,7 @@ public class Organization implements Serializable {
     private Link link;
     private List<Experience> experienceList = new ArrayList<>();
 
+    //Used for XML serialization
     public Organization() {
     }
 
@@ -45,10 +46,6 @@ public class Organization implements Serializable {
 
     public List<Experience> getExperienceList() {
         return experienceList;
-    }
-
-    public void setExperienceList(List<Experience> experienceList) {
-        this.experienceList = experienceList;
     }
 
     @Override
@@ -95,15 +92,15 @@ public class Organization implements Serializable {
         public Experience(YearMonth startDate, YearMonth endDate, String position, String description) {
             Objects.requireNonNull(startDate, "startDate must not be null !!");
             Objects.requireNonNull(endDate, "endDate must not be null !!");
-            Objects.requireNonNull(description, "description must not be null !!");
+            Objects.requireNonNull(position, "position must not be null !!");
             this.startDate = startDate;
             this.endDate = endDate;
             this.position = position;
             this.description = description;
         }
 
-        public Experience(YearMonth startDate, YearMonth endDate, String description) {
-            this(startDate, endDate, null, description);
+        public Experience(YearMonth startDate, YearMonth endDate, String position) {
+            this(startDate, endDate, position, null);
         }
 
         public Experience(YearMonth startDate, String position, String description) {
@@ -130,22 +127,16 @@ public class Organization implements Serializable {
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
-
             Experience that = (Experience) o;
-
-            if (!startDate.equals(that.startDate)) return false;
-            if (!endDate.equals(that.endDate)) return false;
-            if (!Objects.equals(position, that.position)) return false;
-            return description.equals(that.description);
+            return startDate.equals(that.startDate) &&
+                    endDate.equals(that.endDate) &&
+                    position.equals(that.position) &&
+                    Objects.equals(description, that.description);
         }
 
         @Override
         public int hashCode() {
-            int result = startDate.hashCode();
-            result = 31 * result + endDate.hashCode();
-            result = 31 * result + (position != null ? position.hashCode() : 0);
-            result = 31 * result + description.hashCode();
-            return result;
+            return Objects.hash(startDate, endDate, position, description);
         }
 
         @Override

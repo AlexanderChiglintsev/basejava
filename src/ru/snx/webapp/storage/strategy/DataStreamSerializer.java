@@ -47,9 +47,9 @@ public class DataStreamSerializer implements Serializer {
                             writeWithException(dos, listExp, (exp) -> {
                                 dos.writeUTF(exp.getStartDate().toString());
                                 dos.writeUTF(exp.getEndDate().toString());
-                                String position = exp.getPosition();
-                                dos.writeUTF(position != null ? position : "null");
-                                dos.writeUTF(exp.getDescription());
+                                dos.writeUTF(exp.getPosition());
+                                String description = exp.getDescription();
+                                dos.writeUTF(description != null ? description : "null");
                             });
                         });
                         break;
@@ -96,8 +96,8 @@ public class DataStreamSerializer implements Serializer {
                                 lstExp.add(new Organization.Experience(
                                                 begin,
                                                 end,
-                                                (position.equals("null") ? null : position),
-                                                description
+                                                position,
+                                                description.equals("null") ? null : description
                                 ));
                             });
                             lstOrg.add(new Organization(
