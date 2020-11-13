@@ -1,5 +1,6 @@
 package ru.snx.webapp.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -7,7 +8,7 @@ import java.util.Objects;
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private List<String> information;
+    private List<String> information = new ArrayList<>();
 
     public ListSection() {
     }
@@ -19,6 +20,10 @@ public class ListSection extends AbstractSection {
     public ListSection(List<String> information) {
         Objects.requireNonNull(information, "information must not be null !!!");
         this.information = information;
+    }
+
+    public void addInformation(String str){
+        information.add(str);
     }
 
     public List<String> getInformation() {

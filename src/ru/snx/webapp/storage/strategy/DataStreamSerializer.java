@@ -2,7 +2,8 @@ package ru.snx.webapp.storage.strategy;
 
 import ru.snx.webapp.exceptions.StorageException;
 import ru.snx.webapp.model.*;
-import ru.snx.webapp.utils.Writer;
+import ru.snx.webapp.utils.DataReader;
+import ru.snx.webapp.utils.DataWriter;
 
 import java.io.*;
 import java.time.YearMonth;
@@ -64,66 +65,67 @@ public class DataStreamSerializer implements Serializer {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+
+            readWithException(dis.readInt(), () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+
+            readWithException(dis.readInt(), () -> {
                 SectionType st = SectionType.valueOf(dis.readUTF());
                 switch (st) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        resume.addSection(st, new TextSection(dis.readUTF()));
+                        readWithException(1, () -> resume.addSection(st, new TextSection(dis.readUTF())));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATION:
-                        resume.addSection(st, readListSection(dis));
+                        List<String> lstStr = new ArrayList<>();
+                        readWithException(dis.readInt(), () -> lstStr.add(dis.readUTF()));
+                        resume.addSection(st, new ListSection(lstStr));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        resume.addSection(st, readOrgSection(dis));
+                        List<Organization> lstOrg = new ArrayList<>();
+                        readWithException(dis.readInt(), () -> {
+                            List<Organization.Experience> lstExp = new ArrayList<>();
+                            String name = dis.readUTF();
+                            String url = dis.readUTF();
+                            readWithException(dis.readInt(), () -> {
+                                YearMonth begin = YearMonth.parse(dis.readUTF());
+                                YearMonth end = YearMonth.parse(dis.readUTF());
+                                String position = dis.readUTF();
+                                String description = dis.readUTF();
+                                lstExp.add(new Organization.Experience(
+                                                begin,
+                                                end,
+                                                (position.equals("null") ? null : position),
+                                                description
+                                ));
+                            });
+                            lstOrg.add(new Organization(
+                                            name,
+                                            url.equals("null") ? null : url,
+                                            lstExp
+                                    ));
+                        });
+                        resume.addSection(st, new OrganizationSection(lstOrg));
                         break;
                 }
-            }
+            });
+
             return resume;
         }
     }
 
-    private <T> void writeWithException(DataOutputStream dos, List<T> list, Writer<T> writer) throws IOException {
+    private <T> void writeWithException(DataOutputStream dos, List<T> list, DataWriter<T> writer) throws IOException {
         dos.writeInt(list.size());
         for (T s : list) {
             writer.writeIt(s);
         }
     }
 
-    private AbstractSection readListSection(DataInputStream dis) throws IOException {
-        List<String> info = new ArrayList<>();
-        int size = dis.readInt();
+    private void readWithException(int size, DataReader reader) throws IOException {
         for (int i = 0; i < size; i++) {
-            info.add(dis.readUTF());
+            reader.readIt();
         }
-        return new ListSection(info);
-    }
-
-    private AbstractSection readOrgSection(DataInputStream dis) throws IOException {
-        List<Organization> info = new ArrayList<>();
-        int size = dis.readInt();
-        for (int i = 0; i < size; i++) {
-            String name = dis.readUTF();
-            String url = dis.readUTF();
-            List<Organization.Experience> exp = new ArrayList<>();
-            int count = dis.readInt();
-            for (int j = 0; j < count; j++) {
-                YearMonth begin = YearMonth.parse(dis.readUTF());
-                YearMonth end = YearMonth.parse(dis.readUTF());
-                String position = dis.readUTF();
-                String description = dis.readUTF();
-                exp.add(new Organization.Experience(begin, end, (position.equals("null") ? null : position), description));
-            }
-            info.add(new Organization(name, (url.equals("null") ? null : url), exp));
-        }
-        return new OrganizationSection(info);
     }
 
 }
