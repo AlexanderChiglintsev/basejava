@@ -60,9 +60,7 @@ public class MainConcurrency {
         System.out.println(Thread.currentThread().getName());
         step++;
         Thread.yield();
-        if ((step > 2)) {
-            Thread.currentThread().interrupt();
-        } else {
+        if ((step <= 2)) {
             mc.doSomething(mc);
         }
     }
