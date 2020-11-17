@@ -1,4 +1,4 @@
-package ru.snx.webapp.utils;
+package ru.snx.webapp.storage.strategy;
 
 import java.io.IOException;
 

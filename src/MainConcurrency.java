@@ -4,8 +4,7 @@ import java.util.List;
 public class MainConcurrency {
     private static final int THREADS_NUMBER = 10000;
     private static int counter;
-    private static final Object LOCK1 = new Object();
-    private static final Object LOCK2 = new Object();
+    private static int step;
 
     public static void main(String[] args) {
 
@@ -42,32 +41,29 @@ public class MainConcurrency {
         });
         System.out.println(counter);
 
-        System.out.println("\nDeadlock");
+        System.out.println("\nDeadlock\n");
 
-        Thread t1 = new Thread(MainConcurrency::first);
-        Thread t2 = new Thread(MainConcurrency::second);
+        MainConcurrency mc1 = new MainConcurrency();
+        MainConcurrency mc2 = new MainConcurrency();
+
+        Thread t1 = new Thread(() -> mc1.doSomething(mc2));
+        Thread t2 = new Thread(() -> mc2.doSomething(mc1));
         t1.start();
         t2.start();
-
     }
 
     private synchronized void inc() {
         counter++;
     }
 
-    private static void first() {
-        synchronized (LOCK1){
-            System.out.println("first()");
-            Thread.yield();
-            second();
-        }
-    }
-
-    private static void second() {
-        synchronized (LOCK2){
-            System.out.println("second()");
-            Thread.yield();
-            first();
+    private synchronized void doSomething(MainConcurrency mc) {
+        System.out.println(Thread.currentThread().getName());
+        step++;
+        Thread.yield();
+        if ((step > 2)) {
+            Thread.currentThread().interrupt();
+        } else {
+            mc.doSomething(mc);
         }
     }
 
