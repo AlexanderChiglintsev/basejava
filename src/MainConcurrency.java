@@ -1,10 +1,13 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainConcurrency {
     private static final int THREADS_NUMBER = 10000;
     private static int counter;
-    private static int step;
+    private final AtomicInteger atomicCounter = new AtomicInteger();
+    private static final Lock lock = new ReentrantLock();
 
     public static void main(String[] args) {
 
@@ -20,49 +23,56 @@ public class MainConcurrency {
         new Thread(() -> System.out.println(Thread.currentThread().getName() + ", " + Thread.currentThread().getState())).start();
         System.out.println(thread0.getState());
 
-        List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
+        CountDownLatch latch = new CountDownLatch(THREADS_NUMBER);
+        //List<Thread> threads = new ArrayList<>(THREADS_NUMBER);
+
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        //CompletionService completionService = new ExecutorCompletionService(executorService);
         final MainConcurrency mainConcurrency = new MainConcurrency();
         for (int i = 0; i < THREADS_NUMBER; i++) {
-            Thread thread = new Thread(() -> {
+
+            executorService.submit(() -> {
                 for (int j = 0; j < 1000; j++) {
                     mainConcurrency.inc();
                 }
+                latch.countDown();
+            });
+
+            /*Thread thread = new Thread(() -> {
+                for (int j = 0; j < 1000; j++) {
+                    mainConcurrency.inc();
+                }
+                latch.countDown();
             });
             thread.start();
-            threads.add(thread);
+            threads.add(thread);*/
         }
 
-        threads.forEach(t -> {
+        /*threads.forEach(t -> {
             try {
                 t.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        });
-        System.out.println(counter);
+        });*/
 
-        System.out.println("\nDeadlock\n");
-
-        MainConcurrency mc1 = new MainConcurrency();
-        MainConcurrency mc2 = new MainConcurrency();
-
-        Thread t1 = new Thread(() -> mc1.doSomething(mc2));
-        Thread t2 = new Thread(() -> mc2.doSomething(mc1));
-        t1.start();
-        t2.start();
-    }
-
-    private synchronized void inc() {
-        counter++;
-    }
-
-    private synchronized void doSomething(MainConcurrency mc) {
-        System.out.println(Thread.currentThread().getName());
-        step++;
-        Thread.yield();
-        if ((step <= 2)) {
-            mc.doSomething(mc);
+        try {
+            latch.await(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        executorService.shutdown();
+        System.out.println(mainConcurrency.atomicCounter.get());
+    }
+
+    private void inc() {
+        lock.lock();
+        try {
+            atomicCounter.incrementAndGet();
+        } finally {
+            lock.unlock();
+        }
+
     }
 
 }
