@@ -3,14 +3,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MainStreams {
+    private Random rnd = new Random(new Date().getTime());
+
     public static void main(String[] args) {
         MainStreams ms = new MainStreams();
-        int[] testArray = getArray();
+
+        int[] testArray = ms.getArray();
         System.out.println("\n<--- 1 --->\n");
         System.out.println("Input array: " + Arrays.toString(testArray));
         System.out.println("Result: " + ms.minValue(testArray));
 
-        List<Integer> testList = getList();
+        List<Integer> testList = ms.getList();
         System.out.println("\n<--- 2 --->\n");
         System.out.println("Input list: " + testList);
         System.out.println("Result: " + ms.oddOrEven(testList));
@@ -34,8 +37,7 @@ public class MainStreams {
                 stream.filter((p) -> p % 2 == 0).collect(Collectors.toList());
     }
 
-    private static int[] getArray() {
-        Random rnd = new Random(new Date().getTime());
+    private int[] getArray() {
         int size = rnd.nextInt(10);
         int[] array = new int[size];
         for (int i = 0; i < size; i++) {
@@ -44,8 +46,7 @@ public class MainStreams {
         return array;
     }
 
-    private static List<Integer> getList() {
-        Random rnd = new Random(new Date().getTime());
+    private List<Integer> getList() {
         int size = rnd.nextInt(10);
         List<Integer> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
