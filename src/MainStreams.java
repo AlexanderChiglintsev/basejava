@@ -4,6 +4,8 @@ import java.util.stream.Stream;
 
 public class MainStreams {
     private static Random rnd = new Random(new Date().getTime());
+    private static int sum;
+    private static List<Integer> resList = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -27,12 +29,22 @@ public class MainStreams {
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         Stream<Integer> stream = integers.stream();
-        int sum = stream.reduce((o1, o2) -> o1 + o2).orElse(0);
-        stream = integers.stream();
-        return sum % 2 == 0 ?
-                stream.filter((p) -> p % 2 != 0).collect(Collectors.toList())
-                :
-                stream.filter((p) -> p % 2 == 0).collect(Collectors.toList());
+        sum = 0;
+        resList.clear();
+        stream.peek(a -> sum += a)
+                .collect(Collectors.partitioningBy((p) -> p % 2 == 0))
+                .forEach((a, b) -> {
+                    if (sum % 2 == 0) {
+                        if (!a) {
+                            resList = b;
+                        }
+                    } else {
+                        if (a) {
+                            resList = b;
+                        }
+                    }
+                });
+        return resList;
     }
 
     private static int[] getArray() {
