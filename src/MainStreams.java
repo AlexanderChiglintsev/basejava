@@ -1,11 +1,8 @@
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MainStreams {
     private static Random rnd = new Random(new Date().getTime());
-    private static int sum;
-    private static List<Integer> resList = new ArrayList<>();
 
     public static void main(String[] args) {
 
@@ -28,23 +25,11 @@ public class MainStreams {
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        Stream<Integer> stream = integers.stream();
-        sum = 0;
-        resList.clear();
-        stream.peek(a -> sum += a)
-                .collect(Collectors.partitioningBy((p) -> p % 2 == 0))
-                .forEach((a, b) -> {
-                    if (sum % 2 == 0) {
-                        if (!a) {
-                            resList = b;
-                        }
-                    } else {
-                        if (a) {
-                            resList = b;
-                        }
-                    }
-                });
-        return resList;
+        return integers.stream()
+                .filter((p) ->
+                        ((p % 2 == 0) && (integers.stream().reduce(0, (a, b) -> a + b) % 2 != 0)) ||
+                        ((p % 2 != 0) && (integers.stream().reduce(0, (a, b) -> a + b) % 2 == 0)))
+                .collect(Collectors.toList());
     }
 
     private static int[] getArray() {
