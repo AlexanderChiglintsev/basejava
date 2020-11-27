@@ -27,7 +27,7 @@ public class MainStreams {
     private static List<Integer> oddOrEven(List<Integer> integers) {
         return integers.stream()
                 .collect(Collectors.partitioningBy((a) -> a % 2 == 0))
-                .get(integers.stream().reduce(0, (a, b) -> a + b) % 2 == 0);
+                .get(integers.stream().reduce(0, (a, b) -> a + b) % 2 != 0);
     }
 
     private static int[] getArray() {
