@@ -6,6 +6,7 @@ import org.junit.Test;
 import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.NoExistStorageException;
 import ru.snx.webapp.model.Resume;
+import ru.snx.webapp.utils.Config;
 import ru.snx.webapp.utils.ResumeTestData;
 
 import java.io.File;
@@ -16,7 +17,7 @@ import static ru.snx.webapp.storage.AbstractStorage.RESUME_COMPARATOR;
 
 public abstract class AbstractStorageTest {
 
-    static final File STORAGE_DIR = new File("C:\\tmp");
+    static final File STORAGE_DIR = Config.getInstance().getStorageDir();
     Storage storage;
     private final Resume RES1 = ResumeTestData.getFilledResume("1", "John");
     private final Resume RES2 = ResumeTestData.getFilledResume("2", "Mike");
