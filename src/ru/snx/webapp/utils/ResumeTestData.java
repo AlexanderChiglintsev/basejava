@@ -1,10 +1,6 @@
 package ru.snx.webapp.utils;
 
-import ru.snx.webapp.model.*;
-
-import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
+import ru.snx.webapp.model.Resume;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -15,7 +11,7 @@ public class ResumeTestData {
     public static Resume getFilledResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
 
-        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        /*resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
         resume.addContact(ContactType.SKYPE, "grigory.kislin");
         resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
@@ -231,7 +227,7 @@ public class ResumeTestData {
                         "Закончил с отличием")
         ));
         OrganizationSection educations = new OrganizationSection(edu);
-        resume.addSection(SectionType.EDUCATION, educations);
+        resume.addSection(SectionType.EDUCATION, educations);*/
 
         return resume;
     }
