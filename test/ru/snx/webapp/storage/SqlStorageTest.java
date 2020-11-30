@@ -18,15 +18,4 @@ public class SqlStorageTest extends AbstractStorageTest {
         storage.save(ResumeTestData.getFilledResume("1", "John"));
     }
 
-    @Test
-    @Override
-    public void updateNoExist() {
-
-    }
-
-    @Test
-    @Override
-    public void deleteNoExist() {
-
-    }
 }
