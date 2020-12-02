@@ -11,7 +11,7 @@ import java.util.List;
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
 
-    SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         sqlHelper = new SqlHelper(dbUrl, dbUser, dbPassword);
     }
 
@@ -83,12 +83,9 @@ public class SqlStorage implements Storage {
 
     @Override
     public int size() {
-
         return sqlHelper.doQuery("SELECT count(*) FROM resume", (ps) -> {
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                throw new NoExistStorageException("Can not get count of resumes");
-            }
+            rs.next();
             return rs.getInt(1);
         });
     }

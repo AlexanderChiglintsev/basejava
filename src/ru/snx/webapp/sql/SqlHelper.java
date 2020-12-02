@@ -1,5 +1,6 @@
 package ru.snx.webapp.sql;
 
+import ru.snx.webapp.exceptions.ExistStorageException;
 import ru.snx.webapp.exceptions.StorageException;
 
 import java.sql.Connection;
@@ -19,6 +20,9 @@ public class SqlHelper {
              PreparedStatement ps = connection.prepareStatement(sqlQuery)) {
             return executor.execute(ps);
         } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) {
+                throw new ExistStorageException("Резюме с таким uuid уже существует!");
+            }
             throw new StorageException(e);
         }
     }
