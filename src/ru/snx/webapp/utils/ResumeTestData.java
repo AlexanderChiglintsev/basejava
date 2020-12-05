@@ -1,5 +1,6 @@
 package ru.snx.webapp.utils;
 
+import ru.snx.webapp.model.ContactType;
 import ru.snx.webapp.model.Resume;
 
 public class ResumeTestData {
@@ -11,14 +12,14 @@ public class ResumeTestData {
     public static Resume getFilledResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
 
-        /*resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
         resume.addContact(ContactType.SKYPE, "grigory.kislin");
         resume.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
         resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
 
-        TextSection objective = new TextSection("Ведущий стажировок " +
+        /*TextSection objective = new TextSection("Ведущий стажировок " +
                 "и корпоративного обучения по " +
                 "Java Web и Enterprise технологиям");
         resume.addSection(SectionType.OBJECTIVE, objective);

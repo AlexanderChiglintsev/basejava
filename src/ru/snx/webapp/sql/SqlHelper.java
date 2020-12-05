@@ -27,4 +27,24 @@ public class SqlHelper {
         }
     }
 
+    public <T> T doTransactionQuery(SqlTransaction<T> executor) {
+        try (Connection connection = connectionFactory.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+                T res = executor.execute(connection);
+                connection.commit();
+                return res;
+            } catch (SQLException e) {
+                connection.rollback();
+                if (e.getSQLState().equals("23505")) {
+                    throw new ExistStorageException("Резюме с таким uuid уже существует!");
+                }
+                throw new StorageException(e);
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+
+    }
+
 }
