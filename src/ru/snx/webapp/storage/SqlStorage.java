@@ -66,7 +66,7 @@ public class SqlStorage implements Storage {
                     "INSERT INTO resume (uuid, full_name) VALUES (?,?)")) {
                 ps.setString(1, r.getUuid());
                 ps.setString(2, r.getFullName());
-                ps.executeUpdate();
+                ps.execute();
             }
             insertContacts(r, connection);
             return null;
@@ -76,18 +76,24 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         return sqlHelper.doQuery(
-                "SELECT uuid, full_name, type, value " +
-                        "FROM resume " +
+                "SELECT * FROM resume " +
                         "LEFT JOIN contact " +
                         "ON resume.uuid = contact.resume_uuid " +
-                        "WHERE uuid=?", (ps) -> {
+                        "WHERE resume.uuid=?", (ps) -> {
                     ps.setString(1, uuid);
                     ResultSet rs = ps.executeQuery();
                     if (!rs.next()) {
                         throw new NoExistStorageException(uuid);
                     }
                     Resume r = new Resume(uuid, rs.getString("full_name"));
-                    extractContacts(r, rs);
+                    do {
+                        if (rs.getString("type") != null) {
+                            ContactType contactType = ContactType.valueOf(rs.getString("type"));
+                            String value = rs.getString("value");
+                            r.addContact(contactType, value);
+                        }
+
+                    } while (rs.next());
                     return r;
                 });
     }
@@ -113,17 +119,21 @@ public class SqlStorage implements Storage {
                 ResultSet rs = ps.executeQuery();
                 List<Resume> resList = new ArrayList<>();
                 while (rs.next()) {
-                    Resume resume = new Resume(rs.getString("uuid"), rs.getString("full_name"));
-                    try (PreparedStatement ps1 = conn.prepareStatement(
-                            "SELECT type, value " +
-                                    "FROM contact " +
-                                    "WHERE resume_uuid = ?")) {
-                        ps1.setString(1, resume.getUuid());
-                        ResultSet rs1 = ps1.executeQuery();
-                        rs1.next();
-                        extractContacts(resume, rs1);
+                    resList.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                }
+                try (PreparedStatement ps1 = conn.prepareStatement(
+                        "SELECT * FROM contact")) {
+                    ResultSet rs1 = ps1.executeQuery();
+                    while (rs1.next()) {
+                        String uuid = rs1.getString("resume_uuid");
+                        ContactType contactType = ContactType.valueOf(rs1.getString("type"));
+                        String value = rs1.getString("value");
+                        resList.forEach(r -> {
+                            if (r.getUuid().equals(uuid)) {
+                                r.addContact(contactType, value);
+                            }
+                        });
                     }
-                    resList.add(resume);
                 }
                 return resList;
             }
@@ -149,13 +159,5 @@ public class SqlStorage implements Storage {
             }
             ps.executeBatch();
         }
-    }
-
-    private void extractContacts(Resume r, ResultSet rs) throws SQLException {
-        do {
-            ContactType contactType = ContactType.valueOf(rs.getString("type"));
-            String value = rs.getString("value");
-            r.addContact(contactType, value);
-        } while (rs.next());
     }
 }

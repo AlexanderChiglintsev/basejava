@@ -15,7 +15,7 @@ public class SqlHelper {
         connectionFactory = () -> DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     }
 
-    public <T> T doQuery(String sqlQuery, SqlExecute<T> executor) {
+    public <T> T doQuery(String sqlQuery, SqlExecutor<T> executor) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement ps = connection.prepareStatement(sqlQuery)) {
             return executor.execute(ps);
@@ -37,7 +37,7 @@ public class SqlHelper {
             } catch (SQLException e) {
                 connection.rollback();
                 if (e.getSQLState().equals("23505")) {
-                    throw new ExistStorageException("Резюме с таким uuid уже существует!");
+                    throw new ExistStorageException("Resume with such UUID already exist !", e);
                 }
                 throw new StorageException(e);
             }
