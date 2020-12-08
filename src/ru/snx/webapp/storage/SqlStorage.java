@@ -47,16 +47,6 @@ public class SqlStorage implements Storage {
             insertContacts(r, connection);
             return null;
         });
-
-        sqlHelper.doQuery("UPDATE resume SET uuid=?, full_name=? WHERE uuid = ? ", ps -> {
-            ps.setString(1, r.getUuid());
-            ps.setString(2, r.getFullName());
-            ps.setString(3, r.getUuid());
-            if (ps.executeUpdate() == 0) {
-                throw new NoExistStorageException(r.getUuid());
-            }
-            return null;
-        });
     }
 
     @Override
