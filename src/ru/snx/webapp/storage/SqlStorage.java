@@ -29,17 +29,18 @@ public class SqlStorage implements Storage {
     @Override
     public void update(Resume r) {
         sqlHelper.doTransactionQuery(connection -> {
+            String uuid = r.getUuid();
             try (PreparedStatement ps = connection.prepareStatement(
                     "UPDATE resume SET full_name=? WHERE uuid = ? ")) {
                 ps.setString(1, r.getFullName());
-                ps.setString(2, r.getUuid());
+                ps.setString(2, uuid);
                 if (ps.executeUpdate() == 0) {
-                    throw new NoExistStorageException(r.getUuid());
+                    throw new NoExistStorageException(uuid);
                 }
             }
             try (PreparedStatement ps = connection.prepareStatement(
                     "DELETE FROM contact WHERE resume_uuid = ?")) {
-                ps.setString(1, r.getUuid());
+                ps.setString(1, uuid);
                 ps.execute();
             }
             insertContacts(r, connection);
@@ -64,7 +65,8 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         return sqlHelper.doQuery(
-                "SELECT * FROM resume " +
+                "SELECT resume_uuid, type, value " +
+                        "FROM resume " +
                         "LEFT JOIN contact " +
                         "ON resume.uuid = contact.resume_uuid " +
                         "WHERE resume.uuid=?", (ps) -> {
@@ -75,9 +77,7 @@ public class SqlStorage implements Storage {
                     }
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
-                        if (rs.getString("type") != null) {
-                            getContacts(r, rs);
-                        }
+                        getContacts(r, rs);
                     } while (rs.next());
                     return r;
                 });
@@ -110,7 +110,7 @@ public class SqlStorage implements Storage {
                 }
             }
             try (PreparedStatement ps = conn.prepareStatement(
-                    "SELECT * FROM contact")) {
+                    "SELECT resume_uuid, type, value FROM contact")) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     String uuid = rs.getString("resume_uuid");
@@ -143,9 +143,9 @@ public class SqlStorage implements Storage {
     }
 
     private void getContacts(Resume r, ResultSet rs) throws SQLException {
-        ContactType contactType = ContactType.valueOf(rs.getString("type"));
-        String value = rs.getString("value");
-        r.addContact(contactType, value);
+        String type = rs.getString("type");
+        if (rs.getString(type) != null) {
+            r.addContact(ContactType.valueOf(type), rs.getString("value"));
+        }
     }
-
 }
