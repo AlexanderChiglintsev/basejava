@@ -9,9 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     private SqlHelper sqlHelper;
@@ -78,11 +76,8 @@ public class SqlStorage implements Storage {
                     Resume r = new Resume(uuid, rs.getString("full_name"));
                     do {
                         if (rs.getString("type") != null) {
-                            ContactType contactType = ContactType.valueOf(rs.getString("type"));
-                            String value = rs.getString("value");
-                            r.addContact(contactType, value);
+                            getContacts(r, rs);
                         }
-
                     } while (rs.next());
                     return r;
                 });
@@ -101,32 +96,28 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+        Map<String, Resume> resMap = new LinkedHashMap<>();
         return sqlHelper.doTransactionQuery(conn -> {
             try (PreparedStatement ps = conn.prepareStatement(
                     "SELECT uuid, full_name " +
                             "FROM resume " +
                             "ORDER BY full_name, uuid")) {
                 ResultSet rs = ps.executeQuery();
-                List<Resume> resList = new ArrayList<>();
                 while (rs.next()) {
-                    resList.add(new Resume(rs.getString("uuid"), rs.getString("full_name")));
+                    String uuid = rs.getString("uuid");
+                    String full_name = rs.getString("full_name");
+                    resMap.put(uuid, new Resume(uuid, full_name));
                 }
-                try (PreparedStatement ps1 = conn.prepareStatement(
-                        "SELECT * FROM contact")) {
-                    ResultSet rs1 = ps1.executeQuery();
-                    while (rs1.next()) {
-                        String uuid = rs1.getString("resume_uuid");
-                        ContactType contactType = ContactType.valueOf(rs1.getString("type"));
-                        String value = rs1.getString("value");
-                        resList.forEach(r -> {
-                            if (r.getUuid().equals(uuid)) {
-                                r.addContact(contactType, value);
-                            }
-                        });
-                    }
-                }
-                return resList;
             }
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT * FROM contact")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("resume_uuid");
+                    getContacts(resMap.get(uuid), rs);
+                }
+            }
+            return (ArrayList<Resume>) resMap.values();
         });
     }
 
@@ -150,4 +141,11 @@ public class SqlStorage implements Storage {
             ps.executeBatch();
         }
     }
+
+    private void getContacts(Resume r, ResultSet rs) throws SQLException {
+        ContactType contactType = ContactType.valueOf(rs.getString("type"));
+        String value = rs.getString("value");
+        r.addContact(contactType, value);
+    }
+
 }
