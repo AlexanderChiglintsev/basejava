@@ -117,7 +117,7 @@ public class SqlStorage implements Storage {
                     getContacts(resMap.get(uuid), rs);
                 }
             }
-            return (ArrayList<Resume>) resMap.values();
+            return new ArrayList<>(resMap.values());
         });
     }
 
