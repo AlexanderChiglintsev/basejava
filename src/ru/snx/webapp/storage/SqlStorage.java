@@ -65,7 +65,7 @@ public class SqlStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         return sqlHelper.doQuery(
-                "SELECT resume_uuid, type, value " +
+                "SELECT full_name, resume_uuid, type, value " +
                         "FROM resume " +
                         "LEFT JOIN contact " +
                         "ON resume.uuid = contact.resume_uuid " +
@@ -144,7 +144,7 @@ public class SqlStorage implements Storage {
 
     private void getContacts(Resume r, ResultSet rs) throws SQLException {
         String type = rs.getString("type");
-        if (rs.getString(type) != null) {
+        if (type != null) {
             r.addContact(ContactType.valueOf(type), rs.getString("value"));
         }
     }
