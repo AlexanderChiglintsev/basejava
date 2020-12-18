@@ -1,8 +1,7 @@
 package ru.snx.webapp.storage;
 
 import ru.snx.webapp.exceptions.NoExistStorageException;
-import ru.snx.webapp.model.ContactType;
-import ru.snx.webapp.model.Resume;
+import ru.snx.webapp.model.*;
 import ru.snx.webapp.sql.SqlHelper;
 
 import java.sql.Connection;
@@ -43,7 +42,13 @@ public class SqlStorage implements Storage {
                 ps.setString(1, uuid);
                 ps.execute();
             }
+            try (PreparedStatement ps = connection.prepareStatement(
+                    "DELETE FROM section WHERE resume_uuid = ?")) {
+                ps.setString(1, uuid);
+                ps.execute();
+            }
             insertContacts(r, connection);
+            insertSections(r, connection);
             return null;
         });
     }
@@ -58,6 +63,7 @@ public class SqlStorage implements Storage {
                 ps.execute();
             }
             insertContacts(r, connection);
+            insertSections(r, connection);
             return null;
         });
     }
@@ -146,6 +152,32 @@ public class SqlStorage implements Storage {
         String type = rs.getString("type");
         if (type != null) {
             r.addContact(ContactType.valueOf(type), rs.getString("value"));
+        }
+    }
+
+    private void insertSections(Resume r, Connection connection) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement(
+                "INSERT INTO section (resume_uuid, type, value) VALUES (?,?,?)")) {
+            for (Map.Entry<SectionType, AbstractSection> e : r.getSections().entrySet()) {
+                switch (e.getKey()) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        ps.setString(1, r.getUuid());
+                        ps.setString(2, e.getKey().name());
+                        ps.setString(3, ((TextSection) e.getValue()).getInformation());
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATION:
+                        ps.setString(1, r.getUuid());
+                        ps.setString(2, e.getKey().name());
+                        StringBuilder val = new StringBuilder();
+                        ((ListSection) e.getValue()).getInformation().forEach(s -> val.append(s).append("\n"));
+                        ps.setString(3, val.toString());
+                        break;
+                }
+                ps.addBatch();
+            }
+            ps.executeBatch();
         }
     }
 }
