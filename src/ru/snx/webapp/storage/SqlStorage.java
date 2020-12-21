@@ -70,23 +70,39 @@ public class SqlStorage implements Storage {
 
     @Override
     public Resume get(String uuid) {
-        return sqlHelper.doQuery(
-                "SELECT full_name, resume_uuid, type, value " +
-                        "FROM resume " +
-                        "LEFT JOIN contact " +
-                        "ON resume.uuid = contact.resume_uuid " +
-                        "WHERE resume.uuid=?", (ps) -> {
-                    ps.setString(1, uuid);
-                    ResultSet rs = ps.executeQuery();
-                    if (!rs.next()) {
-                        throw new NoExistStorageException(uuid);
-                    }
-                    Resume r = new Resume(uuid, rs.getString("full_name"));
-                    do {
-                        getContacts(r, rs);
-                    } while (rs.next());
-                    return r;
-                });
+        return sqlHelper.doTransactionQuery(conn -> {
+            Resume r;
+            try (PreparedStatement ps = conn.prepareStatement("SELECT full_name " +
+                    "FROM resume " +
+                    "WHERE resume.uuid=?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                if (!rs.next()) {
+                    throw new NoExistStorageException(uuid);
+                }
+                r = new Resume(uuid, rs.getString("full_name"));
+            }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT type, value " +
+                    "FROM contact " +
+                    "WHERE resume_uuid=?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    getContacts(r, rs);
+                }
+            }
+            try (PreparedStatement ps = conn.prepareStatement("SELECT type, value " +
+                    "FROM section " +
+                    "WHERE resume_uuid=?")) {
+                ps.setString(1, uuid);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    getSections(r, rs);
+                }
+            }
+
+            return r;
+        });
     }
 
     @Override
@@ -121,6 +137,14 @@ public class SqlStorage implements Storage {
                 while (rs.next()) {
                     String uuid = rs.getString("resume_uuid");
                     getContacts(resMap.get(uuid), rs);
+                }
+            }
+            try (PreparedStatement ps = conn.prepareStatement(
+                    "SELECT resume_uuid, type, value FROM section")) {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    String uuid = rs.getString("resume_uuid");
+                    getSections(resMap.get(uuid), rs);
                 }
             }
             return new ArrayList<>(resMap.values());
@@ -178,6 +202,24 @@ public class SqlStorage implements Storage {
                 ps.addBatch();
             }
             ps.executeBatch();
+        }
+    }
+
+    private void getSections(Resume r, ResultSet rs) throws SQLException {
+        String type = rs.getString("type");
+        if (type != null) {
+            SectionType st = SectionType.valueOf(type);
+            switch (st) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    r.addSection(st, new TextSection(rs.getString("value")));
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATION:
+                    String str = rs.getString("value");
+                    r.addSection(st, new ListSection(Arrays.asList(str.split("\n"))));
+                    break;
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 package ru.snx.webapp.utils;
 
-import ru.snx.webapp.model.ContactType;
-import ru.snx.webapp.model.Resume;
+import ru.snx.webapp.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeTestData {
     public static void main(String[] args) {
@@ -19,7 +21,7 @@ public class ResumeTestData {
         resume.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         resume.addContact(ContactType.GITHUB, "https://github.com/gkislin");
 
-        /*TextSection objective = new TextSection("Ведущий стажировок " +
+        TextSection objective = new TextSection("Ведущий стажировок " +
                 "и корпоративного обучения по " +
                 "Java Web и Enterprise технологиям");
         resume.addSection(SectionType.OBJECTIVE, objective);
@@ -79,7 +81,7 @@ public class ResumeTestData {
         ListSection qualifications = new ListSection(qual);
         resume.addSection(SectionType.QUALIFICATION, qualifications);
 
-        List<Organization> exp = new ArrayList<>();
+        /*List<Organization> exp = new ArrayList<>();
         exp.add(exp.size(), new Organization(
                 "Alcatel",
                 "http://www.alcatel.ru/",
