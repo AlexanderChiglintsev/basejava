@@ -2,6 +2,7 @@ package ru.snx.webapp.utils;
 
 import ru.snx.webapp.model.*;
 
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class ResumeTestData {
         ListSection qualifications = new ListSection(qual);
         resume.addSection(SectionType.QUALIFICATION, qualifications);
 
-        /*List<Organization> exp = new ArrayList<>();
+        List<Organization> exp = new ArrayList<>();
         exp.add(exp.size(), new Organization(
                 "Alcatel",
                 "http://www.alcatel.ru/",
@@ -230,7 +231,7 @@ public class ResumeTestData {
                         "Закончил с отличием")
         ));
         OrganizationSection educations = new OrganizationSection(edu);
-        resume.addSection(SectionType.EDUCATION, educations);*/
+        resume.addSection(SectionType.EDUCATION, educations);
 
         return resume;
     }
