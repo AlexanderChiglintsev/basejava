@@ -1,10 +1,12 @@
 package ru.snx.webapp.web;
 
 import ru.snx.webapp.model.Resume;
-import ru.snx.webapp.storage.SqlStorage;
 import ru.snx.webapp.storage.Storage;
+import ru.snx.webapp.utils.Config;
 import ru.snx.webapp.utils.ResumeTestData;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,17 +25,20 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
     private final Resume RES3 = ResumeTestData.getFilledResume(uuid3, "Alex");
     private final Resume RES4 = ResumeTestData.getFilledResume(uuid4, "Mike");
     private final Resume RES5 = ResumeTestData.getFilledResume(uuid5, "Mike");
+
     private Storage storage;
 
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        storage = Config.getInstance().getSqlStorage();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (storage == null) {
-            storage = new SqlStorage("jdbc:postgresql://localhost:5432/resumes", "postgres", "postgres"); //Config.getInstance().getSqlStorage();
-        }
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");

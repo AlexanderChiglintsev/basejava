@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    private static final File CONFIG = new File("config\\resumes.properties");
+    private static final File CONFIG = new File(getHomeDir(), "config\\resumes.properties");
     private static final Config INSTANCE = new Config();
     private File storageDir;
     private SqlStorage sqlStorage;
@@ -37,5 +37,14 @@ public class Config {
 
     public SqlStorage getSqlStorage() {
         return sqlStorage;
+    }
+
+    private static File getHomeDir() {
+        String property = System.getProperty("homeDir");
+        File homeDir = new File(property == null ? "." : property);
+        if (!homeDir.isDirectory()) {
+            throw new IllegalStateException(homeDir + " not is directory!");
+        }
+        return homeDir;
     }
 }
