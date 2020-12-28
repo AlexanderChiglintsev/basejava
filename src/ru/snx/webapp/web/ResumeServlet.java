@@ -10,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.UUID;
 
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
@@ -38,9 +37,11 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.setAttribute("resumes", storage.getAllSorted());
+        request.getRequestDispatcher("/WEB-INF/jsp/list.jsp").forward(request, response);
 
-        response.setCharacterEncoding("UTF-8");
+        /*response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter w = response.getWriter();
         w.write("Hello Resumes !");
@@ -73,7 +74,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
             w.println("</tr>");
         }
 
-        w.println("</table>");
+        w.println("</table>");*/
 
     }
 }
