@@ -7,4 +7,4 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <hr>
-<header>Created by SaNeX</header>
+<footer>Created by SaNeX</footer>
