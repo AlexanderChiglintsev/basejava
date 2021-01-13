@@ -6,5 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<hr>
-<footer>Created by SaNeX</footer>
+<footer>
+    Created by SaNeX
+    <a href="mailto:alex.chiglintsev@yandex.ru">alex.chiglintsev@yandex.ru</a>
+</footer>
