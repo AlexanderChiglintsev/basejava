@@ -25,6 +25,10 @@ public class OrganizationSection extends AbstractSection {
         return information;
     }
 
+    public void addOrganization(Organization org) {
+        information.add(org);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

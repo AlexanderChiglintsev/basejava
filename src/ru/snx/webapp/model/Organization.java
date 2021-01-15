@@ -24,8 +24,8 @@ public class Organization implements Serializable {
     public Organization() {
     }
 
-    public Organization(String link, String url, Experience... experiences) {
-        this.link = new Link(link, url);
+    public Organization(String name, String url, Experience... experiences) {
+        this.link = new Link(name, url);
         if (experiences.length != 0) {
             experienceList.addAll(Arrays.asList(experiences));
         } else throw new IllegalArgumentException("At least one work period is required !!!");

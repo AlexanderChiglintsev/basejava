@@ -19,6 +19,10 @@ public class TextSection extends AbstractSection {
         return information;
     }
 
+    public void setInformation(String information) {
+        this.information = information;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

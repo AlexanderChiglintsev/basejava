@@ -31,3 +31,9 @@ dd{
     margin-left: 8px;
     vertical-align: top;
 }
+
+textarea {
+    width: 20%;
+    height: 50px;
+    text-align: left;
+}
