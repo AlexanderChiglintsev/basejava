@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"/>
 <section>
-    <table border="1" cellpadding="8" cellspacing="0" align="center">
+    <table border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>Имя</th>
             <th>E-mail</th>

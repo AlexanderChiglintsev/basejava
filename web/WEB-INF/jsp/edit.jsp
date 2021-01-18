@@ -205,26 +205,26 @@
                     </c:forEach>
                 </ul>
 
-            <dl>
-                <dt>Название организации</dt>
-                <dd><input type="text" name="orgName" size=30" value="" required></dd>
-            </dl>
-            <dl>
-                <dt>URL</dt>
-                <dd><input type="url" name="url" size=30" value=""></dd>
-            </dl>
-            <dl>
-                <dt>Дата начала</dt>
-                <dd><input type="text" name="dateBegin" size=30" value="" required></dd>
-            </dl>
-            <dl>
-                <dt>Дата окончания</dt>
-                <dd><input type="text" name="dateEnd" size=30" value=""></dd>
-            </dl>
-            <dl>
-                <dt>Описание</dt>
-                <dd><input type="text" name="position" size=30" value="" required></dd>
-            </dl>
+                <dl>
+                    <dt>Название организации</dt>
+                    <dd><input type="text" name="orgName" size=30" value="" required></dd>
+                </dl>
+                <dl>
+                    <dt>URL</dt>
+                    <dd><input type="url" name="url" size=30" value=""></dd>
+                </dl>
+                <dl>
+                    <dt>Дата начала</dt>
+                    <dd><input type="text" name="dateBegin" size=30" value="" required></dd>
+                </dl>
+                <dl>
+                    <dt>Дата окончания</dt>
+                    <dd><input type="text" name="dateEnd" size=30" value=""></dd>
+                </dl>
+                <dl>
+                    <dt>Описание</dt>
+                    <dd><input type="text" name="position" size=30" value="" required></dd>
+                </dl>
             </p>
             <input type="hidden" name="edit" value="education">
             <button type="submit">Добавить запись</button>
