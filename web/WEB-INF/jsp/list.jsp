@@ -10,7 +10,7 @@
 <body>
 <jsp:include page="/WEB-INF/jsp/fragments/header.jsp"/>
 <section>
-    <table border="1" cellpadding="8" cellspacing="0">
+    <table cellpadding="8" cellspacing="0">
         <tr>
             <th>Имя</th>
             <th>E-mail</th>
@@ -28,6 +28,9 @@
             </tr>
         </c:forEach>
     </table>
+    <p>
+        <img src="img/add.png" alt="Add"><a id="addres" href="resume?uuid=&action=create">Добавить резюме</a>
+    </p>
 </section>
 <jsp:include page="/WEB-INF/jsp/fragments/footer.jsp"/>
 </body>

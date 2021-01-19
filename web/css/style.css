@@ -15,6 +15,15 @@ footer {
     text-align: center;
 }
 
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 2px solid #4661ff;
+    font-size: 14pt;
+}
+
 dl {
     background: none repeat scroll 0 0 #FAFAFA;
     margin: 8px 0;
@@ -36,4 +45,8 @@ textarea {
     width: 20%;
     height: 50px;
     text-align: left;
+}
+
+#addres {
+    font-size: 14pt;
 }

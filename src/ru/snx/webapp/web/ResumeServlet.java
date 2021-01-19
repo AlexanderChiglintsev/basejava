@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.UUID;
 
 public class ResumeServlet extends javax.servlet.http.HttpServlet {
     private Storage storage;
@@ -26,11 +27,17 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
         String editType = request.getParameter("edit");
+        String create = request.getParameter("create");
         Resume r;
         String value;
         switch (editType) {
             case "contacts":
-                r = storage.get(uuid);
+                if (create != null) {
+                  r = new Resume(uuid, "");
+                  storage.save(r);
+                } else {
+                    r = storage.get(uuid);
+                }
                 r.setFullName(fullName);
                 for (ContactType type : ContactType.values()) {
                     value = request.getParameter(type.name());
@@ -41,7 +48,8 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                     }
                 }
                 storage.update(r);
-                response.sendRedirect("resume");
+                forward(r, "/WEB-INF/jsp/edit.jsp", request, response);
+                //response.sendRedirect("resume");
                 break;
             case "personal":
                 editTS(storage.get(uuid), SectionType.PERSONAL, "personal", request, response);
@@ -77,12 +85,17 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         Resume r;
         switch (action) {
             case "create":
-                //storage.delete(uuid);
-                r = new Resume();
+                r = new Resume(UUID.randomUUID().toString(), "");
+                forward(r, "/WEB-INF/jsp/add.jsp", request, response);
                 break;
             case "view":
             case "edit":
                 r = storage.get(uuid);
+                forward(r,
+                        "view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp",
+                        request,
+                        response
+                );
                 break;
             case "delete":
                 storage.delete(uuid);
@@ -103,11 +116,6 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal !");
         }
-        request.setAttribute("resume", r);
-        request.getRequestDispatcher(
-                ("view".equals(action) ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
-        ).forward(request, response);
-
     }
 
     private void editTS(Resume r, SectionType st, String param, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -149,7 +157,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
 
     private void deleteStrFromList(Resume r, SectionType st, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String searchKey = req.getParameter("str").trim();
-        ((ListSection) r.getSection(SectionType.QUALIFICATION)).getInformation().remove(searchKey);
+        ((ListSection) r.getSection(st)).getInformation().remove(searchKey);
         storage.update(r);
         forward(r, "/WEB-INF/jsp/edit.jsp", req, resp);
     }
