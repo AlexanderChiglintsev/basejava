@@ -44,20 +44,15 @@
         <c:forEach var="sectionEntry" items="${resume.sections}">
             <jsp:useBean id="sectionEntry"
                          type="java.util.Map.Entry<ru.snx.webapp.model.SectionType, ru.snx.webapp.model.AbstractSection>"/>
-            <c:set var="type" value="<%=sectionEntry.getKey().name()%>" scope="request"/>
-            <h3><%=sectionEntry.getKey().getTitle()%></h3>
+            <c:set var="type" value="${sectionEntry.key}" scope="request"/>
+            <h3>${sectionEntry.key.title}</h3>
                 <c:choose>
-                    <c:when test="${type == 'PERSONAL'}">
+                    <c:when test="${type == 'PERSONAL' || type == 'OBJECTIVE'}">
                         <p>
                             <%=((TextSection) sectionEntry.getValue()).getInformation()%>
                         </p>
                     </c:when>
-                    <c:when test="${type == 'OBJECTIVE'}">
-                        <p>
-                            <%=((TextSection) sectionEntry.getValue()).getInformation()%>
-                        </p>
-                    </c:when>
-                    <c:when test="${type == 'ACHIEVEMENT'}">
+                    <c:when test="${type == 'ACHIEVEMENT'  || type == 'QUALIFICATION'}">
                         <c:set var="list" value="<%=((ListSection) sectionEntry.getValue()).getInformation()%>" scope="request"/>
                         <ul>
                             <c:forEach var="text" items="${list}">
@@ -65,20 +60,21 @@
                             </c:forEach>
                         </ul>
                     </c:when>
-                    <c:when test="${type == 'QUALIFICATION'}">
-                        <c:set var="list" value="<%=((ListSection) sectionEntry.getValue()).getInformation()%>" scope="request"/>
-                        <ul>
-                            <c:forEach var="text" items="${list}">
-                                <li>${text}</li>
-                            </c:forEach>
-                        </ul>
-                    </c:when>
-                    <c:when test="${type == 'EXPERIENCE'}">
+                    <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                         <c:set var="list" value="<%=((OrganizationSection) sectionEntry.getValue()).getInformation()%>" scope="request"/>
                         <ul>
                             <c:forEach var="org" items="${list}">
                                 <jsp:useBean id="org" type="ru.snx.webapp.model.Organization"/>
-                                <li><%=org.getUrl() == null ? org.getName() : "<a href="+org.getUrl()+">"+org.getName()+"</a>"%></li>
+                                <li>
+                                    <c:choose>
+                                        <c:when test="${empty org.url}">
+                                            ${org.name}
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${org.url}">${org.name}</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </li>
                                     <c:forEach var="exp" items="${org.experienceList}">
                                             ${exp.startDate} -
                                             <c:if test="${exp.endDate != '3000-01'}">
@@ -89,29 +85,13 @@
                                             </c:if>
                                             &nbsp
                                             <i><b>${exp.position}</b></i><br/>
-                                            <p>${exp.description}</p>
+                                            <c:if test="${type == 'EXPERIENCE'}">
+                                                <p>${exp.description}</p>
+                                            </c:if>
                                     </c:forEach>
-                            </c:forEach>
-                        </ul>
-                    </c:when>
-                    <c:when test="${type == 'EDUCATION'}">
-                        <c:set var="list" value="<%=((OrganizationSection) sectionEntry.getValue()).getInformation()%>" scope="request"/>
-                        <ul>
-                            <c:forEach var="edu" items="${list}">
-                                <jsp:useBean id="edu" type="ru.snx.webapp.model.Organization"/>
-                                <li><%=edu.getUrl() == null ? edu.getName() : "<a href="+edu.getUrl()+">"+edu.getName()+"</a>"%></li>
-                                <c:forEach var="exp" items="${edu.experienceList}">
-                                    ${exp.startDate} -
-                                    <c:if test="${exp.endDate != '3000-01'}">
-                                        ${exp.endDate}
-                                    </c:if>
-                                    <c:if test="${exp.endDate == '3000-01'}">
-                                        <c:out value="по н.в."/>
-                                    </c:if>
-                                    &nbsp
-                                    <i><b>${exp.position}</b></i><br/>
-                                </c:forEach>
-                                <br>
+                                <c:if test="${type == 'EDUCATION'}">
+                                    <p></p>
+                                </c:if>
                             </c:forEach>
                         </ul>
                     </c:when>
