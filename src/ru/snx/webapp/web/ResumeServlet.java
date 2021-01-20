@@ -49,25 +49,18 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                 }
                 storage.update(r);
                 forward(r, "/WEB-INF/jsp/edit.jsp", request, response);
-                //response.sendRedirect("resume");
                 break;
             case "personal":
-                editTS(storage.get(uuid), SectionType.PERSONAL, "personal", request, response);
-                break;
             case "objective":
-                editTS(storage.get(uuid), SectionType.OBJECTIVE, "objective", request, response);
+                editTS(storage.get(uuid), editType.equals("personal") ? SectionType.PERSONAL : SectionType.OBJECTIVE, editType, request, response);
                 break;
             case "achievement":
-                addStrInLS(storage.get(uuid), SectionType.ACHIEVEMENT, "achievement", request, response);
-                break;
             case "qualification":
-                addStrInLS(storage.get(uuid), SectionType.QUALIFICATION, "qualification", request, response);
+                addStrInLS(storage.get(uuid), editType.equals("achievement") ? SectionType.ACHIEVEMENT : SectionType.QUALIFICATION, editType, request, response);
                 break;
             case "experience":
-                addOrg(storage.get(uuid), SectionType.EXPERIENCE, request, response);
-                break;
             case "education":
-                addOrg(storage.get(uuid), SectionType.EDUCATION, request, response);
+                addOrg(storage.get(uuid), editType.equals("experience") ? SectionType.EXPERIENCE : SectionType.EDUCATION, request, response);
                 break;
             default:
                 throw new IllegalArgumentException("Action " + editType + " is illegal !");
@@ -102,16 +95,12 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "deleteAchString":
-                deleteStrFromList(storage.get(uuid), SectionType.ACHIEVEMENT, request, response);
-                return;
             case "deleteQualString":
-                deleteStrFromList(storage.get(uuid), SectionType.QUALIFICATION, request, response);
+                deleteStrFromList(storage.get(uuid), action.equals("deleteAchString") ? SectionType.ACHIEVEMENT : SectionType.QUALIFICATION, request, response);
                 return;
             case "deleteExpOrg":
-                deleteOrg(storage.get(uuid), SectionType.EXPERIENCE, request, response);
-                return;
             case "deleteEduOrg":
-                deleteOrg(storage.get(uuid), SectionType.EDUCATION, request, response);
+                deleteOrg(storage.get(uuid), action.equals("deleteExpOrg") ? SectionType.EXPERIENCE : SectionType.EDUCATION, request, response);
                 return;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal !");
@@ -122,11 +111,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         String val = req.getParameter(param).trim();
         if (r.getSection(st) == null) {
             r.addSection(st, new TextSection(val));
-            storage.update(r);
-            forward(r, "/WEB-INF/jsp/view.jsp", req, resp);
-            return;
-        }
-        ((TextSection) r.getSection(st)).setInformation(val);
+        } else {((TextSection) r.getSection(st)).setInformation(val);}
         storage.update(r);
         forward(r, "/WEB-INF/jsp/view.jsp", req, resp);
     }
@@ -135,11 +120,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         String val = req.getParameter(param).trim();
         if (r.getSection(st) == null) {
             r.addSection(st, new ListSection(val));
-            storage.update(r);
-            forward(r, "/WEB-INF/jsp/edit.jsp", req, resp);
-            return;
-        }
-        ((ListSection) r.getSection(st)).addInformation(val);
+        } else {((ListSection) r.getSection(st)).addInformation(val);}
         storage.update(r);
         forward(r, "/WEB-INF/jsp/edit.jsp", req, resp);
     }
@@ -147,11 +128,8 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
     private void addOrg(Resume r, SectionType st, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (r.getSection(st) == null) {
             r.addSection(st, new OrganizationSection(getOrganization(req)));
-            storage.update(r);
-            forward(r, "/WEB-INF/jsp/edit.jsp", req, resp);
-            return;
-        }
-        ((OrganizationSection) r.getSection(st)).addOrganization(getOrganization(req));
+        } else {((OrganizationSection) r.getSection(st)).addOrganization(getOrganization(req));}
+        storage.update(r);
         forward(r, "/WEB-INF/jsp/edit.jsp", req, resp);
     }
 

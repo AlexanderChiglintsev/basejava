@@ -77,7 +77,6 @@
                                             %>" scope="request"/>
                 <ul>
                     <c:forEach var="text" items="${list}">
-
                         <li>
                                 ${text}&nbsp;<a href="resume?uuid=${resume.uuid}&action=deleteAchString&str=${fn:escapeXml(text)}"><img src="img/delete.png"
                                                                                                                                         alt="Delete item">
@@ -156,7 +155,7 @@
                     </dl>
                     <dl>
                         <dt>Дата начала</dt>
-                        <dd><input type="text" name="dateBegin" size=30" value="" required></dd>
+                        <dd><input type="text" name="dateBegin" size=30" value="" required placeholder="yyyy-MM"></dd>
                     </dl>
                     <dl>
                         <dt>Дата окончания</dt>
@@ -215,7 +214,7 @@
                 </dl>
                 <dl>
                     <dt>Дата начала</dt>
-                    <dd><input type="text" name="dateBegin" size=30" value="" required></dd>
+                    <dd><input type="text" name="dateBegin" size=30" value="" required placeholder="yyyy-MM"></dd>
                 </dl>
                 <dl>
                     <dt>Дата окончания</dt>
