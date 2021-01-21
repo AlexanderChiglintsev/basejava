@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.YearMonth;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,6 +31,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
         String create = request.getParameter("create");
         Resume r;
         String value;
+        String dateEnd;
         switch (editType) {
             case "contacts":
                 if (create != null) {
@@ -62,6 +64,53 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
             case "education":
                 addOrg(storage.get(uuid), editType.equals("experience") ? SectionType.EXPERIENCE : SectionType.EDUCATION, request, response);
                 break;
+            case "addEduItem":
+                r = storage.get(uuid);
+                List<Organization> edus = ((OrganizationSection) r.getSection(SectionType.EDUCATION)).getInformation();
+                String searchKey = request.getParameter("str");
+                dateEnd = request.getParameter("dateEnd");
+                if (!dateEnd.equals("")) {
+                    dateEnd = dateEnd.trim();
+                } else {
+                    dateEnd = "3000-01";
+                }
+                for (Organization org : edus) {
+                    if (org.getName().equals(searchKey)) {
+                        org.getExperienceList().add(new Organization.Experience(
+                                YearMonth.parse(request.getParameter("dateBegin").trim()),
+                                YearMonth.parse(dateEnd),
+                                request.getParameter("position").trim())
+                        );
+                        break;
+                    }
+                }
+                storage.update(r);
+                forward(r, "/WEB-INF/jsp/edit.jsp", request, response);
+                break;
+            case "addExpItem":
+                r = storage.get(uuid);
+                List<Organization> exps = ((OrganizationSection) r.getSection(SectionType.EXPERIENCE)).getInformation();
+                searchKey = request.getParameter("str");
+                dateEnd = request.getParameter("dateEnd");
+                if (!dateEnd.equals("")) {
+                    dateEnd = dateEnd.trim();
+                } else {
+                    dateEnd = "3000-01";
+                }
+                for (Organization org : exps) {
+                    if (org.getName().equals(searchKey)) {
+                        org.getExperienceList().add(new Organization.Experience(
+                                YearMonth.parse(request.getParameter("dateBegin").trim()),
+                                YearMonth.parse(dateEnd),
+                                request.getParameter("position").trim(),
+                                request.getParameter("description"))
+                        );
+                        break;
+                    }
+                }
+                storage.update(r);
+                forward(r, "/WEB-INF/jsp/edit.jsp", request, response);
+                break;
             default:
                 throw new IllegalArgumentException("Action " + editType + " is illegal !");
         }
@@ -76,6 +125,7 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
             return;
         }
         Resume r;
+        String searchKey;
         switch (action) {
             case "create":
                 r = new Resume(UUID.randomUUID().toString(), "");
@@ -101,6 +151,34 @@ public class ResumeServlet extends javax.servlet.http.HttpServlet {
             case "deleteExpOrg":
             case "deleteEduOrg":
                 deleteOrg(storage.get(uuid), action.equals("deleteExpOrg") ? SectionType.EXPERIENCE : SectionType.EDUCATION, request, response);
+                return;
+            case "addEduItem":
+                r = storage.get(uuid);
+                List<Organization> edus = ((OrganizationSection) r.getSection(SectionType.EDUCATION)).getInformation();
+                searchKey = request.getParameter("str");
+                List<Organization.Experience> eduList = Collections.emptyList();
+                for (Organization org : edus) {
+                    if (org.getName().equals(searchKey)) {
+                        eduList = org.getExperienceList();
+                        break;
+                    }
+                }
+                request.setAttribute("eduList", eduList);
+                request.getRequestDispatcher("/WEB-INF/jsp/addeduitem.jsp").forward(request, response);
+                return;
+            case "addExpItem":
+                r = storage.get(uuid);
+                List<Organization> orgs = ((OrganizationSection) r.getSection(SectionType.EXPERIENCE)).getInformation();
+                searchKey = request.getParameter("str");
+                List<Organization.Experience> expList = Collections.emptyList();
+                for (Organization org : orgs) {
+                    if (org.getName().equals(searchKey)) {
+                        expList = org.getExperienceList();
+                        break;
+                    }
+                }
+                request.setAttribute("expList", expList);
+                request.getRequestDispatcher("/WEB-INF/jsp/addexpitem.jsp").forward(request, response);
                 return;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal !");

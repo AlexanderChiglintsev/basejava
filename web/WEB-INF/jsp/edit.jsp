@@ -140,8 +140,11 @@
                                 </c:if>
                                 &nbsp
                                 <i><b>${exp.position}</b></i><br/>
-                                <p>${exp.description}</p>
+                                <p>&nbsp&nbsp&nbsp${exp.description}</p>
                             </c:forEach>
+                            <img src="img/add.png" alt="Add item"><a href="resume?uuid=<%=resume.getUuid()%>&action=addExpItem&&str=<%=org.getName()%>">Добавить период</a>
+                            <br/>
+                            <br/>
                         </c:forEach>
                     </ul>
 
@@ -159,15 +162,15 @@
                     </dl>
                     <dl>
                         <dt>Дата окончания</dt>
-                        <dd><input type="text" name="dateEnd" size=30" value=""></dd>
+                        <dd><input type="text" name="dateEnd" size=30" value="" placeholder="yyyy-MM"></dd>
                     </dl>
                     <dl>
                         <dt>Должность</dt>
-                        <dd><input type="text" name="position" size=30" value=""></dd>
+                        <dd><input type="text" name="position" size=30" value="" required></dd>
                     </dl>
                     <dl>
                         <dt>Описание</dt>
-                        <dd><input type="text" name="description" size=30" value="" required></dd>
+                        <dd><input type="text" name="description" size=30" value=""></dd>
                     </dl>
             </p>
             <input type="hidden" name="edit" value="experience">
@@ -187,8 +190,7 @@
                     <c:forEach var="edu" items="${list}">
                         <jsp:useBean id="edu" type="ru.snx.webapp.model.Organization"/>
                         <li><%=edu.getUrl() == null ? edu.getName() : "<a href="+edu.getUrl()+">"+edu.getName()+"</a>"%>
-                            <a href="resume?uuid=<%=resume.getUuid()%>&action=deleteEduOrg&str=<%=edu.getName()%>"><img src="img/delete.png" alt="Delete item">
-                            </a>
+                            <a href="resume?uuid=<%=resume.getUuid()%>&action=deleteEduOrg&str=<%=edu.getName()%>"><img src="img/delete.png" alt="Delete item"></a>
                         </li>
                          <c:forEach var="exp" items="${edu.experienceList}">
                             ${exp.startDate} -
@@ -201,6 +203,9 @@
                             &nbsp
                             <i><b>${exp.position}</b></i><br/>
                         </c:forEach>
+                        <p>
+                        <img src="img/add.png" alt="Add item"><a href="resume?uuid=<%=resume.getUuid()%>&action=addEduItem&&str=<%=edu.getName()%>">Добавить период</a>
+                        </p>
                     </c:forEach>
                 </ul>
 
@@ -218,7 +223,7 @@
                 </dl>
                 <dl>
                     <dt>Дата окончания</dt>
-                    <dd><input type="text" name="dateEnd" size=30" value=""></dd>
+                    <dd><input type="text" name="dateEnd" size=30" value="" placeholder="yyyy-MM"></dd>
                 </dl>
                 <dl>
                     <dt>Описание</dt>
